@@ -46,15 +46,19 @@ body {
     height: 315px;
 }
 
-/* Menú flotante - Centrado y en la parte inferior */
+/* Menú flotante - Centrado horizontalmente y en la parte inferior */
 .menu {
     position: fixed;
     bottom: 30px;  /* Colocamos los botones en la parte inferior */
     left: 50%;
     transform: translateX(-50%); /* Centra los botones */
     z-index: 10;
+    display: flex;
+    justify-content: space-between;  /* Espacio entre los botones */
+    width: 80%;  /* Controla el ancho de los botones */
 }
 
+/* Estilo de los botones */
 .menu button {
     background-color: black;
     color: #800080; /* Color morado */
@@ -62,11 +66,11 @@ body {
     margin: 10px 0;
     border: none;
     cursor: pointer;
-    font-size: 22px;  /* Fuente más grande */
+    font-size: 18px;  /* Fuente más grande */
     font-style: italic;
     text-transform: uppercase;
     border-radius: 10px;
-    width: 250px;  /* Botones más anchos */
+    width: 150px;  /* Controla el ancho de los botones */
     box-shadow: 0 0 10px 3px #800080; /* Efecto de sombra de neón */
     transition: all 0.3s ease;
 }
