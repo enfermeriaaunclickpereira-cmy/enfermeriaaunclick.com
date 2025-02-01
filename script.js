@@ -1,19 +1,36 @@
-function loadContent(page) {
-    // Ocultar el video cuando se hace clic en los botones
-    document.getElementById('video-container').style.display = 'none';
+<script src="script.js"></script>
+</body>
+</html>
 
-    // Cargar el contenido de la página seleccionada
-    fetch(page)
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById('content').innerHTML = data;
-        })
-        .catch(error => {
-            console.error('Error al cargar la página:', error);
-        });
-}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Ti</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="content">
+        <h2>Sobre Ti</h2>
+        <p>Aquí puedes agregar el contenido que deseas mostrar sobre ti...</p>
+    </div>
+</body>
+</html>
 
-// Mostrar el video al cargar la página por primera vez
-window.onload = function() {
-    document.getElementById('video-container').style.display = 'block';
-};
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Ti</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="content">
+        <h2>Sobre Ti</h2>
+        <p>Aquí puedes agregar el contenido que deseas mostrar sobre ti...</p>
+    </div>
+</body>
+</html>

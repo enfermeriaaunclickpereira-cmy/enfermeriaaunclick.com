@@ -78,23 +78,3 @@ body {
     margin-right: auto;
     transition: opacity 0.5s ease;
 }
-
-h2 {
-    color: #333;
-}
-/* Contenedor del video fijo */
-.video-container {
-    position: fixed;
-    bottom: 20px; /* Ajusta la distancia desde la parte inferior */
-    left: 50%;
-    transform: translateX(-50%); /* Centra el video en la pantalla */
-    z-index: 99; /* Asegúrate de que esté por encima de otros elementos */
-    width: 560px; /* Ajusta el tamaño si es necesario */
-    height: 315px;
-}
-
-/* Estilo adicional opcional para un borde en el video */
-.video-container iframe {
-    border-radius: 10px;
-    border: 5px solid #9b4dca; /* Puedes cambiar el color del borde */
-}
