@@ -7,30 +7,48 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Música que se reproduce automáticamente -->
-    <audio id="music" autoplay loop>
-        <source src="musica.mp3" type="audio/mp3">
-        Tu navegador no soporta el audio.
-    </audio>
 
-    <!-- Fondo de imagen fija -->
-    <div class="background"></div>
-
-    <!-- Menú Principal flotante -->
-    <div class="menu">
-        <button onclick="openTab('tab1')">Hola</button>
-        <button onclick="openTab('tab2')">Conocernos</button>
-        <button onclick="openTab('tab3')">Como Estás</button>
-        <button onclick="openTab('tab4')">Te Quiero</button>
-        <button onclick="openTab('tab5')">Viajes</button>
+    <!-- Introducción y Video -->
+    <div class="intro">
+        <h1>Bienvenido a nuestra Página</h1>
+        <p>Descubre más sobre nosotros, nuestras salidas y dedicatorias. Explora las opciones a continuación:</p>
+        
+        <!-- Video de YouTube (pequeño) -->
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allowfullscreen></iframe>
+        </div>
     </div>
 
-    <!-- Pestañas -->
-    <section id="tab1" class="tab active">rusgbfveturigfhetrfiu</section>
-    <section id="tab2" class="tab">rusgbfveturigfhetrfiu</section>
-    <section id="tab3" class="tab">rusgbfveturigfhetrfiu</section>
-    <section id="tab4" class="tab">rusgbfveturigfhetrfiu</section>
-    <section id="tab5" class="tab">rusgbfveturigfhetrfiu</section>
+    <!-- Menú Principal flotante con botones -->
+    <div class="menu">
+        <button onclick="openTab('tab1')">Sobre Ti</button>
+        <button onclick="openTab('tab2')">Sobre Nosotros</button>
+        <button onclick="openTab('tab3')">Salidas</button>
+        <button onclick="openTab('tab4')">Dedicatorias</button>
+        <button onclick="openTab('tab5')">Otros</button>
+    </div>
+
+    <!-- Pestañas (donde puedes agregar texto) -->
+    <section id="tab1" class="tab">
+        <h2>Sobre Ti</h2>
+        <p>Aquí puedes agregar información sobre ti.</p>
+    </section>
+    <section id="tab2" class="tab">
+        <h2>Sobre Nosotros</h2>
+        <p>Aquí puedes agregar información sobre nosotros.</p>
+    </section>
+    <section id="tab3" class="tab">
+        <h2>Salidas</h2>
+        <p>Aquí puedes agregar información sobre nuestras salidas.</p>
+    </section>
+    <section id="tab4" class="tab">
+        <h2>Dedicatorias</h2>
+        <p>Aquí puedes agregar tus dedicatorias.</p>
+    </section>
+    <section id="tab5" class="tab">
+        <h2>Otros</h2>
+        <p>Aquí puedes agregar cualquier otro contenido.</p>
+    </section>
 
     <script src="script.js"></script>
 </body>
