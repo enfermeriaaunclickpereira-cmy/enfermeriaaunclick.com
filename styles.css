@@ -82,3 +82,13 @@ body {
 h2 {
     color: #333;
 }
+/* Video contenedor */
+.video-container {
+    text-align: center;
+    margin: 20px 0;
+}
+
+/* Estilo para el contenedor de video, se esconderá por defecto */
+#video-container {
+    display: block;
+}
