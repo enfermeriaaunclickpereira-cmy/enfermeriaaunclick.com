@@ -12,13 +12,3 @@ function loadContent(page) {
             console.error('Error al cargar la página:', error);
         });
 }
-
-// Mostrar el video solo en la página principal
-window.onload = function() {
-    // Solo mostrar el video en la página principal
-    if (window.location.pathname === "/index.html" || window.location.pathname === "/") {
-        document.getElementById('video-container').style.display = 'block';
-    } else {
-        document.getElementById('video-container').style.display = 'none';
-    }
-};
