@@ -3,37 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Interactiva</title>
+    <title>Mi Página Web</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
     <!-- Introducción y Video -->
     <div class="intro">
-        <h1>Bienvenido a nuestra Página</h1>
-        <p>Descubre más sobre nosotros, nuestras salidas y dedicatorias. Explora las opciones a continuación:</p>
-        
-        <!-- Video de YouTube -->
-        <div class="video-container">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/2Af15Gcqxcg" frameborder="0" allowfullscreen></iframe>
-        </div>
+        <h1>Bienvenido a Mi Página</h1>
+        <p>Esta es una breve introducción.</p>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/2Af15Gcqxcg" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     </div>
 
-    <!-- Menú Principal flotante con botones -->
-    <div class="menu">
+    <!-- Botones de navegación -->
+    <div class="buttons">
         <button onclick="window.location.href='sobre_ti.html'">Sobre Ti</button>
         <button onclick="window.location.href='sobre_nosotros.html'">Sobre Nosotros</button>
         <button onclick="window.location.href='salidas.html'">Salidas</button>
         <button onclick="window.location.href='dedicatorias.html'">Dedicatorias</button>
         <button onclick="window.location.href='otros.html'">Otros</button>
-        
     </div>
 
-    <!-- Contenedor donde se cargará el contenido -->
-    <div id="content-area">
-        <!-- Aquí se cargará el contenido dinámico -->
-    </div>
-
-    <script src="script.js"></script> <!-- Asegúrate de que este archivo exista y sea correcto -->
+    <script src="script.js"></script>
 </body>
 </html>
