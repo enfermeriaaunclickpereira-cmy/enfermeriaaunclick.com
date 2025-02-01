@@ -3,30 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página con Menú Interactivo</title>
+    <title>Mi Página</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Menú de navegación con botones flotantes en la parte superior -->
+    <!-- Menú con botones -->
     <div class="menu-container">
-        <a href="#sobre_ti" onclick="loadContent('sobre_ti')">
-            <button class="menu-button">Sobre ti</button>
-        </a>
-        <a href="#sobre_nosotros" onclick="loadContent('sobre_nosotros')">
-            <button class="menu-button">WE</button>
-        </a>
-        <a href="#salidas" onclick="loadContent('salidas')">
-            <button class="menu-button">OUT</button>
-        </a>
-        <a href="#dedicatorias" onclick="loadContent('dedicatorias')">
-            <button class="menu-button">OURS</button>
-        </a>
-        <a href="#otros" onclick="loadContent('otros')">
-            <button class="menu-button">OTHERS</button>
-        </a>
+        <button class="menu-button" onclick="loadContent('sobre_ti.html')">Sobre Ti</button>
+        <button class="menu-button" onclick="loadContent('sobre_nosotros.html')">Sobre Nosotros</button>
+        <button class="menu-button" onclick="loadContent('salidas.html')">Salidas</button>
+        <button class="menu-button" onclick="loadContent('dedicatorias.html')">Dedicatorias</button>
+        <button class="menu-button" onclick="loadContent('otros.html')">Otros</button>
     </div>
 
-    <!-- Contenedor para el contenido que cambiará dinámicamente -->
+    <!-- Contenedor de contenido -->
     <div id="content">
         <h2>Bienvenido</h2>
         <p>Selecciona una opción del menú.</p>
