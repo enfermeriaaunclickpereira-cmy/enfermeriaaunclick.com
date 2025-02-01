@@ -7,18 +7,6 @@ body {
     color: #fff;
 }
 
-/* Fondo fijo de la página */
-.background {
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    background: url('imagenes/flores.jpg') no-repeat center center fixed;
-    background-size: cover;
-    z-index: -1; /* Para que no se superponga a los elementos */
-}
-
 /* Introducción */
 .intro {
     padding: 20px;
@@ -73,6 +61,39 @@ body {
     width: 150px;  /* Controla el ancho de los botones */
     box-shadow: 0 0 10px 3px #800080; /* Efecto de sombra de neón */
     transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden; /* Para evitar que la animación se salga del botón */
+}
+
+/* Sombra de neón y animación de giro */
+.menu button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300%;
+    height: 300%;
+    background: rgba(128, 0, 128, 0.5);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    animation: glow 3s infinite ease-in-out;
+    z-index: -1;  /* Coloca la sombra detrás del botón */
+}
+
+/* Efecto de rotación para la sombra */
+@keyframes glow {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+        box-shadow: 0 0 10px 3px #800080;
+    }
+    50% {
+        transform: translate(-50%, -50%) rotate(180deg);
+        box-shadow: 0 0 20px 10px #800080;
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+        box-shadow: 0 0 10px 3px #800080;
+    }
 }
 
 .menu button:hover {
