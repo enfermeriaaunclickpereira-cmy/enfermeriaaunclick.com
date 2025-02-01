@@ -7,35 +7,26 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Contenedor para la introducción y video -->
-    <div class="intro-container">
-        <h1>Bienvenidos a Mi Página</h1>
-        <p>¡Explora mi contenido a través de las opciones del menú!</p>
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/2Af15Gcqxcg" 
-                frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
-                allowfullscreen></iframe>
-    </div>
-
-    <!-- Menú de navegación con botones flotantes -->
+    <!-- Menú de navegación con botones flotantes en la parte superior -->
     <div class="menu-container">
-        <a href="sobre_ti.html" target="_blank">
+        <a href="#sobre_ti" onclick="loadContent('sobre_ti')">
             <button class="menu-button">Sobre Ti</button>
         </a>
-        <a href="sobre_nosotros.html" target="_blank">
+        <a href="#sobre_nosotros" onclick="loadContent('sobre_nosotros')">
             <button class="menu-button">Sobre Nosotros</button>
         </a>
-        <a href="salidas.html" target="_blank">
+        <a href="#salidas" onclick="loadContent('salidas')">
             <button class="menu-button">Salidas</button>
         </a>
-        <a href="dedicatorias.html" target="_blank">
+        <a href="#dedicatorias" onclick="loadContent('dedicatorias')">
             <button class="menu-button">Dedicatorias</button>
         </a>
-        <a href="otros.html" target="_blank">
+        <a href="#otros" onclick="loadContent('otros')">
             <button class="menu-button">Otros</button>
         </a>
     </div>
 
-    <!-- Contenedor para actualizar el contenido de cada página -->
+    <!-- Contenedor para el contenido que cambiará dinámicamente -->
     <div id="content">
         <h2>Bienvenido</h2>
         <p>Selecciona una opción del menú.</p>

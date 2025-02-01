@@ -5,37 +5,22 @@ body {
     background-color: #f0f8ff;
     margin: 0;
     padding: 0;
+    padding-top: 50px; /* Asegura espacio para el menú flotante superior */
 }
 
-/* Contenedor para la introducción */
-.intro-container {
-    padding: 20px;
-    margin-top: 20px;
-}
-
-h1 {
-    color: #333;
-}
-
-/* Estilos para el video */
-iframe {
-    margin-top: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-}
-
-/* Contenedor de los botones flotantes */
+/* Menú de navegación flotante en la parte superior */
 .menu-container {
     position: fixed;
-    bottom: 20px;
+    top: 10px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
     justify-content: center;
     gap: 15px;
+    z-index: 100;
 }
 
-/* Estilos para los botones */
+/* Estilos para los botones redondos */
 .menu-button {
     background-color: black;
     color: #9b4dca; /* Morado */
@@ -43,12 +28,28 @@ iframe {
     font-size: 18px;
     padding: 15px 30px;
     border: none;
-    border-radius: 10px;
+    border-radius: 50%; /* Redondear los botones */
     cursor: pointer;
+    position: relative;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
 }
 
+/* Efecto de luz LED morada giratoria */
+.menu-button::before {
+    content: '';
+    position: absolute;
+    top: -8px;
+    left: -8px;
+    right: -8px;
+    bottom: -8px;
+    border-radius: 50%;
+    border: 3px solid #9b4dca;
+    animation: spin 3s infinite linear;
+    z-index: -1;
+}
+
+/* Hover: cuando el usuario pasa el mouse por encima */
 .menu-button:hover {
     background-color: #9b4dca;
     color: white;
@@ -56,7 +57,17 @@ iframe {
     transform: translateY(-5px);
 }
 
-/* Para asegurar que el contenido se vea correctamente */
+/* Efecto de giro para la luz alrededor de los botones */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Contenedor para el contenido que cambiará dinámicamente */
 #content {
     margin-top: 100px;
     padding: 20px;
@@ -66,4 +77,9 @@ iframe {
     max-width: 80%;
     margin-left: auto;
     margin-right: auto;
+    transition: opacity 0.5s ease;
+}
+
+h2 {
+    color: #333;
 }
