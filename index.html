@@ -3,55 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Página Web</title>
+    <title>Página con Menú Interactivo</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
 </head>
 <body>
-
-    <!-- Contenedor principal con video -->
-    <div class="video-container">
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/2Af15Gcqxcg" frameborder="0" allowfullscreen></iframe>
-    </div>
-
-    <!-- Sección de Introducción -->
-    <div class="intro">
+    <!-- Contenedor para la introducción y video -->
+    <div class="intro-container">
         <h1>Bienvenidos a Mi Página</h1>
-        <p>Una pequeña introducción a nuestra página web. Explora las secciones a continuación para saber más.</p>
+        <p>¡Explora mi contenido a través de las opciones del menú!</p>
+        <iframe width="560" height="315" src="https://www.youtube.com/embed/2Af15Gcqxcg" 
+                frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" 
+                allowfullscreen></iframe>
     </div>
 
-    <!-- Menú de botones flotantes -->
-    <div class="menu">
-        <button onclick="loadContent('sobre_ti')">Sobre Ti</button>
-        <button onclick="loadContent('sobre_nosotros')">Sobre Nosotros</button>
-        <button onclick="loadContent('salidas')">Salidas</button>
-        <button onclick="loadContent('dedicatorias')">Dedicatorias</button>
-        <button onclick="loadContent('otros')">Otros</button>
+    <!-- Menú de navegación con botones flotantes -->
+    <div class="menu-container">
+        <a href="sobre_ti.html" target="_blank">
+            <button class="menu-button">Sobre Ti</button>
+        </a>
+        <a href="sobre_nosotros.html" target="_blank">
+            <button class="menu-button">Sobre Nosotros</button>
+        </a>
+        <a href="salidas.html" target="_blank">
+            <button class="menu-button">Salidas</button>
+        </a>
+        <a href="dedicatorias.html" target="_blank">
+            <button class="menu-button">Dedicatorias</button>
+        </a>
+        <a href="otros.html" target="_blank">
+            <button class="menu-button">Otros</button>
+        </a>
     </div>
 
-    <!-- Contenedor de contenido dinámico (donde se mostrará el contenido según el botón que se haga clic) -->
+    <!-- Contenedor para actualizar el contenido de cada página -->
     <div id="content">
         <h2>Bienvenido</h2>
         <p>Selecciona una opción del menú.</p>
     </div>
 
+    <script src="script.js"></script>
 </body>
 </html>
-<!-- Aquí están tus botones, ahora con enlaces que abrirán nuevas pestañas -->
-<div class="menu-container">
-    <a href="sobre_ti.html" target="_blank">
-        <button class="menu-button">Sobre Ti</button>
-    </a>
-    <a href="sobre_nosotros.html" target="_blank">
-        <button class="menu-button">Sobre Nosotros</button>
-    </a>
-    <a href="salidas.html" target="_blank">
-        <button class="menu-button">Salidas</button>
-    </a>
-    <a href="dedicatorias.html" target="_blank">
-        <button class="menu-button">Dedicatorias</button>
-    </a>
-    <a href="otros.html" target="_blank">
-        <button class="menu-button">Otros</button>
-    </a>
-</div>

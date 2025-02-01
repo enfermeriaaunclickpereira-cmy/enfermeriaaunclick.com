@@ -1,80 +1,69 @@
-/* Estilo para los botones flotantes */
-.menu {
+/* Estilo básico */
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f8ff;
+    margin: 0;
+    padding: 0;
+}
+
+/* Contenedor para la introducción */
+.intro-container {
+    padding: 20px;
+    margin-top: 20px;
+}
+
+h1 {
+    color: #333;
+}
+
+/* Estilos para el video */
+iframe {
+    margin-top: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+}
+
+/* Contenedor de los botones flotantes */
+.menu-container {
     position: fixed;
-    bottom: 20px; /* Posición de los botones en la parte inferior */
+    bottom: 20px;
     left: 50%;
-    transform: translateX(-50%); /* Centrar los botones horizontalmente */
+    transform: translateX(-50%);
     display: flex;
+    justify-content: center;
     gap: 15px;
 }
 
-/* Estilo individual para los botones */
-.menu button {
-    font-family: 'Arial', sans-serif;
-    font-size: 16px;
-    font-weight: bold;
+/* Estilos para los botones */
+.menu-button {
     background-color: black;
-    color: #9b59b6; /* Letra morada */
-    border: 2px solid #9b59b6;
-    border-radius: 25px;
-    padding: 12px 25px;
+    color: #9b4dca; /* Morado */
+    font-family: 'Arial', sans-serif;
+    font-size: 18px;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 10px;
     cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
 }
 
-/* Efecto al pasar el mouse por encima */
-.menu button:hover {
-    background-color: #9b59b6;
+.menu-button:hover {
+    background-color: #9b4dca;
     color: white;
-    box-shadow: 0 0 10px #9b59b6, 0 0 20px #9b59b6, 0 0 30px #9b59b6;
+    box-shadow: 0 0 15px #9b4dca, 0 0 25px #9b4dca, 0 0 50px #9b4dca;
+    transform: translateY(-5px);
 }
 
-/* Animación de luz (neón) alrededor de los botones */
-.menu button {
-    position: relative;
-    z-index: 1;
-}
-
-.menu button:before {
-    content: "";
-    position: absolute;
-    top: -3px;
-    left: -3px;
-    right: -3px;
-    bottom: -3px;
-    background: linear-gradient(45deg, #9b59b6, #e74c3c, #9b59b6, #3498db);
-    z-index: -1;
-    filter: blur(5px);
-    animation: glowing 20s linear infinite;
-}
-
-@keyframes glowing {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.1); }
-    100% { transform: scale(1); }
-}
-
-/* Estilo general de la página */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    text-align: center;
-}
-
-/* Contenedor para el contenido dinámico */
+/* Para asegurar que el contenido se vea correctamente */
 #content {
-    margin-top: 20px;
+    margin-top: 100px;
     padding: 20px;
-    background-color: white;
+    background-color: #fff;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    max-width: 800px;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: auto;
 }
