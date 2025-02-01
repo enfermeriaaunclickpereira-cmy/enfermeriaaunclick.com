@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página con Flores Animadas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="background"></div>
+    <header>
+        <h1>Bienvenido a mi Página</h1>
+        <p>Explora las diferentes secciones usando los botones abajo.</p>
+
+        <!-- Reproductor de YouTube -->
+        <div class="music-player">
+            <iframe width="300" height="200" 
+                src="https://www.youtube.com/embed/VIDEO_ID?autoplay=1&loop=1&playlist=VIDEO_ID&controls=0&mute=0" 
+                frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+            </iframe>
+        </div>
+    </header>
+    <nav>
+        <button onclick="openTab('tab1')">Pestaña 1</button>
+        <button onclick="openTab('tab2')">Pestaña 2</button>
+        <button onclick="openTab('tab3')">Pestaña 3</button>
+        <button onclick="openTab('tab4')">Pestaña 4</button>
+        <button onclick="openTab('tab5')">Pestaña 5</button>
+    </nav>
+    <section id="tab1" class="tab active">Contenido de la Pestaña 1</section>
+    <section id="tab2" class="tab">Contenido de la Pestaña 2</section>
+    <section id="tab3" class="tab">Contenido de la Pestaña 3</section>
+    <section id="tab4" class="tab">Contenido de la Pestaña 4</section>
+    <section id="tab5" class="tab">Contenido de la Pestaña 5</section>
+    <script src="script.js"></script>
+</body>
+</html>
