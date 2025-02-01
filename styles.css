@@ -33,23 +33,20 @@ body {
     position: relative;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
+    overflow: hidden;
 }
 
-/* Efecto de luz LED morada giratoria */
-.menu-button::before {
-    content: '';
+/* Animación de flor al pasar el mouse */
+.menu-button:hover::after {
+    content: '🌸'; /* Esto representa la flor */
+    font-size: 30px;
     position: absolute;
-    top: -8px;
-    left: -8px;
-    right: -8px;
-    bottom: -8px;
-    border-radius: 50%;
-    border: 3px solid #9b4dca;
-    animation: spin 3s infinite linear;
-    z-index: -1;
+    top: -15px;
+    left: -15px;
+    animation: flowerAnimation 1s forwards;
 }
 
-/* Hover: cuando el usuario pasa el mouse por encima */
+/* Efecto de hover (cuando el usuario pasa el mouse por encima) */
 .menu-button:hover {
     background-color: #9b4dca;
     color: white;
@@ -57,13 +54,15 @@ body {
     transform: translateY(-5px);
 }
 
-/* Efecto de giro para la luz alrededor de los botones */
-@keyframes spin {
+/* Animación de la flor que aparece al pasar el mouse */
+@keyframes flowerAnimation {
     0% {
-        transform: rotate(0deg);
+        transform: scale(0);
+        opacity: 0;
     }
     100% {
-        transform: rotate(360deg);
+        transform: scale(1.5);
+        opacity: 1;
     }
 }
 
