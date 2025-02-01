@@ -1,5 +1,5 @@
 function loadContent(file) {
-    // Utilizamos fetch para cargar el archivo HTML cuando se hace clic en un botón
+    // Usamos fetch para cargar el archivo HTML cuando se hace clic en un botón
     fetch(file)
         .then(response => response.text())  // Convertir la respuesta en texto
         .then(data => {

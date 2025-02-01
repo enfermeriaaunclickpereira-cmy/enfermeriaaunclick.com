@@ -13,64 +13,26 @@
         <h1>Bienvenido a nuestra Página</h1>
         <p>Descubre más sobre nosotros, nuestras salidas y dedicatorias. Explora las opciones a continuación:</p>
         
-        <!-- Video de YouTube (actualizado con el enlace proporcionado) -->
+        <!-- Video de YouTube -->
         <div class="video-container">
-            <iframe width="560" height="315" src="https://www.youtube.com/watch?v=2Af15Gcqxcg" frameborder="0" allowfullscreen></iframe>
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/2Af15Gcqxcg" frameborder="0" allowfullscreen></iframe>
         </div>
     </div>
 
-    <!DOCTYPE html>
-    <html lang="es">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Página Interactiva</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-    
-        <!-- Introducción y Video -->
-        <div class="intro">
-            <h1>Bienvenido a nuestra Página</h1>
-            <p>Descubre más sobre nosotros, nuestras salidas y dedicatorias. Explora las opciones a continuación:</p>
-            
-            <!-- Video de YouTube -->
-            <div class="video-container">
-                <iframe width="560" height="315" src="https://www.youtube.com/embed/2Af15Gcqxcg" frameborder="0" allowfullscreen></iframe>
-            </div>
-        </div>
-    
-        <!-- Menú Principal flotante con botones -->
-        <div class="menu">
-            <button onclick="loadContent('sobre_ti.html')">Sobre Ti</button>
-            <button onclick="loadContent('sobre_nosotros.html')">Sobre Nosotros</button>
-            <button onclick="loadContent('salidas.html')">Salidas</button>
-            <button onclick="loadContent('dedicatorias.html')">Dedicatorias</button>
-            <button onclick="loadContent('otros.html')">Otros</button>
-        </div>
-    
-        <!-- Contenedor donde se cargará el contenido -->
-        <div id="content-area">
-            <!-- Aquí se cargará el contenido dinámico -->
-        </div>
-    
-        <script src="script.js"></script>
-    </body>
-    </html>
-    3. Modificar script.js para cargar los archivos
-    Ahora, vamos a crear un archivo script.js que se encargue de cargar el contenido de los archivos HTML cuando se haga clic en los botones. Vamos a usar fetch() para cargar estos archivos:
-    
-    javascript
-    Copiar
-    function loadContent(file) {
-        // Utilizamos fetch para cargar el archivo HTML cuando se hace clic en un botón
-        fetch(file)
-            .then(response => response.text())  // Convertir la respuesta en texto
-            .then(data => {
-                // Cargar el contenido en el área específica
-                document.getElementById("content-area").innerHTML = data;
-            })
-            .catch(error => {
-                console.error('Error al cargar el contenido:', error);
-            });
-    }
+    <!-- Menú Principal flotante con botones -->
+    <div class="menu">
+        <button onclick="loadContent('sobre_ti.html')">Sobre Ti</button>
+        <button onclick="loadContent('sobre_nosotros.html')">Sobre Nosotros</button>
+        <button onclick="loadContent('salidas.html')">Salidas</button>
+        <button onclick="loadContent('dedicatorias.html')">Dedicatorias</button>
+        <button onclick="loadContent('otros.html')">Otros</button>
+    </div>
+
+    <!-- Contenedor donde se cargará el contenido -->
+    <div id="content-area">
+        <!-- Aquí se cargará el contenido dinámico -->
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
