@@ -6,7 +6,7 @@ function loadContent(page) {
         case 'sobre_ti':
             content.innerHTML = `
                 <h2>Sobre Ti</h2>
-                <p>Aquí puedes agregar el contenido sobre ti...</p>
+                <p>Holaaa moni!!! , espero te encuentres muy bien porque acontinuacion te presento tu propia pagina.</p>
             `;
             break;
         case 'sobre_nosotros':
