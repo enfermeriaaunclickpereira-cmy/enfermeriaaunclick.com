@@ -54,7 +54,7 @@ body {
     transform: translateX(-50%); /* Centra los botones */
     z-index: 10;
     display: flex;
-    justify-content: space-between;  /* Espacio entre los botones */
+    justify-content: space-evenly;  /* Distribuye los botones de manera uniforme */
     width: 80%;  /* Controla el ancho de los botones */
 }
 
