@@ -1,6 +1,8 @@
 function loadContent(page) {
-    // Ocultar el video cuando se hace clic en los botones
-    document.getElementById('video-container').style.display = 'none';
+    // Ocultar el video cuando se hace clic en los botones (solo si no estamos en la página inicial)
+    if (page !== 'index.html') {
+        document.getElementById('video-container').style.display = 'none';
+    }
 
     // Cargar el contenido de la página seleccionada
     fetch(page)

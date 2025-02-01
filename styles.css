@@ -5,7 +5,7 @@ body {
     background-color: #f0f8ff;
     margin: 0;
     padding: 0;
-    padding-top: 50px; /* Asegura espacio para el menú flotante superior */
+    padding-top: 50px;
 }
 
 /* Menú de navegación flotante en la parte superior */
@@ -33,7 +33,6 @@ body {
     position: relative;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: all 0.3s ease;
-    overflow: hidden;
 }
 
 /* Efecto de hover (cuando el usuario pasa el mouse por encima) */
