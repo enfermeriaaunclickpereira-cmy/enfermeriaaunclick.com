@@ -3,14 +3,16 @@ body {
     font-family: Arial, sans-serif;
     text-align: center;
     background-color: #f0f8ff;
+    overflow: hidden;
 }
 
+/* Fondo con imagen y movimiento */
 .background {
     position: fixed;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    background-image: url('ruta-de-tu-imagen-de-flores.jpg'); /* Usa una imagen de flores */
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREj9R1dvjjQfrmIezL1Iktt_Zlg-fR__xbGQ&s') repeat;
     background-size: cover;
     animation: moveBackground 10s linear infinite;
 }
@@ -20,10 +22,7 @@ body {
     to { background-position: 100% 100%; }
 }
 
-.music-player {
-    margin-top: 10px;
-}
-
+/* Estilos generales */
 nav button {
     margin: 10px;
     padding: 10px 20px;
