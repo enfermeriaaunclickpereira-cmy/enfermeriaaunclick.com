@@ -77,3 +77,21 @@ body {
     margin-right: auto;
     transition: opacity 0.5s ease;
 }
+
+
+
+
+/* Estilos para la imagen */
+img {
+    width: 300px;  /* Cambia el tamaño de la imagen */
+    height: auto;  /* Mantiene la proporción */
+    border-radius: 10px;  /* Bordes redondeados */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);  /* Sombra alrededor de la imagen */
+    margin-top: 20px;  /* Un pequeño margen superior */
+}
+
+/* Si la imagen está dentro de un contenedor */
+.imagen-container {
+    text-align: center;  /* Centra la imagen */
+    margin-top: 30px;  /* Ajusta el margen superior del contenedor */
+}
