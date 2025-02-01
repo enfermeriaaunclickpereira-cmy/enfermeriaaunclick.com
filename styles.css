@@ -36,6 +36,14 @@ body {
     overflow: hidden;
 }
 
+/* Efecto de hover (cuando el usuario pasa el mouse por encima) */
+.menu-button:hover {
+    background-color: #9b4dca;
+    color: white;
+    box-shadow: 0 0 15px #9b4dca, 0 0 25px #9b4dca, 0 0 50px #9b4dca;
+    transform: translateY(-5px);
+}
+
 /* Animación de flor al pasar el mouse */
 .menu-button:hover::after {
     content: '🌸'; /* Esto representa la flor */
@@ -44,14 +52,6 @@ body {
     top: -15px;
     left: -15px;
     animation: flowerAnimation 1s forwards;
-}
-
-/* Efecto de hover (cuando el usuario pasa el mouse por encima) */
-.menu-button:hover {
-    background-color: #9b4dca;
-    color: white;
-    box-shadow: 0 0 15px #9b4dca, 0 0 25px #9b4dca, 0 0 50px #9b4dca;
-    transform: translateY(-5px);
 }
 
 /* Animación de la flor que aparece al pasar el mouse */
