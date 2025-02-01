@@ -19,92 +19,58 @@
         </div>
     </div>
 
-    <!-- Menú Principal flotante con botones -->
-    <div class="menu">
-        <button onclick="openTab('tab1')">Sobre Ti</button>
-        <button onclick="openTab('tab2')">Sobre Nosotros</button>
-        <button onclick="openTab('tab3')">Salidas</button>
-        <button onclick="openTab('tab4')">Dedicatorias</button>
-        <button onclick="openTab('tab5')">Otros</button>
-    </div>
-
-    <!-- Pestañas (donde puedes agregar texto) -->
-    <section id="tab1" class="tab">
-        <h2>Sobre Ti</h2>
-        <p>Agregamos fotos y detallado de lista.</p>
-    </section>
-    <section id="tab2" class="tab">
-        <h2>Sobre Nosotros</h2>
-        <p>agregamos detalles mañana .</p>
-    </section>
-    <section id="tab3" class="tab">
-        <h2>Salidas</h2>
-        <p>bloc pagina 3 detallado .</p>
-    </section>
-    <section id="tab4" class="tab">
-        <h2>Dedicatorias</h2>
-        <p>tus dedicatorias.</p>
-    </section>
-    <section id="tab5" class="tab">
-        <h2>Otros</h2>
-        <p>Aquí puedes agregar cualquier otro contenido.</p>
-    </section>
-
-    <script src="script.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página Interactiva</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
-    <!-- Introducción y Video -->
-    <div class="intro">
-        <h1>Bienvenido a nuestra Página</h1>
-        <p>Descubre más sobre nosotros, nuestras salidas y dedicatorias. Explora las opciones a continuación:</p>
-        
-        <!-- Video de YouTube (actualizado con el enlace proporcionado) -->
-        <div class="video-container">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/2Af15Gcqxcg" frameborder="0" allowfullscreen></iframe>
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Página Interactiva</title>
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+    
+        <!-- Introducción y Video -->
+        <div class="intro">
+            <h1>Bienvenido a nuestra Página</h1>
+            <p>Descubre más sobre nosotros, nuestras salidas y dedicatorias. Explora las opciones a continuación:</p>
+            
+            <!-- Video de YouTube -->
+            <div class="video-container">
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/2Af15Gcqxcg" frameborder="0" allowfullscreen></iframe>
+            </div>
         </div>
-    </div>
-
-    <!-- Menú Principal flotante con botones -->
-    <div class="menu">
-        <button onclick="openTab('tab1')">Sobre Ti</button>
-        <button onclick="openTab('tab2')">Sobre Nosotros</button>
-        <button onclick="openTab('tab3')">Salidas</button>
-        <button onclick="openTab('tab4')">Dedicatorias</button>
-        <button onclick="openTab('tab5')">Otros</button>
-    </div>
-
-    <!-- Pestañas (donde puedes agregar texto) -->
-    <section id="tab1" class="tab">
-        <h2>Sobre Ti</h2>
-        <p>Aquí puedes agregar información sobre ti.</p>
-    </section>
-    <section id="tab2" class="tab">
-        <h2>Sobre Nosotros</h2>
-        <p>Aquí puedes agregar información sobre nosotros.</p>
-    </section>
-    <section id="tab3" class="tab">
-        <h2>Salidas</h2>
-        <p>Aquí puedes agregar información sobre nuestras salidas.</p>
-    </section>
-    <section id="tab4" class="tab">
-        <h2>Dedicatorias</h2>
-        <p>Aquí puedes agregar tus dedicatorias.</p>
-    </section>
-    <section id="tab5" class="tab">
-        <h2>Otros</h2>
-        <p>Aquí puedes agregar cualquier otro contenido.</p>
-    </section>
-
-    <script src="script.js"></script>
-</body>
-</html>
+    
+        <!-- Menú Principal flotante con botones -->
+        <div class="menu">
+            <button onclick="loadContent('sobre_ti.html')">Sobre Ti</button>
+            <button onclick="loadContent('sobre_nosotros.html')">Sobre Nosotros</button>
+            <button onclick="loadContent('salidas.html')">Salidas</button>
+            <button onclick="loadContent('dedicatorias.html')">Dedicatorias</button>
+            <button onclick="loadContent('otros.html')">Otros</button>
+        </div>
+    
+        <!-- Contenedor donde se cargará el contenido -->
+        <div id="content-area">
+            <!-- Aquí se cargará el contenido dinámico -->
+        </div>
+    
+        <script src="script.js"></script>
+    </body>
+    </html>
+    3. Modificar script.js para cargar los archivos
+    Ahora, vamos a crear un archivo script.js que se encargue de cargar el contenido de los archivos HTML cuando se haga clic en los botones. Vamos a usar fetch() para cargar estos archivos:
+    
+    javascript
+    Copiar
+    function loadContent(file) {
+        // Utilizamos fetch para cargar el archivo HTML cuando se hace clic en un botón
+        fetch(file)
+            .then(response => response.text())  // Convertir la respuesta en texto
+            .then(data => {
+                // Cargar el contenido en el área específica
+                document.getElementById("content-area").innerHTML = data;
+            })
+            .catch(error => {
+                console.error('Error al cargar el contenido:', error);
+            });
+    }
