@@ -6,12 +6,10 @@ function openTab(tabId) {
 
     // Mostrar la pestaña seleccionada
     document.getElementById(tabId).classList.add('active');
-
-    // Control de la música: solo suena en la pestaña 1
+    
+    // Reproducir música cuando se selecciona la pestaña "Hola"
     let music = document.getElementById("music");
     if (tabId === "tab1") {
         music.play();
-    } else {
-        music.pause();
     }
 }

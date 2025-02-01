@@ -3,36 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Página con Flores Animadas y Música</title>
+    <title>Página Interactiva</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- Música que se reproduce automáticamente -->
+    <audio id="music" autoplay loop>
+        <source src="musica.mp3" type="audio/mp3">
+        Tu navegador no soporta el audio.
+    </audio>
+
+    <!-- Fondo de imagen -->
     <div class="background"></div>
 
-    <header>
-        <h1>Bienvenido a mi Página</h1>
-        <p>Explora las diferentes secciones usando los botones abajo.</p>
+    <!-- Menú Principal -->
+    <div class="menu">
+        <button onclick="openTab('tab1')">Hola</button>
+        <button onclick="openTab('tab2')">Conocernos</button>
+        <button onclick="openTab('tab3')">Como Estás</button>
+        <button onclick="openTab('tab4')">Te Quiero</button>
+        <button onclick="openTab('tab5')">Viajes</button>
+    </div>
 
-        <!-- Reproductor de música (oculto pero suena automáticamente) -->
-        <audio id="music" autoplay loop>
-            <source src="musica.mp3" type="audio/mp3">
-            Tu navegador no soporta el audio.
-        </audio>
-    </header>
-
-    <nav>
-        <button onclick="openTab('tab1')">Pestaña 1</button>
-        <button onclick="openTab('tab2')">Pestaña 2</button>
-        <button onclick="openTab('tab3')">Pestaña 3</button>
-        <button onclick="openTab('tab4')">Pestaña 4</button>
-        <button onclick="openTab('tab5')">Pestaña 5</button>
-    </nav>
-
-    <section id="tab1" class="tab active">Contenido de la Pestaña 1</section>
-    <section id="tab2" class="tab">Contenido de la Pestaña 2</section>
-    <section id="tab3" class="tab">Contenido de la Pestaña 3</section>
-    <section id="tab4" class="tab">Contenido de la Pestaña 4</section>
-    <section id="tab5" class="tab">Contenido de la Pestaña 5</section>
+    <!-- Pestañas -->
+    <section id="tab1" class="tab active">rusgbfveturigfhetrfiu</section>
+    <section id="tab2" class="tab">rusgbfveturigfhetrfiu</section>
+    <section id="tab3" class="tab">rusgbfveturigfhetrfiu</section>
+    <section id="tab4" class="tab">rusgbfveturigfhetrfiu</section>
+    <section id="tab5" class="tab">rusgbfveturigfhetrfiu</section>
 
     <script src="script.js"></script>
 </body>

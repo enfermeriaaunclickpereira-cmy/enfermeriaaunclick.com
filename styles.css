@@ -1,35 +1,48 @@
+/* Fondo con la imagen */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
     text-align: center;
-    background-color: #f0f8ff;
     overflow: hidden;
 }
 
-/* Fondo con imagen y movimiento */
+/* Fondo de pantalla */
 .background {
     position: fixed;
     width: 100%;
     height: 100%;
-    overflow: hidden;
-    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREj9R1dvjjQfrmIezL1Iktt_Zlg-fR__xbGQ&s') repeat;
+    top: 0;
+    left: 0;
+    background: url('imagenes/flores.jpg') no-repeat center center fixed;
     background-size: cover;
-    animation: moveBackground 10s linear infinite;
+    z-index: -1;
 }
 
-@keyframes moveBackground {
-    from { background-position: 0 0; }
-    to { background-position: 100% 100%; }
+/* Menú flotante */
+.menu {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 10;
 }
 
-/* Estilos generales */
-nav button {
-    margin: 10px;
+.menu button {
+    display: block;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
     padding: 10px 20px;
+    margin: 5px 0;
     border: none;
     cursor: pointer;
+    font-size: 18px;
+    border-radius: 5px;
 }
 
+.menu button:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Pestañas */
 .tab {
     display: none;
     padding: 20px;
