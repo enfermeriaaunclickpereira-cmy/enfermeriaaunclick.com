@@ -95,3 +95,17 @@ img {
     text-align: center;  /* Centra la imagen */
     margin-top: 30px;  /* Ajusta el margen superior del contenedor */
 }
+
+
+/* Estilo para el contenedor de la imagen */
+.imagen-container {
+    position: absolute; /* Esto permite posicionar la imagen en cualquier parte de la página */
+}
+
+/* Estilo para la imagen dentro del contenedor */
+.imagen-container img {
+    width: 300px;  /* Tamaño de la imagen */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
