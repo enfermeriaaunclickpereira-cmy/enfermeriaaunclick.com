@@ -1,9 +1,9 @@
 function loadContent(page) {
     const contentDiv = document.getElementById('content');
-    contentDiv.innerHTML = "<p>Cargando...</p>";  // Mostrar mensaje de carga
+    contentDiv.innerHTML = "<p>🌙🌙 𝑻𝒆 𝒒𝒖𝒊𝒆𝒓𝒐 𝒅𝒆 𝒂𝒒𝒖𝒊 𝒂 𝒍𝒂 𝒍𝒖𝒏𝒂 𝒆𝒏 𝒑𝒂𝒔𝒐𝒔 𝒅𝒆 𝒕𝒐𝒓𝒕𝒖𝒈𝒂... 🐢🐢 </p>";  // Mostrar mensaje de carga
 
     // Establecer el tiempo de espera para el mensaje de carga (en milisegundos)
-    const loadingTime = 1000;  // 2 segundos de carga
+    const loadingTime = 8000;  // 1 segundos de carga
 
     // Ocultar el video cuando se hace clic en los botones (solo si no estamos en la página inicial)
     if (page !== 'index.html') {
