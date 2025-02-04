@@ -3,7 +3,7 @@ function loadContent(page) {
     contentDiv.innerHTML = "<p>Cargando...</p>";  // Mostrar mensaje de carga
 
     // Establecer el tiempo de espera para el mensaje de carga (en milisegundos)
-    const loadingTime = 4000;  // 2 segundos de carga
+    const loadingTime = 8000;  // 2 segundos de carga
 
     // Ocultar el video cuando se hace clic en los botones (solo si no estamos en la página inicial)
     if (page !== 'index.html') {
