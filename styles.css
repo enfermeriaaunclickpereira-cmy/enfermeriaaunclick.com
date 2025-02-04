@@ -78,9 +78,6 @@ body {
     transition: opacity 0.5s ease;
 }
 
-
-
-
 /* Estilos para la imagen */
 img {
     width: 300px;  /* Cambia el tamaño de la imagen */
@@ -96,10 +93,11 @@ img {
     margin-top: 30px;  /* Ajusta el margen superior del contenedor */
 }
 
-
-/* Estilo para el contenedor de la imagen */
+/* Estilo para el contenedor de la imagen (remover posicionamiento absoluto) */
 .imagen-container {
-    position: absolute; /* Esto permite posicionar la imagen en cualquier parte de la página */
+    position: relative; /* Se ajusta al flujo normal del documento (alineación vertical) */
+    margin-top: 30px;  /* Espacio entre las imágenes */
+    text-align: center;  /* Centra las imágenes */
 }
 
 /* Estilo para la imagen dentro del contenedor */
@@ -108,4 +106,5 @@ img {
     height: auto;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin: 10px 0; /* Espaciado entre las imágenes */
 }
