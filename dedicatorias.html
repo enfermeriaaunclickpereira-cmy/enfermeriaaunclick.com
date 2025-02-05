@@ -1,15 +1,136 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sobre Ti</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Dedicatorias</title>
+
+    <!-- Estilos CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 600px;
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #4b8bf5;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            font-size: 1rem;
+        }
+
+        button {
+            background-color: #4b8bf5;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #3a70c4;
+        }
+
+        .messages {
+            margin-top: 30px;
+            padding: 10px;
+            background-color: #e2f7f7;
+            border: 1px solid #4b8bf5;
+            border-radius: 5px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            background-color: #f0f8ff;
+            border: 1px solid #4b8bf5;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+    </style>
 </head>
+
 <body>
-    <div id="content">
-        <h2>Sobre Ti</h2>
-        <p>Funcion desiponible despues</p>
+
+    <div class="container">
+        <h1>Dedicatorias Especiales</h1>
+
+        <form id="formDedicatoria">
+            <label for="nombre">Tu nombre:</label>
+            <input type="text" id="nombre" name="nombre" required>
+
+            <label for="dedicatoria">Dedicatoria:</label>
+            <textarea id="dedicatoria" name="dedicatoria" rows="4" required></textarea>
+
+            <button type="submit">Enviar Dedicatoria</button>
+        </form>
+
+        <div class="messages" id="messagesContainer">
+            <h2>Dedicatorias Recibidas:</h2>
+            <!-- Las dedicatorias se mostrarán aquí -->
+        </div>
     </div>
+
+    <!-- Script JavaScript -->
+    <script>
+        const formDedicatoria = document.getElementById('formDedicatoria');
+        const messagesContainer = document.getElementById('messagesContainer');
+
+        formDedicatoria.addEventListener('submit', function (event) {
+            event.preventDefault();
+
+            // Obtener los valores del formulario
+            const nombre = document.getElementById('nombre').value;
+            const dedicatoria = document.getElementById('dedicatoria').value;
+
+            // Crear un nuevo elemento para la dedicatoria
+            const newMessage = document.createElement('div');
+            newMessage.classList.add('message');
+            newMessage.innerHTML = `<strong>${nombre}</strong>: ${dedicatoria}`;
+
+            // Agregar el nuevo mensaje al contenedor
+            messagesContainer.appendChild(newMessage);
+
+            // Limpiar el formulario después de enviarlo
+            formDedicatoria.reset();
+        });
+    </script>
+
 </body>
+
 </html>
