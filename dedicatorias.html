@@ -8,34 +8,67 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
+            background-color: black;
             margin: 0;
             padding: 0;
             text-align: center;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
         }
 
-        .container {
-            padding: 50px;
+        /* Fondo con estrellas y cometas */
+        .stars {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            background-repeat: repeat;
+            z-index: 1;
+        }
+
+        .comet {
+            position: absolute;
+            background-color: #fff;
+            width: 20px;
+            height: 2px;
+            animation: comet 5s linear infinite;
+        }
+
+        /* Animación de los cometas */
+        @keyframes comet {
+            0% {
+                transform: translateX(0) translateY(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateX(100vw) translateY(100vh);
+                opacity: 0;
+            }
         }
 
         /* Estilo para el letrero animado */
         .neon-text {
             font-size: 4rem;
             font-weight: bold;
-            color: #ff3366;
             text-transform: uppercase;
-            text-shadow: 0 0 5px #ff3366, 0 0 10px #ff3366, 0 0 15px #ff3366, 0 0 20px #ff3366;
+            color: #a4a4ff; /* Color morado sutil */
+            text-shadow: 0 0 5px #a4a4ff, 0 0 10px #a4a4ff, 0 0 15px #a4a4ff, 0 0 20px #a4a4ff;
             animation: neon 1.5s infinite alternate;
+            z-index: 2;
         }
 
         /* Animación del letrero */
         @keyframes neon {
             0% {
-                text-shadow: 0 0 5px #ff3366, 0 0 10px #ff3366, 0 0 15px #ff3366, 0 0 20px #ff3366;
+                text-shadow: 0 0 5px #a4a4ff, 0 0 10px #a4a4ff, 0 0 15px #a4a4ff, 0 0 20px #a4a4ff;
             }
 
             100% {
-                text-shadow: 0 0 10px #ff3366, 0 0 20px #ff3366, 0 0 30px #ff3366, 0 0 40px #ff3366;
+                text-shadow: 0 0 10px #a4a4ff, 0 0 20px #a4a4ff, 0 0 30px #a4a4ff, 0 0 40px #a4a4ff;
             }
         }
 
@@ -49,15 +82,30 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s ease;
+            z-index: 2;
         }
 
         button:hover {
             background-color: #d02a56;
         }
+
+        /* Contenedor del botón */
+        .container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 2;
+        }
     </style>
 </head>
 
 <body>
+    <div class="stars"></div>
+    <div class="comet" style="top: 10%; left: 20%; animation-duration: 6s;"></div>
+    <div class="comet" style="top: 40%; left: 60%; animation-duration: 8s;"></div>
+    <div class="comet" style="top: 70%; left: 80%; animation-duration: 5s;"></div>
+
     <div class="container">
         <div class="neon-text">
             Te quiero
