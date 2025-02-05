@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Escribe tu Carta</title>
+    <title>Te Quiero Tres Millones</title>
     <style>
         body {
             margin: 0;
@@ -43,55 +43,25 @@
                 transform: translateX(0) translateY(0);
                 opacity: 1;
             }
+
             100% {
                 transform: translateX(100vw) translateY(100vh);
                 opacity: 0;
             }
         }
 
-        /* Estilo del área de la carta */
-        .container {
+        /* Estilo del mensaje fijo */
+        .fixed-message {
             position: absolute;
-            z-index: 2;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            text-align: center;
-            width: 80%;
-            max-width: 600px;
+            font-size: 3rem;
+            font-weight: bold;
+            color: #ff3366;
+            text-shadow: 0 0 5px #ff3366, 0 0 10px #ff3366, 0 0 15px #ff3366, 0 0 20px #ff3366;
         }
 
-        h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 300px;
-            font-size: 1.1rem;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #fff;
-            background-color: #333;
-            color: #fff;
-            resize: none;
-        }
-
-        button {
-            background-color: #ff3366;
-            color: white;
-            padding: 15px 25px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        button:hover {
-            background-color: #d02a56;
-        }
     </style>
 </head>
 
@@ -99,12 +69,12 @@
 
     <div class="stars"></div>
 
-    <div class="container">
-        <h1>Escribe tu Carta de San Valentín</h1>
-        <textarea placeholder="Escribe tu carta aquí..."></textarea><br>
-        <button>Enviar Carta</button>
+    <!-- Mensaje fijo -->
+    <div class="fixed-message">
+        Te quiero tres millones
     </div>
 
+    <!-- Cometas -->
     <div class="comet" style="top: 10%; left: 20%; animation-duration: 6s;"></div>
     <div class="comet" style="top: 40%; left: 60%; animation-duration: 8s;"></div>
     <div class="comet" style="top: 70%; left: 80%; animation-duration: 5s;"></div>
