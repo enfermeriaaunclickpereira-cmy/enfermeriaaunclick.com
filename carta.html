@@ -53,7 +53,7 @@
         /* Estilo del mensaje fijo */
         .fixed-message {
             position: absolute;
-            top: 50%;
+            top: 40%; /* Subir el mensaje un poco más arriba */
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 3rem;
@@ -66,7 +66,7 @@
         /* Estilo para el espacio de texto adicional */
         .additional-text {
             position: absolute;
-            top: 70%; /* Justo debajo del mensaje principal */
+            top: 60%; /* Ubicar el texto adicional más abajo */
             left: 50%;
             transform: translateX(-50%);
             width: 90%; /* Ancho más grande para no cortar el texto */
@@ -77,7 +77,7 @@
             padding: 20px;
             border-radius: 10px;
             overflow-y: auto; /* Permitir desplazamiento si el texto es largo */
-            max-height: 60%; /* Limitar la altura para que no se sobrecargue la pantalla */
+            max-height: 35%; /* Limitar la altura para que no se sobrecargue la pantalla */
             word-wrap: break-word; /* Asegura que las palabras largas se ajusten */
             z-index: 2;
         }
