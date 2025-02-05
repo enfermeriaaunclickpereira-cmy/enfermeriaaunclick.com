@@ -14,59 +14,106 @@
             text-align: center;
         }
 
-        .container {
-            padding: 50px;
-        }
-
-        /* Estilo para el letrero animado */
-        .neon-text {
-            font-size: 4rem;
+        /* Estilo para el letrero de "Te quiero" */
+        .led-sign {
+            font-size: 40px;
             font-weight: bold;
-            color: #ff3366;
             text-transform: uppercase;
-            text-shadow: 0 0 5px #ff3366, 0 0 10px #ff3366, 0 0 15px #ff3366, 0 0 20px #ff3366;
-            animation: neon 1.5s infinite alternate;
+            color: black;
+            letter-spacing: 5px;
+            text-shadow: 0 0 5px #ff0000, 0 0 10px #ff0000, 0 0 15px #ff0000, 0 0 20px #ff0000;
+            animation: blink 1s linear infinite;
         }
 
-        /* Animación del letrero */
-        @keyframes neon {
+        /* Efecto de iluminación para las palabras "Te" y "Quiero" */
+        @keyframes blink {
             0% {
-                text-shadow: 0 0 5px #ff3366, 0 0 10px #ff3366, 0 0 15px #ff3366, 0 0 20px #ff3366;
+                color: transparent;
+            }
+
+            50% {
+                color: #ff0000;
             }
 
             100% {
-                text-shadow: 0 0 10px #ff3366, 0 0 20px #ff3366, 0 0 30px #ff3366, 0 0 40px #ff3366;
+                color: transparent;
             }
         }
 
-        /* Estilo del botón */
-        button {
-            background-color: #ff3366;
-            color: white;
-            padding: 15px 25px;
-            font-size: 1.2rem;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
+        .button-container {
+            margin-top: 30px;
         }
 
-        button:hover {
-            background-color: #d02a56;
+        .button {
+            background-color: #ff0000;
+            color: white;
+            font-size: 20px;
+            padding: 10px 30px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .button:hover {
+            background-color: #cc0000;
+        }
+
+        .message-container {
+            margin-top: 20px;
+            display: none;
+            padding: 20px;
+            background-color: black;
+            color: white;
+            font-size: 18px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        .message-container textarea {
+            width: 100%;
+            height: 200px;
+            background-color: #333;
+            color: white;
+            border: 1px solid #ccc;
+            padding: 10px;
+            font-size: 18px;
+            border-radius: 5px;
+            resize: none;
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <div class="neon-text">
-            Te quiero
-        </div>
-        <br><br>
-        <a href="carta.html">
-            <button>¿Quieres ser mi San Valentín?</button>
-        </a>
+
+    <!-- Letrero de "Te quiero" que se ilumina de izquierda a derecha -->
+    <div class="led-sign">
+        <span id="te">Te</span> <span id="quiero">quiero</span>
     </div>
+
+    <!-- Botón para mostrar el mensaje -->
+    <div class="button-container">
+        <button class="button" onclick="showMessage()">¿Quieres ser mi San Valentín?</button>
+    </div>
+
+    <!-- Contenedor de mensaje que aparece después de hacer clic -->
+    <div id="message-container" class="message-container">
+        <p>Aquí está tu carta para escribir:</p>
+        <!-- Área de texto donde puedes escribir tu mensaje -->
+        <textarea placeholder="Escribe aquí tu carta de San Valentín..."></textarea>
+    </div>
+
+    <script>
+        // Función para alternar la visibilidad del contenedor del mensaje
+        function showMessage() {
+            var messageContainer = document.getElementById('message-container');
+            messageContainer.style.display = 'block';  // Muestra el contenedor del mensaje
+        }
+    </script>
+
 </body>
 
 </html>
