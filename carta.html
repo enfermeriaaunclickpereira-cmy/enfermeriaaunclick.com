@@ -60,6 +60,7 @@
             font-style: italic; /* Cursiva */
             color: gold; /* Color dorado */
             text-align: center;
+            z-index: 2;
         }
 
         /* Estilo para el espacio de texto adicional */
@@ -69,15 +70,16 @@
             left: 50%;
             transform: translateX(-50%);
             width: 90%; /* Ancho más grande para no cortar el texto */
-            max-width: 800px; /* Limitar el ancho máximo para que no se estire mucho */
             font-size: 1.5rem;
             color: white;
-            text-align: center;
+            text-align: left;
             background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
             padding: 20px;
             border-radius: 10px;
             overflow-y: auto; /* Permitir desplazamiento si el texto es largo */
             max-height: 60%; /* Limitar la altura para que no se sobrecargue la pantalla */
+            word-wrap: break-word; /* Asegura que las palabras largas se ajusten */
+            z-index: 2;
         }
 
     </style>
