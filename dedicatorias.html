@@ -5,13 +5,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dedicatorias</title>
+
+    <!-- Incluir particles.js -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
-            background-color: #f0f8ff;
             margin: 0;
             padding: 0;
             text-align: center;
+            overflow: hidden; /* Para que el fondo de partículas no se desborde */
+        }
+
+        /* Fondo animado de partículas */
+        #particles-js {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: -1;
         }
 
         /* Estilo para el letrero de "Te quiero" */
@@ -89,6 +104,9 @@
 
 <body>
 
+    <!-- Contenedor para el fondo animado de partículas -->
+    <div id="particles-js"></div>
+
     <!-- Letrero de "Te quiero" que se ilumina de izquierda a derecha -->
     <div class="led-sign">
         <span id="te">Te</span> <span id="quiero">quiero</span>
@@ -107,6 +125,74 @@
     </div>
 
     <script>
+        // Inicializar particles.js con el fondo de estrellas y cometas
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 100, // Número de partículas (estrellas y cometas)
+                    density: {
+                        enable: true,
+                        value_area: 800
+                    }
+                },
+                color: {
+                    value: "#ffffff" // Color de las partículas (blanco para estrellas)
+                },
+                shape: {
+                    type: "circle", // Las partículas serán circulares (simulando estrellas)
+                    stroke: {
+                        width: 0,
+                        color: "#000000"
+                    }
+                },
+                opacity: {
+                    value: 0.5, // Opacidad de las partículas
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 0.5,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 3, // Tamaño de las partículas (estrellas)
+                    random: true,
+                    anim: {
+                        enable: true,
+                        speed: 2,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: false // Desactivar líneas entre partículas
+                },
+                move: {
+                    enable: true,
+                    speed: 1, // Velocidad de movimiento de las partículas (simulando cometas)
+                    direction: "none",
+                    random: true,
+                    straight: false,
+                    out_mode: "out"
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: "repulse"
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: "push"
+                    }
+                }
+            },
+            retina_detect: true
+        });
+
         // Función para alternar la visibilidad del contenedor del mensaje
         function showMessage() {
             var messageContainer = document.getElementById('message-container');
