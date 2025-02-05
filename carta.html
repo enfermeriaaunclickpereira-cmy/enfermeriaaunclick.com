@@ -57,9 +57,24 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-size: 3rem;
-            font-weight: bold;
-            color: #ff3366;
-            text-shadow: 0 0 5px #ff3366, 0 0 10px #ff3366, 0 0 15px #ff3366, 0 0 20px #ff3366;
+            font-style: italic; /* Cursiva */
+            color: gold; /* Color dorado */
+            text-align: center;
+        }
+
+        /* Estilo para el espacio de texto adicional */
+        .additional-text {
+            position: absolute;
+            top: 70%; /* Justo debajo del mensaje principal */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80%;
+            font-size: 1.5rem;
+            color: white;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
+            padding: 20px;
+            border-radius: 10px;
         }
 
     </style>
@@ -72,6 +87,12 @@
     <!-- Mensaje fijo -->
     <div class="fixed-message">
         Te quiero tres millones
+    </div>
+
+    <!-- Espacio para agregar más texto -->
+    <div class="additional-text">
+        <!-- Puedes agregar más texto aquí -->
+        Aquí puedes escribir lo que quieras añadir a tu carta.
     </div>
 
     <!-- Cometas -->
