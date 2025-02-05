@@ -9,7 +9,6 @@
   <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
   
   <style>
-    /* Estilos generales */
     body, html {
       margin: 0;
       padding: 0;
@@ -17,7 +16,6 @@
       overflow: hidden;
     }
 
-    /* Fondo de partículas */
     #particles-js {
       position: absolute;
       width: 100%;
@@ -25,7 +23,6 @@
       z-index: -1;
     }
 
-    /* Estilo del cartel de "Te quiero" */
     .cartel {
       font-family: 'Arial', sans-serif;
       font-size: 50px;
@@ -52,7 +49,6 @@
       animation-delay: 2s;
     }
 
-    /* Animación para el cartel "Te quiero" */
     @keyframes iluminacion {
       0% {
         opacity: 0;
@@ -62,7 +58,6 @@
       }
     }
 
-    /* Estilo del botón */
     .boton {
       display: block;
       margin: 30px auto;
@@ -83,7 +78,6 @@
       background-color: #ff3385;
     }
 
-    /* Estilo de la carta (página de destino) */
     .carta-container {
       color: #fff;
       font-size: 24px;
@@ -94,17 +88,15 @@
 </head>
 <body>
 
-  <!-- Fondo de partículas -->
   <div id="particles-js"></div>
 
-  <!-- Cartel "Te quiero" -->
   <div class="cartel">
     <span class="te">Te</span>
     <span class="quiero">quiero</span>
   </div>
 
-  <!-- Botón "¿Quieres ser mi San Valentín?" -->
-  <button class="boton" onclick="redirigirCarta()">¿Quieres ser mi San Valentín?</button>
+  <!-- Botón de San Valentín -->
+  <button class="boton" onclick="showMessage()">¿Quieres ser mi San Valentín?</button>
 
   <!-- Página de la carta (oculta inicialmente) -->
   <div id="pagina-carta" class="carta-container" style="display: none;">
@@ -113,13 +105,14 @@
   </div>
 
   <script>
-    // Función para redirigir al área de la carta
-    function redirigirCarta() {
+    // Función para mostrar el mensaje al hacer clic en el botón
+    function showMessage() {
+      alert("¡Bienvenida/o! Escribe tu carta de San Valentín.");
       document.getElementById("pagina-carta").style.display = "block"; // Muestra la página de la carta
       window.scrollTo(0, document.body.scrollHeight); // Desplaza la pantalla hasta la carta
     }
 
-    // Configuración de partículas de estrellas y cometas (fondo)
+    // Configuración de partículas de estrellas y cometas
     particlesJS("particles-js", {
       "particles": {
         "number": {
