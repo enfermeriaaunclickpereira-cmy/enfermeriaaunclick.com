@@ -37,7 +37,7 @@ body {
 
 /* Efecto de hover (cuando el usuario pasa el mouse por encima) */
 .menu-button:hover {
-    background-color: #554dca;
+    background-color: #332e72;
     color: white;
     box-shadow: 0 0 15px #554dca, 0 0 25px #554dca, 0 0 50px #554dca;
     transform: translateY(-5px);
@@ -45,7 +45,7 @@ body {
 
 /* Animación de flor al pasar el mouse */
 .menu-button:hover::after {
-    content: '🌁'; /* Esto representa la flor */
+    content: '💭'; /* Esto representa la flor */
     font-size: 30px;
     position: absolute;
     top: -15px;

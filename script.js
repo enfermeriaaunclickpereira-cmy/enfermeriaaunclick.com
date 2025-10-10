@@ -14,7 +14,7 @@ function loadContent(page) {
     contentDiv.style.alignItems = "center";  // Centrar el mensaje
 
     // Establecer el tiempo de espera para el mensaje de carga (en milisegundos)
-    const loadingTime = 2000;  // 2 segundos de carga
+    const loadingTime = 200;  // 2 segundos de carga
 
     // Cargar el contenido de la página seleccionada después de 2 segundos
     setTimeout(() => {
