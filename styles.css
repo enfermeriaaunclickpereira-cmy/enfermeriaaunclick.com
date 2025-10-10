@@ -23,7 +23,7 @@ body {
 /* Estilos para los botones redondos */
 .menu-button {
     background-color: black;
-    color: #9b4dca; /* Morado */
+    color: #554dca; /* Morado */
     font-family: 'Arial', sans-serif;
     font-size: 18px;
     padding: 15px 30px;
@@ -37,15 +37,15 @@ body {
 
 /* Efecto de hover (cuando el usuario pasa el mouse por encima) */
 .menu-button:hover {
-    background-color: #9b4dca;
+    background-color: #554dca;
     color: white;
-    box-shadow: 0 0 15px #9b4dca, 0 0 25px #9b4dca, 0 0 50px #9b4dca;
+    box-shadow: 0 0 15px #554dca, 0 0 25px #554dca, 0 0 50px #554dca;
     transform: translateY(-5px);
 }
 
 /* Animación de flor al pasar el mouse */
 .menu-button:hover::after {
-    content: '🌸'; /* Esto representa la flor */
+    content: '🌁'; /* Esto representa la flor */
     font-size: 30px;
     position: absolute;
     top: -15px;

@@ -5,7 +5,7 @@ function loadContent(page) {
     document.getElementById('video-container').style.display = 'none';
 
     // Mostrar el mensaje de carga
-    contentDiv.innerHTML = "<p>🌙 𝑻𝒆 𝒒𝒖𝒊𝒆𝒓𝒐 𝒅𝒆 𝒂𝒒𝒖𝒊 𝒂 𝒍𝒂 𝒍𝒖𝒏𝒂 𝒆𝒏 𝒑𝒂𝒔𝒐𝒔 𝒅𝒆 𝒕𝒐𝒓𝒕𝒖𝒈𝒂... 🐢</p>";  // Mensaje de carga visible
+    contentDiv.innerHTML = "<p> 𝒍𝒐 𝒃𝒖𝒆𝒏𝒐 𝒅𝒆𝒃𝒆 𝒅𝒆𝒋𝒂𝒓 𝒑𝒂𝒔𝒐 𝒂 𝒍𝒐 𝒎𝒆𝒋𝒐𝒓. </p>";  // Mensaje de carga visible
 
     // Asegurarse de que el contenedor de contenido ocupe toda la pantalla
     contentDiv.style.height = "100vh";  // Altura completa de la pantalla
