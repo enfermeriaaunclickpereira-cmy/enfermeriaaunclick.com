@@ -1,43 +1,30 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis objetivos semanales </title>
-    <link rel="stylesheet" href="styles.css">
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Enfermera a un CLICK — Demo</title>
+        <link rel="stylesheet" href="demo.css">
+        <style>
+            /* Pequeño override para centrar el launcher */
+            body{margin:0;display:flex;align-items:center;justify-content:center;height:100vh;background:#f6fbff;font-family:Poppins,Arial,Helvetica,sans-serif}
+            .launcher{background:#fff;padding:28px;border-radius:12px;box-shadow:0 8px 30px rgba(16,40,60,0.08);max-width:720px;text-align:center}
+            .launcher h1{margin:0 0 6px;font-size:20px}
+            .launcher p{margin:0 0 18px;color:#4f6b80}
+            .launcher a{display:inline-block;padding:12px 18px;background:#6fb3d2;color:#fff;border-radius:8px;text-decoration:none;font-weight:600}
+            .small-links{margin-top:12px;font-size:13px}
+            .small-links a{color:#16324f;text-decoration:underline;margin:0 6px}
+        </style>
 </head>
 <body>
-    <!-- Menú con botones -->
-    <div class="menu-container">
-       <button class="menu-button" onclick="loadContent('sobre_ti.html')">INTRODUCCION</button> 
-         <button class="menu-button" onclick="loadContent('sobre_nosotros.html')">Sobre Nosotros</button>
-        <!--    <button class="menu-button" onclick="loadContent('salidas.html')">Salidas</button> -->
-    <button class="menu-button" onclick="loadContent('dedicatorias.html')">Dedicatoria</button>
-   <!-- <button class="menu-button" onclick="loadContent('otros.html')">Otros</button> -->
-</div>
-
-    <!-- Contiene el titulo de la pestaña -->
-    <div id="content">
-        <h2>𝑬𝒍 𝒎𝒖𝒏𝒅𝒐 𝒄𝒂𝒎𝒃𝒊𝒂 𝒄𝒐𝒏 𝒕𝒖 𝒆𝒋𝒆𝒎𝒑𝒍𝒐, 𝒏𝒐 𝒄𝒐𝒏 𝒕𝒖 𝒐𝒑𝒊𝒏𝒊ó𝒏.</h2>
-            </div>
-    
-    <!-- Contenedor del video --> <!--musica que le gusto la primera vez -->
-
-    <!--
-     <div id="video-container" class="video-container" style="display: block;"> 
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/4ZadjZXxyNU" frameborder="0" allowfullscreen></iframe>
-    </div> 
-    -->
-
-    </div><div class="imagen-container imagen1"  style="display: block;">
-                    <img src="imagenes/villa.jpg" alt="Imagen de erika">
-                </div>
-    <!--
-    <div id="video-container" class="video-container" style="display: block;"> 
-        <iframe width="560" height="315" src="https://www.youtube.com/embed/2iftWszmwLs" frameborder="0" allowfullscreen></iframe>
-    </div> 
--->
-
-    <script src="script.js"></script>
+    <div class="launcher">
+        <h1>Enfermera a un CLICK</h1>
+        <p>Demo interactiva preparada para la feria — experiencia simulada sin backend.</p>
+        <a href="demo.html">Abrir demo</a>
+        <div class="small-links">
+            <a href="sobre_nosotros.html">Sobre Nosotros</a>
+            <a href="dedicatorias.html">Dedicatoria</a>
+        </div>
+    </div>
 </body>
 </html>

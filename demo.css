@@ -1,0 +1,42 @@
+:root{
+  --bg:#f6fbff;
+  --card:#ffffff;
+  --primary:#6fb3d2; /* azul claro */
+  --accent:#a7e9cf; /* verde menta */
+  --text:#16324f;
+  --muted:#6b7b8c;
+}
+*{box-sizing:border-box;font-family:'Poppins',system-ui,Segoe UI,Roboto,Arial,sans-serif}
+body{margin:0;background:var(--bg);color:var(--text);}
+.header,header.top{display:flex;align-items:center;padding:12px 20px;background:linear-gradient(90deg,#ffffff, #eef9ff);border-bottom:1px solid #e6f0f6}
+.logo{font-size:28px;margin-right:12px}
+.title h1{margin:0;font-size:18px}
+.slogan{margin:0;font-size:12px;color:var(--muted)}
+main#app{max-width:980px;margin:24px auto;padding:20px}
+.view{background:var(--card);padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(20,40,60,0.06)}
+.hidden{display:none}
+.buttons{display:flex;gap:12px;margin-top:12px}
+button{background:var(--primary);border:none;color:#fff;padding:12px 18px;border-radius:8px;cursor:pointer;font-weight:600}
+button[data-action="back"],button[data-action="logout"]{background:#ccc;color:#16324f}
+button:active{transform:translateY(1px)}
+form label{display:block;margin:8px 0}
+input,select,textarea{width:100%;padding:8px;border:1px solid #d7e8ef;border-radius:6px}
+.form-actions{display:flex;gap:10px;margin-top:12px}
+.panel-header{display:flex;justify-content:space-between;align-items:center}
+.quick-actions button{background:var(--accent);color:var(--text);padding:10px 12px;border-radius:8px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px}
+.card{padding:12px;border-radius:8px;background:linear-gradient(180deg,#fff,#fbfeff)}
+.card.alert{border-left:6px solid #ffd2d2}
+.card.message{border-left:6px solid #cfe9ff}
+.card.education{border-left:6px solid #d7ffe9}
+.patient-list{list-style:none;padding:0}
+.patient-list li{padding:8px;border-bottom:1px dashed #e6f0f6}
+.status{padding:4px 8px;border-radius:6px;font-weight:600}
+.status.green{background:#dff6e9;color:#0b6b33}
+.status.yellow{background:#fff6d8;color:#6b4b00}
+.status.red{background:#ffdfdf;color:#6b1212}
+.edu-card{padding:12px;background:#f8fdff;border-radius:8px}
+.video-placeholder{height:120px;background:#eef7fb;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);margin:12px 0}
+#toast{position:fixed;right:20px;bottom:20px;background:#16324f;color:#fff;padding:12px 16px;border-radius:8px;box-shadow:0 6px 18px rgba(20,40,60,0.2)}
+#toast.hidden{display:none}
+@media(max-width:600px){.buttons{flex-direction:column}main#app{margin:12px}}

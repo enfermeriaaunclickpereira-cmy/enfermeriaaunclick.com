@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Enfermera a un CLICK - Demo</title>
+  <link rel="stylesheet" href="demo.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <header class="top">
+    <div class="logo">💙</div>
+    <div class="title">
+      <h1>Enfermera a un CLICK</h1>
+      <p class="slogan">Prevención, confianza y cuidado en un solo click</p>
+    </div>
+  </header>
+
+  <main id="app">
+    <!-- Pantalla Inicial -->
+    <section class="view" id="home">
+      <h2>Bienvenido</h2>
+      <p>Seleccione una opción para comenzar la demo</p>
+      <div class="buttons">
+        <button data-action="login" data-role="paciente">Iniciar como Paciente</button>
+        <button data-action="login" data-role="enfermero">Iniciar como Enfermero</button>
+        <button data-action="guest">Entrar como Invitado (demo)</button>
+      </div>
+    </section>
+
+    <!-- Login simulado -->
+    <section class="view hidden" id="login">
+      <h2 id="login-title">Registro / Login</h2>
+      <form id="login-form">
+        <label>Nombre<input type="text" id="name" placeholder="María" required></label>
+        <label>Correo<input type="email" id="email" placeholder="maria@mail.com" required></label>
+        <label>Contraseña<input type="password" id="password" required></label>
+        <label>Enfermedad
+          <select id="condition">
+            <option>Diabetes</option>
+            <option>Hipertensión</option>
+            <option>Asma</option>
+            <option>Otra</option>
+          </select>
+        </label>
+        <div class="form-actions">
+          <button type="submit">Simular registro</button>
+          <button type="button" data-action="back">Volver</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Panel Paciente -->
+    <section class="view hidden" id="patient">
+      <div class="panel-header">
+        <h2 id="patient-greet">Hola, Paciente</h2>
+        <div class="quick-actions">
+          <button data-action="video">Videollamada con mi enfermera</button>
+          <button data-action="reminder">Recordatorios de medicación</button>
+          <button data-action="chat">Mensajes / Chat</button>
+        </div>
+      </div>
+
+      <div class="cards">
+        <article class="card alert">
+          <h3>Alerta</h3>
+          <p id="alert-text">Recuerda medir tu glucosa hoy a las 8 a.m.</p>
+        </article>
+
+        <article class="card message">
+          <h3>Mensaje nuevo</h3>
+          <p id="message-text">Tu enfermera ha revisado tus signos y te felicita por tu control.</p>
+        </article>
+
+        <article class="card education">
+          <h3>Educación en salud</h3>
+          <p>Video corto: Cómo medir la glucosa correctamente.</p>
+          <button data-action="view-education">Ver más contenido</button>
+        </article>
+      </div>
+
+      <div class="patient-footer">
+        <button data-action="logout">Cerrar sesión</button>
+      </div>
+    </section>
+
+    <!-- Panel Enfermero (estático) -->
+    <section class="view hidden" id="nurse">
+      <h2>Panel del Enfermero</h2>
+      <p>Lista de pacientes asignados</p>
+      <ul class="patient-list">
+        <li>María - <span class="status green">Estable</span></li>
+        <li>Juan - <span class="status yellow">En observación</span></li>
+        <li>Ana - <span class="status red">Alerta</span></li>
+      </ul>
+      <div class="nurse-actions">
+        <button data-action="video">Iniciar videollamada</button>
+        <button data-action="chat">Abrir chat</button>
+        <button data-action="logout">Cerrar sesión</button>
+      </div>
+    </section>
+
+    <!-- Educacion -->
+    <section class="view hidden" id="education">
+      <h2>Educación en salud</h2>
+      <div class="edu-card">
+        <h3>Tips para medir la glucosa</h3>
+        <p>1. Lávese las manos antes de medir. 2. Use el dedo lateral. 3. Anote el resultado.</p>
+        <div class="video-placeholder">[Video demostrativo]</div>
+        <button data-action="back-to" data-target="patient">Volver al panel</button>
+      </div>
+    </section>
+
+    <!-- Contacto / Ayuda -->
+    <section class="view hidden" id="contact">
+      <h2>Contacto / Ayuda</h2>
+      <form id="contact-form">
+        <label>Nombre<input type="text" id="c-name"></label>
+        <label>Correo<input type="email" id="c-email"></label>
+        <label>Mensaje<textarea id="c-message"></textarea></label>
+        <div class="form-actions">
+          <button type="submit">Enviar (simulado)</button>
+          <button type="button" data-action="back">Volver</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- Toast / modal -->
+    <div id="toast" class="hidden"></div>
+
+  </main>
+
+  <script src="demo.js"></script>
+</body>
+</html>
