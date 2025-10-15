@@ -526,9 +526,12 @@ document.addEventListener('click', (e)=>{
   }
 
   function computeIMC(){
-    const w = inputWeight ? parseFloat(inputWeight.value) : NaN;
-    const hcm = inputHeight ? parseFloat(inputHeight.value) : NaN;
-    if(!w || !hcm || hcm <= 0){ resetIMC(); return; }
+    console.log('computeIMC() called');
+    if(!inputWeight || !inputHeight){ console.error('IMC inputs not found', inputWeight, inputHeight); toast('Error: campos de IMC no disponibles'); return; }
+    const w = parseFloat(inputWeight.value);
+    const hcm = parseFloat(inputHeight.value);
+    console.log('IMC inputs:', {weight: inputWeight.value, height: inputHeight.value});
+    if(!w || !hcm || isNaN(w) || isNaN(hcm) || hcm <= 0){ resetIMC(); toast('Introduce peso y estatura válidos antes de calcular'); return; }
     const hm = hcm/100;
     const imc = +(w / (hm*hm)).toFixed(1);
     if(imcValueEl) imcValueEl.textContent = imc;
@@ -547,6 +550,7 @@ document.addEventListener('click', (e)=>{
     try{
       const payload = { imc, minW, maxW, category: cat, date: (new Date()).toISOString() };
       localStorage.setItem('lastIMC', JSON.stringify(payload));
+      console.log('IMC result saved', payload);
     }catch(e){ /* ignore */ }
   }
   if(inputWeight) inputWeight.addEventListener('input', computeIMC);
