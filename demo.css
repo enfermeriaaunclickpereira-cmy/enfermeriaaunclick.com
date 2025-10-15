@@ -17,6 +17,7 @@ body{margin:0;background:var(--bg);color:var(--text);}
 .hero-left{flex:1;z-index:1}
 .hero-right{flex:1;text-align:right}
 .hero-right img{width:90%;max-width:420px;border-radius:10px;box-shadow:0 10px 30px rgba(16,40,60,0.08)}
+.hero-logo-large{width:100%;max-width:480px;border-radius:12px;box-shadow:0 14px 40px rgba(16,40,60,0.12);display:block;margin-left:auto}
 .hero .logo{font-size:36px}
 .hero h1{font-size:36px;margin:10px 0}
 .site-logo{width:64px;height:64px;object-fit:contain;border-radius:12px;box-shadow:0 6px 18px rgba(16,40,60,0.08);display:inline-block}
@@ -71,7 +72,8 @@ input,select,textarea{width:100%;padding:8px;border:1px solid #d7e8ef;border-rad
 #other-condition input{padding:8px;border-radius:6px;border:1px solid #d7e8ef}
 
 /* chat widget */
-.chat-widget{position:fixed;left:18px;bottom:18px;width:320px;max-width:90vw;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(16,40,60,0.12);overflow:hidden;display:flex;flex-direction:column}
+.chat-widget{position:fixed;left:18px;bottom:18px;width:320px;max-width:90vw;background:#fff;border-radius:10px;box-shadow:0 10px 30px rgba(16,40,60,0.12);overflow:hidden;flex-direction:column}
+.chat-widget:not(.hidden){display:flex}
 .chat-widget .chat-header{background:linear-gradient(90deg,#6fb3d2,#a7e9cf);padding:8px 12px;color:#063247;display:flex;justify-content:space-between;align-items:center}
 .chat-widget .chat-messages{padding:10px;height:180px;overflow:auto;font-size:14px;background:#fbfeff}
 .chat-widget .chat-messages .msg{margin:6px 0;padding:8px;border-radius:8px;max-width:80%}
