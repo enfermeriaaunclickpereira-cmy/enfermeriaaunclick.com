@@ -119,19 +119,30 @@ function openChat(){
   if(!chatWidget) return;
   // solo abrir si está oculto (evita reabrir si ya está visible)
   if(!chatWidget.classList.contains('hidden')) return;
+  // asegurar visibilidad y animación
   chatWidget.classList.remove('hidden');
+  chatWidget.style.display = 'flex';
+  // small animation class
+  setTimeout(()=>chatWidget.classList.add('open'), 10);
   chatWidget.setAttribute('aria-hidden','false');
   // welcome message solo la primera vez por sesión
   if(!chatOpened){
     addBotMessage('Hola 👋, soy tu enfermera virtual de demostración. ¿En qué puedo ayudarte hoy?');
     chatOpened = true;
   }
+  // focus input
+  if(chatInput) chatInput.focus();
 }
 
 function closeChat(){
   if(!chatWidget) return;
-  chatWidget.classList.add('hidden');
+  // reverse animation then hide
+  chatWidget.classList.remove('open');
   chatWidget.setAttribute('aria-hidden','true');
+  setTimeout(()=>{
+    chatWidget.classList.add('hidden');
+    chatWidget.style.display = 'none';
+  }, 180);
 }
 
 function addBotMessage(text){
