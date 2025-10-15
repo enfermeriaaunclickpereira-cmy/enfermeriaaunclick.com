@@ -174,46 +174,21 @@ function initNursePanel(){
 }
 
 function selectPatient(id){
-  const it = $(`.patient-item[data-id="${id}"]`);
-  if(!it) return;
-  const name = it.dataset.name;
-  $('#detail-name').textContent = name;
-  // valores simulados
-  $('#v-glu').textContent = Math.floor(80 + Math.random()*80) + ' mg/dL';
-  $('#v-bp').textContent = `${110+Math.floor(Math.random()*30)}/${70+Math.floor(Math.random()*10)}`;
-  $('#v-hr').textContent = 60+Math.floor(Math.random()*30) + ' bpm';
-  $('#detail-notes').textContent = `Notas simuladas para ${name}: observar signos vitales y revisar medicación.`;
-  // permitir acciones con contexto
-  $('#nurse-chat').onclick = ()=>{ openChat(); setTimeout(()=>addBotMessage('Abriendo chat con '+name+'...'),400); };
-  $('#nurse-call').onclick = ()=>{ toast('Iniciando videollamada con '+name+' (simulado)'); };
-  $('#nurse-alert').onclick = ()=>{ toast('Alerta añadida para '+name); };
-}
-
-// Inicializar panel cuando se muestra
-document.addEventListener('click', (e)=>{
-  // si se muestra la vista nurse, inicializamos
-  if(e.target && e.target.matches && (e.target.matches('[data-action="login"]') || e.target.matches('button[data-action="guest"]'))){
-    // nothing here
+  // resolve elements dynamically in case they aren't initialized yet
+  const cw = (typeof chatWidget !== 'undefined' && chatWidget) ? chatWidget : document.getElementById('chat-widget');
+  const ci = (typeof chatInput !== 'undefined' && chatInput) ? chatInput : document.getElementById('chat-input');
+  if(!cw) return;
+  // only open if hidden (avoid reopening)
+  if(!cw.classList.contains('hidden')) return;
+  cw.classList.remove('hidden');
+  cw.style.display = 'flex';
+  setTimeout(()=>cw.classList.add('open'), 10);
+  cw.setAttribute('aria-hidden','false');
+  if(!chatOpened){
+    addBotMessage('Hola 👋, soy tu enfermera virtual de demostración. ¿En qué puedo ayudarte hoy?');
+    chatOpened = true;
   }
-});
-
-// Ejecutar initNursePanel la primera vez que se entre al panel
-let nurseInited = false;
-const origShow = show;
-function show(viewId){
-  $all('.view').forEach(v=>v.classList.add('hidden'));
-  const v = $(`#${viewId}`);
-  if(v) v.classList.remove('hidden');
-  if(typeof closeChat === 'function') closeChat();
-  if(viewId==='nurse' && !nurseInited){ initNursePanel(); nurseInited=true; }
-  // control visibility of Edit Profile button: only show on patient view when logged as paciente
-  try{
-    const ep = $('#edit-profile');
-    if(ep){
-      if(viewId === 'patient' && state.role === 'paciente') ep.style.display = '';
-      else ep.style.display = 'none';
-    }
-  }catch(e){}
+  if(ci) ci.focus();
 }
 
 // Mostrar campo 'Especifique' si la condición es 'Otra'
@@ -388,42 +363,36 @@ if(chatWidget){
 }
 
 function openChat(){
-  if(!chatWidget) return;
-  // solo abrir si está oculto (evita reabrir si ya está visible)
-  if(!chatWidget.classList.contains('hidden')) return;
-  // asegurar visibilidad y animación
-  chatWidget.classList.remove('hidden');
-  chatWidget.style.display = 'flex';
-  // small animation class
-  setTimeout(()=>chatWidget.classList.add('open'), 10);
-  chatWidget.setAttribute('aria-hidden','false');
-  // welcome message solo la primera vez por sesión
-  if(!chatOpened){
-    addBotMessage('Hola 👋, soy tu enfermera virtual de demostración. ¿En qué puedo ayudarte hoy?');
-    chatOpened = true;
-  }
-  // focus input
-  if(chatInput) chatInput.focus();
+  // query DOM directly to avoid TDZ on lexical bindings
+  const cw = document.getElementById('chat-widget');
+  const ci = document.getElementById('chat-input');
+  if(!cw) return;
+  if(!cw.classList.contains('hidden')) return;
+  cw.classList.remove('hidden');
+  cw.style.display = 'flex';
+  setTimeout(()=>cw.classList.add('open'), 10);
+  cw.setAttribute('aria-hidden','false');
+  if(!chatOpened){ addBotMessage('Hola 👋, soy tu enfermera virtual de demostración. ¿En qué puedo ayudarte hoy?'); chatOpened = true; }
+  if(ci) ci.focus();
 }
 
 function closeChat(){
-  if(!chatWidget) return;
-  // reverse animation then hide
-  chatWidget.classList.remove('open');
-  chatWidget.setAttribute('aria-hidden','true');
-  setTimeout(()=>{
-    chatWidget.classList.add('hidden');
-    chatWidget.style.display = 'none';
-  }, 180);
+  const cw = document.getElementById('chat-widget');
+  if(!cw) return;
+  cw.classList.remove('open');
+  cw.setAttribute('aria-hidden','true');
+  setTimeout(()=>{ cw.classList.add('hidden'); cw.style.display = 'none'; }, 180);
 }
 
 function addBotMessage(text){
-  if(!chatMessages) return;
-  const d = document.createElement('div'); d.className='msg bot'; d.textContent = text; chatMessages.appendChild(d); chatMessages.scrollTop = chatMessages.scrollHeight;
+  const cm = document.getElementById('chat-messages');
+  if(!cm) return;
+  const d = document.createElement('div'); d.className='msg bot'; d.textContent = text; cm.appendChild(d); cm.scrollTop = cm.scrollHeight;
 }
 function addUserMessage(text){
-  if(!chatMessages) return;
-  const d = document.createElement('div'); d.className='msg user'; d.textContent = text; chatMessages.appendChild(d); chatMessages.scrollTop = chatMessages.scrollHeight;
+  const cm = document.getElementById('chat-messages');
+  if(!cm) return;
+  const d = document.createElement('div'); d.className='msg user'; d.textContent = text; cm.appendChild(d); cm.scrollTop = cm.scrollHeight;
 }
 
 // close button
