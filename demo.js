@@ -252,3 +252,63 @@ if(chatForm){
 
 // Also allow opening chat from patient quick-actions if already on patient view
 // (some buttons call openChat directly)
+
+// --- Video thumbnails and modal player ---
+const videoModal = $('#video-modal');
+const videoFrame = $('#video-frame');
+const videoFallback = $('#video-fallback');
+const videoOpenLink = $('#video-open-link');
+
+function makeEmbedUrlFromLink(link){
+  // try to extract mid query param and create bing embed URL
+  try{
+    const u = new URL(link);
+    // if path contains /videos/embed already, return as-is
+    if(u.pathname && u.pathname.includes('/videos/embed')) return link;
+    const mid = u.searchParams.get('mid');
+    if(mid) return `https://www.bing.com/videos/embed?mid=${mid}`;
+    // fallback: try to use the original link
+    return link;
+  }catch(e){ return link; }
+}
+
+function openVideoModal(url, fallback){
+  if(!videoModal) return;
+  // construct embed URL when possible
+  const embed = makeEmbedUrlFromLink(url);
+  // remove any previous iframe
+  videoFrame.innerHTML = '';
+  videoFallback.style.display = 'none';
+  videoOpenLink.href = fallback || url;
+  // create iframe
+  const ifr = document.createElement('iframe');
+  ifr.setAttribute('src', embed);
+  ifr.setAttribute('allowfullscreen','');
+  ifr.setAttribute('sandbox','allow-same-origin allow-scripts allow-popups');
+  videoFrame.appendChild(ifr);
+  // show modal
+  videoModal.classList.remove('hidden');
+  videoModal.setAttribute('aria-hidden','false');
+  // If embed equals original (likely not embeddable) show fallback link to open in new tab
+  if(embed === url) videoFallback.style.display = '';
+}
+
+function closeVideoModal(){
+  if(!videoModal) return;
+  videoModal.classList.add('hidden');
+  videoModal.setAttribute('aria-hidden','true');
+  // remove iframe to stop playback
+  videoFrame.innerHTML = '';
+}
+
+// click on thumbnail
+document.addEventListener('click', (e)=>{
+  const thumb = e.target.closest && e.target.closest('.video-thumb');
+  if(thumb){
+    const url = thumb.dataset.videoUrl;
+    const fb = thumb.dataset.videoFallback || url;
+    openVideoModal(url, fb);
+  }
+  if(e.target && e.target.matches && e.target.matches('.video-modal-close')) closeVideoModal();
+  if(e.target && e.target.closest && e.target.closest('.video-modal-backdrop')) closeVideoModal();
+});

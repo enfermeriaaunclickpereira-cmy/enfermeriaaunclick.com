@@ -171,9 +171,13 @@
         <h3>Cómo lavarse las manos (demostrativo)</h3>
         <p>Video demostrativo paso a paso para un lavado de manos correcto.</p>
         <div class="video-embed">
-          <!-- Embed from Bing video link (fallback to external link if embedding blocked) -->
-          <iframe src="https://www.bing.com/videos/embed?mid=9A60B1892EB2F1B10B4B9A60B1892EB2F1B10B4B" title="Video demostrativo de cómo lavarse las manos" width="560" height="315" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>
-          <p class="video-link-fallback">Si el video no carga aquí, ábralo en una nueva pestaña: <a href="https://www.bing.com/videos/riverview/relatedvideo?q=video+demostrativo+de+como+lavrse+las+manos&&mid=9A60B1892EB2F1B10B4B9A60B1892EB2F1B10B4B&FORM=VAMGZC" target="_blank" rel="noopener">Ver video demostrativo de lavado de manos</a></p>
+          <!-- Thumbnail that opens modal player -->
+          <div class="video-thumb" data-video-url="https://www.bing.com/videos/riverview/relatedvideo?q=video+demostrativo+de+como+lavrse+las+manos&&mid=9A60B1892EB2F1B10B4B9A60B1892EB2F1B10B4B&FORM=VAMGZC" data-video-fallback="https://www.bing.com/videos/riverview/relatedvideo?q=video+demostrativo+de+como+lavrse+las+manos&&mid=9A60B1892EB2F1B10B4B9A60B1892EB2F1B10B4B&FORM=VAMGZC">
+            <img src="imagenes/thumb_hands.svg" alt="Miniatura lavado de manos" style="width:100%;height:auto;border-radius:8px;" />
+            <div class="play-overlay">▶</div>
+            <div class="thumb-label">Ver: Cómo lavarse las manos</div>
+          </div>
+          <p class="video-link-fallback">Si el reproductor interno no funciona, ábralo en una nueva pestaña: <a href="https://www.bing.com/videos/riverview/relatedvideo?q=video+demostrativo+de+como+lavrse+las+manos&&mid=9A60B1892EB2F1B10B4B9A60B1892EB2F1B10B4B&FORM=VAMGZC" target="_blank" rel="noopener">Abrir video (Bing)</a></p>
         </div>
 
         <hr />
@@ -181,8 +185,12 @@
         <h3>Tips para la diabetes</h3>
         <p>Consejos prácticos para el manejo diario de la diabetes.</p>
         <div class="video-embed">
-          <iframe src="https://www.bing.com/videos/embed?mid=2438E28DDE8D7BF957B12438E28DDE8D7BF957B1" title="Tips para la diabetes" width="560" height="315" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>
-          <p class="video-link-fallback">Si el video no carga aquí, ábralo en una nueva pestaña: <a href="https://www.bing.com/videos/riverview/relatedvideo?q=tips+para+la+diabetes&mid=2438E28DDE8D7BF957B12438E28DDE8D7BF957B1&mmscn=stvo&FORM=VIRE" target="_blank" rel="noopener">Ver tips para la diabetes</a></p>
+          <div class="video-thumb" data-video-url="https://www.bing.com/videos/riverview/relatedvideo?q=tips+para+la+diabetes&mid=2438E28DDE8D7BF957B12438E28DDE8D7BF957B1&mmscn=stvo&FORM=VIRE" data-video-fallback="https://www.bing.com/videos/riverview/relatedvideo?q=tips+para+la+diabetes&mid=2438E28DDE8D7BF957B12438E28DDE8D7BF957B1&mmscn=stvo&FORM=VIRE">
+            <img src="imagenes/thumb_diabetes.svg" alt="Miniatura tips diabetes" style="width:100%;height:auto;border-radius:8px;" />
+            <div class="play-overlay">▶</div>
+            <div class="thumb-label">Ver: Tips para la diabetes</div>
+          </div>
+          <p class="video-link-fallback">Si el reproductor interno no funciona, ábralo en una nueva pestaña: <a href="https://www.bing.com/videos/riverview/relatedvideo?q=tips+para+la+diabetes&mid=2438E28DDE8D7BF957B12438E28DDE8D7BF957B1&mmscn=stvo&FORM=VIRE" target="_blank" rel="noopener">Abrir video (Bing)</a></p>
         </div>
 
         <div style="margin-top:12px">
@@ -219,6 +227,16 @@
         <input id="chat-input" type="text" placeholder="Escribe un mensaje..." autocomplete="off" />
         <button type="submit">Enviar</button>
       </form>
+    </div>
+
+    <!-- Modal video player -->
+    <div id="video-modal" class="video-modal hidden" aria-hidden="true">
+      <div class="video-modal-backdrop"></div>
+      <div class="video-modal-content">
+        <button class="video-modal-close" aria-label="Cerrar video">✕</button>
+        <div class="video-frame" id="video-frame"> <!-- iframe injected here --> </div>
+        <p class="video-fallback" id="video-fallback" style="display:none">Si no se reproduce, <a id="video-open-link" href="#" target="_blank" rel="noopener">abrir en nueva pestaña</a>.</p>
+      </div>
     </div>
 
   </main>
