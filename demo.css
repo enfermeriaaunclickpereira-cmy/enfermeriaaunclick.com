@@ -10,6 +10,33 @@
 body{margin:0;background:var(--bg);color:var(--text);}
 .header,header.top{display:flex;align-items:center;padding:12px 20px;background:linear-gradient(90deg,#ffffff, #eef9ff);border-bottom:1px solid #e6f0f6}
 .logo{font-size:28px;margin-right:12px}
+
+/* Hero */
+.hero{padding:36px 20px;background:linear-gradient(180deg,#f7fcff,#f2fbff);}
+.hero-inner{max-width:1100px;margin:0 auto;display:flex;gap:24px;align-items:center}
+.hero-left{flex:1;z-index:1}
+.hero-right{flex:1;text-align:right}
+.hero-right img{width:90%;max-width:420px;border-radius:10px;box-shadow:0 10px 30px rgba(16,40,60,0.08)}
+.hero .logo{font-size:36px}
+.hero h1{font-size:36px;margin:10px 0}
+.site-logo{width:64px;height:64px;object-fit:contain;border-radius:12px;box-shadow:0 6px 18px rgba(16,40,60,0.08);display:inline-block}
+.hero .lead{font-size:18px;color:var(--text);margin-bottom:8px}
+.hero-sub{color:var(--muted);margin-bottom:16px}
+.hero-ctas{display:flex;gap:12px}
+.btn{display:inline-block;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:700}
+.btn.primary{background:var(--primary);color:#fff}
+.btn.secondary{background:#fff;border:2px solid #e6f0f6;color:var(--text)}
+
+/* Botones: iluminación y foco */
+.btn, button{transition: transform 140ms ease, box-shadow 200ms ease, filter 160ms ease}
+.btn:hover, button:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(111,179,210,0.28);filter:brightness(1.06)}
+.btn:focus, button:focus{outline:3px solid rgba(111,179,210,0.18);outline-offset:3px}
+
+@media(max-width:900px){
+  .hero-inner{flex-direction:column-reverse;text-align:left}
+  .hero-right{width:100%}
+  .hero-right img{width:100%;max-width:100%}
+}
 .title h1{margin:0;font-size:18px}
 .slogan{margin:0;font-size:12px;color:var(--muted)}
 main#app{max-width:980px;margin:24px auto;padding:20px}

@@ -8,11 +8,23 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-  <header class="top">
-    <div class="logo">💙</div>
-    <div class="title">
-      <h1>Enfermera a un CLICK</h1>
-      <p class="slogan">Prevención, confianza y cuidado en un solo click</p>
+  <header class="hero">
+    <div class="hero-inner">
+      <div class="hero-left">
+        <div class="logo">
+          <img class="site-logo" src="imagenes/logo.png" alt="Enfermería a un click" onerror="this.src='imagenes/hermosa.jpeg'" />
+        </div>
+        <h1>Enfermera a un CLICK</h1>
+        <p class="lead">Prevención, confianza y cuidado en un solo click</p>
+        <p class="hero-sub">Atención domiciliaria y acompañamiento profesional cuando lo necesites. Demo interactiva para mostrar flujos de paciente y enfermero.</p>
+        <div class="hero-ctas">
+          <button class="btn primary" data-action="guest">Entrar como invitado (demo)</button>
+          <a class="btn secondary" href="demo.html#contact">Contacto</a>
+        </div>
+      </div>
+      <div class="hero-right">
+        <img src="imagenes/enfermeria-bg.jpg" alt="Enfermería" onerror="this.src='imagenes/hermosa.jpeg'" />
+      </div>
     </div>
   </header>
 
@@ -40,6 +52,7 @@
             <option>Diabetes</option>
             <option>Hipertensión</option>
             <option>Asma</option>
+             <option>Epoc</option>
             <option>Otra</option>
           </select>
         </label>
