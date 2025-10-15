@@ -43,6 +43,9 @@
             <option>Otra</option>
           </select>
         </label>
+        <label id="other-condition" class="hidden">Especifique
+          <input type="text" id="other-input" placeholder="Especifique la condición">
+        </label>
         <div class="form-actions">
           <button type="submit">Simular registro</button>
           <button type="button" data-action="back">Volver</button>
@@ -127,6 +130,19 @@
 
     <!-- Toast / modal -->
     <div id="toast" class="hidden"></div>
+
+    <!-- Chat widget (demo) -->
+    <div id="chat-widget" class="chat-widget hidden" aria-hidden="true">
+      <div class="chat-header">
+        <strong>Chat con tu enfermera</strong>
+        <button class="chat-close" aria-label="Cerrar chat">✕</button>
+      </div>
+      <div class="chat-messages" id="chat-messages" role="log" aria-live="polite"></div>
+      <form id="chat-form" class="chat-form">
+        <input id="chat-input" type="text" placeholder="Escribe un mensaje..." autocomplete="off" />
+        <button type="submit">Enviar</button>
+      </form>
+    </div>
 
   </main>
 

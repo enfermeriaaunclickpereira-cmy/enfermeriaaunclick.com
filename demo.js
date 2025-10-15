@@ -67,7 +67,7 @@ $all('button[data-action="reminder"]').forEach(b=>b.addEventListener('click', ()
   alert('Recordatorio: Tomar medicación a las 8:00 AM');
 }));
 $all('button[data-action="chat"]').forEach(b=>b.addEventListener('click', ()=>{
-  toast('Abrir chat (simulado)');
+  openChat();
 }));
 $all('button[data-action="view-education"]').forEach(b=>b.addEventListener('click', ()=>show('education')));
 
@@ -83,3 +83,62 @@ function setupPatient(){
 
 // Initial view
 show('home');
+
+// Mostrar campo 'Especifique' si la condición es 'Otra'
+const conditionSelect = $('#condition');
+if(conditionSelect){
+  conditionSelect.addEventListener('change', (e)=>{
+    const other = $('#other-condition');
+    if(e.target.value === 'Otra') other.classList.remove('hidden'); else other.classList.add('hidden');
+  });
+}
+
+// Chat widget logic
+const chatWidget = $('#chat-widget');
+const chatMessages = $('#chat-messages');
+const chatForm = $('#chat-form');
+const chatInput = $('#chat-input');
+
+function openChat(){
+  if(!chatWidget) return;
+  chatWidget.classList.remove('hidden');
+  chatWidget.setAttribute('aria-hidden','false');
+  // welcome message
+  addBotMessage('Hola 👋, soy tu enfermera virtual de demostración. ¿En qué puedo ayudarte hoy?');
+}
+
+function closeChat(){
+  if(!chatWidget) return;
+  chatWidget.classList.add('hidden');
+  chatWidget.setAttribute('aria-hidden','true');
+}
+
+function addBotMessage(text){
+  if(!chatMessages) return;
+  const d = document.createElement('div'); d.className='msg bot'; d.textContent = text; chatMessages.appendChild(d); chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+function addUserMessage(text){
+  if(!chatMessages) return;
+  const d = document.createElement('div'); d.className='msg user'; d.textContent = text; chatMessages.appendChild(d); chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+// close button
+document.addEventListener('click', (e)=>{
+  if(e.target.classList && e.target.classList.contains('chat-close')) closeChat();
+});
+
+if(chatForm){
+  chatForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const txt = chatInput.value.trim();
+    if(!txt) return;
+    addUserMessage(txt);
+    chatInput.value='';
+    setTimeout(()=>{
+      addBotMessage('Gracias por tu mensaje. En la demo, tu enfermera respondería aquí.');
+    },800);
+  });
+}
+
+// Also allow opening chat from patient quick-actions if already on patient view
+// (some buttons call openChat directly)
