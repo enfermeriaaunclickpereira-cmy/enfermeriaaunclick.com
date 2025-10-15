@@ -14,7 +14,7 @@
         <!-- Logo pequeño eliminado para un diseño más limpio -->
         <h1>Enfermera a un CLICK</h1>
         <p class="lead">Prevención, confianza y cuidado en un solo click</p>
-        <p class="hero-sub">Atención domiciliaria y acompañamiento profesional cuando lo necesites. Demo interactiva para mostrar flujos de paciente y enfermero.</p>
+        <p class="hero-sub">Atención domiciliaria y acompañamiento profesional cuando lo necesites (Demo interactiva para mostrar flujos de paciente y enfermero).</p>
         <div class="hero-ctas">
           <button class="btn primary" data-action="guest">Entrar como invitado (demo)</button>
           <a class="btn secondary" href="demo.html#contact">Contacto</a>
@@ -168,10 +168,26 @@
     <section class="view hidden" id="education">
       <h2>Educación en salud</h2>
       <div class="edu-card">
-        <h3>Tips para medir la glucosa</h3>
-        <p>1. Lávese las manos antes de medir. 2. Use el dedo lateral. 3. Anote el resultado.</p>
-        <div class="video-placeholder">[Video demostrativo]</div>
-        <button data-action="back-to" data-target="patient">Volver al panel</button>
+        <h3>Cómo lavarse las manos (demostrativo)</h3>
+        <p>Video demostrativo paso a paso para un lavado de manos correcto.</p>
+        <div class="video-embed">
+          <!-- Embed from Bing video link (fallback to external link if embedding blocked) -->
+          <iframe src="https://www.bing.com/videos/embed?mid=9A60B1892EB2F1B10B4B9A60B1892EB2F1B10B4B" title="Video demostrativo de cómo lavarse las manos" width="560" height="315" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>
+          <p class="video-link-fallback">Si el video no carga aquí, ábralo en una nueva pestaña: <a href="https://www.bing.com/videos/riverview/relatedvideo?q=video+demostrativo+de+como+lavrse+las+manos&&mid=9A60B1892EB2F1B10B4B9A60B1892EB2F1B10B4B&FORM=VAMGZC" target="_blank" rel="noopener">Ver video demostrativo de lavado de manos</a></p>
+        </div>
+
+        <hr />
+
+        <h3>Tips para la diabetes</h3>
+        <p>Consejos prácticos para el manejo diario de la diabetes.</p>
+        <div class="video-embed">
+          <iframe src="https://www.bing.com/videos/embed?mid=2438E28DDE8D7BF957B12438E28DDE8D7BF957B1" title="Tips para la diabetes" width="560" height="315" frameborder="0" allowfullscreen sandbox="allow-same-origin allow-scripts allow-popups"></iframe>
+          <p class="video-link-fallback">Si el video no carga aquí, ábralo en una nueva pestaña: <a href="https://www.bing.com/videos/riverview/relatedvideo?q=tips+para+la+diabetes&mid=2438E28DDE8D7BF957B12438E28DDE8D7BF957B1&mmscn=stvo&FORM=VIRE" target="_blank" rel="noopener">Ver tips para la diabetes</a></p>
+        </div>
+
+        <div style="margin-top:12px">
+          <button data-action="back-to" data-target="patient">Volver al panel</button>
+        </div>
       </div>
     </section>
 
