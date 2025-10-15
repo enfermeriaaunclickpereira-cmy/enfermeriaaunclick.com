@@ -92,6 +92,72 @@ function setupPatient(){
 // Initial view
 show('home');
 
+// --- Nurse panel interactions ---
+function initNursePanel(){
+  const search = $('#patient-search');
+  const filters = $all('.filter-btn');
+  const items = Array.from($all('.patient-item'));
+
+  if(search){
+    search.addEventListener('input', ()=>{
+      const q = search.value.toLowerCase();
+      items.forEach(it=>{
+        const name = it.dataset.name.toLowerCase();
+        it.style.display = name.includes(q) ? '' : 'none';
+      });
+    });
+  }
+
+  filters.forEach(f=>f.addEventListener('click', (e)=>{
+    filters.forEach(x=>x.classList.remove('active'));
+    e.currentTarget.classList.add('active');
+    const filter = e.currentTarget.dataset.filter;
+    items.forEach(it=>{
+      const st = it.dataset.status;
+      it.style.display = (filter==='all' || st===filter) ? '' : 'none';
+    });
+  }));
+
+  items.forEach(it=>it.addEventListener('click', ()=>{
+    const id = it.dataset.id; selectPatient(id);
+  }));
+}
+
+function selectPatient(id){
+  const it = $(`.patient-item[data-id="${id}"]`);
+  if(!it) return;
+  const name = it.dataset.name;
+  $('#detail-name').textContent = name;
+  // valores simulados
+  $('#v-glu').textContent = Math.floor(80 + Math.random()*80) + ' mg/dL';
+  $('#v-bp').textContent = `${110+Math.floor(Math.random()*30)}/${70+Math.floor(Math.random()*10)}`;
+  $('#v-hr').textContent = 60+Math.floor(Math.random()*30) + ' bpm';
+  $('#detail-notes').textContent = `Notas simuladas para ${name}: observar signos vitales y revisar medicación.`;
+  // permitir acciones con contexto
+  $('#nurse-chat').onclick = ()=>{ openChat(); setTimeout(()=>addBotMessage('Abriendo chat con '+name+'...'),400); };
+  $('#nurse-call').onclick = ()=>{ toast('Iniciando videollamada con '+name+' (simulado)'); };
+  $('#nurse-alert').onclick = ()=>{ toast('Alerta añadida para '+name); };
+}
+
+// Inicializar panel cuando se muestra
+document.addEventListener('click', (e)=>{
+  // si se muestra la vista nurse, inicializamos
+  if(e.target && e.target.matches && (e.target.matches('[data-action="login"]') || e.target.matches('button[data-action="guest"]'))){
+    // nothing here
+  }
+});
+
+// Ejecutar initNursePanel la primera vez que se entre al panel
+let nurseInited = false;
+const origShow = show;
+function show(viewId){
+  $all('.view').forEach(v=>v.classList.add('hidden'));
+  const v = $(`#${viewId}`);
+  if(v) v.classList.remove('hidden');
+  if(typeof closeChat === 'function') closeChat();
+  if(viewId==='nurse' && !nurseInited){ initNursePanel(); nurseInited=true; }
+}
+
 // Mostrar campo 'Especifique' si la condición es 'Otra'
 const conditionSelect = $('#condition');
 if(conditionSelect){

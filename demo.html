@@ -104,16 +104,65 @@
     <!-- Panel Enfermero (estático) -->
     <section class="view hidden" id="nurse">
       <h2>Panel del Enfermero</h2>
-      <p>Lista de pacientes asignados</p>
-      <ul class="patient-list">
-        <li>María - <span class="status green">Estable</span></li>
-        <li>Juan - <span class="status yellow">En observación</span></li>
-        <li>Ana - <span class="status red">Alerta</span></li>
-      </ul>
-      <div class="nurse-actions">
-        <button data-action="video">Iniciar videollamada</button>
-        <button data-action="chat">Abrir chat</button>
-        <button data-action="logout">Cerrar sesión</button>
+      <div class="nurse-grid">
+        <aside class="nurse-col list-col">
+          <div class="list-header">
+            <input id="patient-search" placeholder="Buscar paciente..." />
+            <div class="filters">
+              <button class="filter-btn active" data-filter="all">Todos</button>
+              <button class="filter-btn" data-filter="green">Estables</button>
+              <button class="filter-btn" data-filter="yellow">Observación</button>
+              <button class="filter-btn" data-filter="red">Alerta</button>
+            </div>
+          </div>
+          <div id="patient-list" class="patient-list">
+            <!-- items con data attributes -->
+            <div class="patient-item" data-id="1" data-name="María" data-status="green">
+              <div class="pi-left"><strong>María</strong><small>diabetes</small></div>
+              <div class="pi-right"><span class="status green">Estable</span></div>
+            </div>
+            <div class="patient-item" data-id="2" data-name="Juan" data-status="yellow">
+              <div class="pi-left"><strong>Juan</strong><small>hipertensión</small></div>
+              <div class="pi-right"><span class="status yellow">En observación</span></div>
+            </div>
+            <div class="patient-item" data-id="3" data-name="Ana" data-status="red">
+              <div class="pi-left"><strong>Ana</strong><small>asma</small></div>
+              <div class="pi-right"><span class="status red">Alerta</span></div>
+            </div>
+          </div>
+        </aside>
+
+        <section class="nurse-col detail-col" id="nurse-detail">
+          <div class="detail-card">
+            <h3 id="detail-name">Selecciona un paciente</h3>
+            <div id="detail-vitals" class="vitals">
+              <div class="vitem"><strong>Glucosa</strong><span id="v-glu">--</span></div>
+              <div class="vitem"><strong>Presión</strong><span id="v-bp">--</span></div>
+              <div class="vitem"><strong>Frecuencia</strong><span id="v-hr">--</span></div>
+            </div>
+            <p id="detail-notes">Aquí aparecerán notas y recomendaciones del paciente.</p>
+            <div class="detail-actions">
+              <button class="btn" id="nurse-call">Videollamada</button>
+              <button class="btn" id="nurse-chat">Mensajes / Chat</button>
+              <button class="btn" id="nurse-alert">Agregar alerta</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="nurse-col stats-col">
+          <div class="stat-card">
+            <h4>Resumen</h4>
+            <p><strong id="count-total">3</strong> pacientes asignados</p>
+            <p><span class="status green inline">2</span> Estables • <span class="status yellow inline">0</span> Observación • <span class="status red inline">1</span> Alerta</p>
+          </div>
+          <div class="schedule-card">
+            <h4>Agenda</h4>
+            <ul>
+              <li>09:00 - Visita a María</li>
+              <li>11:00 - Llamada con Juan</li>
+            </ul>
+          </div>
+        </aside>
       </div>
     </section>
 
