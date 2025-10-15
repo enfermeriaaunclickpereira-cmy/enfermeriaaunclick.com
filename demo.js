@@ -10,6 +10,8 @@ function show(viewId){
   if(v) v.classList.remove('hidden');
   // Al cambiar de vista, ocultar el chat para que solo se abra por el botón
   if(typeof closeChat === 'function') closeChat();
+  // Inicializar panel de enfermero la primera vez que se muestra
+  if(viewId === 'nurse' && typeof initNursePanel === 'function' && !window.nurseInitDone){ initNursePanel(); window.nurseInitDone = true; }
 }
 
 function toast(msg, timeout=3000){
@@ -32,8 +34,7 @@ $all('button[data-action="login"]').forEach(btn=>{
         const el = document.querySelector(sel);
         if(el) el.closest && el.closest('label') ? el.closest('label').classList.add('hidden') : el.classList.add('hidden');
       });
-      // show captcha and ensure email/password required
-      const cap = $('#captcha-wrap'); if(cap) cap.classList.remove('hidden');
+      // ensure email/password required (no captcha)
       $('#email').required = true; $('#password').required = true;
     } else {
       // show all fields for paciente
@@ -41,7 +42,7 @@ $all('button[data-action="login"]').forEach(btn=>{
         const el = document.querySelector(sel);
         if(el) el.closest && el.closest('label') ? el.closest('label').classList.remove('hidden') : el.classList.remove('hidden');
       });
-      const cap = $('#captcha-wrap'); if(cap) cap.classList.add('hidden');
+      // no captcha to show
       $('#email').required = true; $('#password').required = true; $('#password2').required = true;
     }
     show('login');
@@ -64,37 +65,59 @@ $all('button[data-action="back-to"]').forEach(b=>b.addEventListener('click', e=>
   const target = e.currentTarget.dataset.target || 'home'; show(target);
 }));
 
-// Login form
-$('#login-form').addEventListener('submit', (e)=>{
-  e.preventDefault();
-  // Nurse minimal login flow: email, password and captcha
-  if(state.role === 'enfermero'){
-    const email = $('#email').value || '';
-    const pass = $('#password').value || '';
-    const cap = $('#captcha') && $('#captcha').checked;
-    if(!email || !/\S+@\S+\.\S+/.test(email)){ alert('Ingrese un correo válido'); return; }
-    if(!pass || pass.length < 4){ alert('Ingrese la contraseña (mínimo 4 caracteres)'); return; }
-    if(!cap){ alert('Por favor completa el captcha'); return; }
-    // Simular autenticación y mostrar panel de enfermero
-    state.role = 'enfermero'; state.name = email.split('@')[0];
-    show('nurse');
+// Login form - unified handler for paciente and enfermero
+if($('#login-form')){
+  $('#login-form').addEventListener('submit', (e)=>{
+    e.preventDefault();
+    // Enfermero: only email + password
+    if(state.role === 'enfermero'){
+      const email = $('#email').value || '';
+      const pass = $('#password').value || '';
+      if(!email || !/\S+@\S+\.\S+/.test(email)){ alert('Ingrese un correo válido'); return; }
+      if(!pass || pass.length < 4){ alert('Ingrese la contraseña (mínimo 4 caracteres)'); return; }
+      // Simular autenticación
+      state.role = 'enfermero'; state.name = email.split('@')[0];
+      // cargar datos específicos de enfermero
+      setupNurse(state.name);
+      show('nurse');
+      if(typeof closeChat === 'function') closeChat();
+      toast('Bienvenido, enfermero ' + state.name);
+      return;
+    }
+    // Paciente flow
+    const data = collectFormData();
+    const err = validateForm(data);
+    if(err){ alert(err); return; }
+    state.role = 'paciente'; state.name = data.name || 'Paciente';
+    localStorage.setItem('lastSessionPatient', JSON.stringify(data));
+    setupPatient();
+    show('patient');
     if(typeof closeChat === 'function') closeChat();
-    toast('Bienvenido, enfermero');
-    return;
-  }
-  // Paciente flow (existing)
-  const name = $('#name').value || 'Paciente';
-  state.name = name;
-  const data = collectFormData();
-  const err = validateForm(data);
-  if(err){ alert(err); return; }
-  state.role = 'paciente';
-  localStorage.setItem('lastSessionPatient', JSON.stringify(data));
-  setupPatient();
-  show('patient');
-  if(typeof closeChat === 'function') closeChat();
-  toast(`Bienvenida, ${name}`);
-});
+    toast(`Bienvenida, ${state.name}`);
+  });
+}
+
+// Setup nurse panel with nurse-specific data (no patient fields)
+function setupNurse(username){
+  try{
+    // show name in header
+    const title = $('#nurse-title'); if(title) title.textContent = `Panel del Enfermero — ${username}`;
+    // populate stats: use existing patient items to count
+    const items = Array.from($all('.patient-item'));
+    $('#count-total').textContent = items.length;
+    const red = items.filter(i=>i.dataset.status==='red').length;
+    const yellow = items.filter(i=>i.dataset.status==='yellow').length;
+    const green = items.filter(i=>i.dataset.status==='green').length;
+    // update inline counts
+    const statEl = $('#count-total'); if(statEl) statEl.textContent = items.length;
+    const statText = document.querySelector('.stat-card p:nth-child(2)'); if(statText) statText.innerHTML = `<span class="status green inline">${green}</span> Estables • <span class="status yellow inline">${yellow}</span> Observación • <span class="status red inline">${red}</span> Alerta`;
+    // populate schedule (basic demo)
+    const sched = document.querySelector('.schedule-card ul'); if(sched){ sched.innerHTML = `<li>09:00 - Visita a María</li><li>11:00 - Llamada con Juan</li><li>15:00 - Revisión de Ana</li>`; }
+    // clear nurse detail area
+    const dn = $('#detail-name'); if(dn) dn.textContent = 'Selecciona un paciente';
+    const notes = $('#detail-notes'); if(notes) notes.textContent = 'Aquí aparecerán notas y recomendaciones del paciente.';
+  }catch(e){ console.error('setupNurse error', e); }
+}
 
 // Logout
 $all('button[data-action="logout"]').forEach(b=>b.addEventListener('click', ()=>{
@@ -357,6 +380,8 @@ if(loginForm){
 // Edit profile button: load lastSessionPatient/demoPatient into form and open login view
 if(editProfileBtn){
   editProfileBtn.addEventListener('click', ()=>{
+    // If a nurse is logged, don't load patient profile into the patient form
+    if(state.role === 'enfermero'){ toast('Estás en modo enfermero. Selecciona un paciente para ver o editar su información.'); show('nurse'); return; }
     const raw = localStorage.getItem('lastSessionPatient') || localStorage.getItem('demoPatient');
     if(!raw){ toast('No hay perfil guardado para editar'); return; }
     const p = JSON.parse(raw);
