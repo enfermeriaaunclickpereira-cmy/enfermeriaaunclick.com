@@ -25,6 +25,25 @@ $all('button[data-action="login"]').forEach(btn=>{
     const role = btn.dataset.role;
     state.role = role;
     $('#login-title').textContent = role === 'enfermero' ? 'Login Enfermero' : 'Registro / Login Paciente';
+    // Prepare form fields depending on role
+    if(role === 'enfermero'){
+      // hide patient-only fields
+      ['#name','#dob','#phone','#meds','#allergies','#em-name','#em-phone','#address','#condition','#other-condition','#other-input','#contact-pref','#lang','.avatar-label','.consent','#password2'].forEach(sel=>{
+        const el = document.querySelector(sel);
+        if(el) el.closest && el.closest('label') ? el.closest('label').classList.add('hidden') : el.classList.add('hidden');
+      });
+      // show captcha and ensure email/password required
+      const cap = $('#captcha-wrap'); if(cap) cap.classList.remove('hidden');
+      $('#email').required = true; $('#password').required = true;
+    } else {
+      // show all fields for paciente
+      ['#name','#dob','#phone','#meds','#allergies','#em-name','#em-phone','#address','#condition','#other-condition','#other-input','#contact-pref','#lang','.avatar-label','.consent','#password2'].forEach(sel=>{
+        const el = document.querySelector(sel);
+        if(el) el.closest && el.closest('label') ? el.closest('label').classList.remove('hidden') : el.classList.remove('hidden');
+      });
+      const cap = $('#captcha-wrap'); if(cap) cap.classList.add('hidden');
+      $('#email').required = true; $('#password').required = true; $('#password2').required = true;
+    }
     show('login');
   })
 });
@@ -48,20 +67,33 @@ $all('button[data-action="back-to"]').forEach(b=>b.addEventListener('click', e=>
 // Login form
 $('#login-form').addEventListener('submit', (e)=>{
   e.preventDefault();
-  const name = $('#name').value || 'Paciente';
-  state.name = name;
+  // Nurse minimal login flow: email, password and captcha
   if(state.role === 'enfermero'){
+    const email = $('#email').value || '';
+    const pass = $('#password').value || '';
+    const cap = $('#captcha') && $('#captcha').checked;
+    if(!email || !/\S+@\S+\.\S+/.test(email)){ alert('Ingrese un correo válido'); return; }
+    if(!pass || pass.length < 4){ alert('Ingrese la contraseña (mínimo 4 caracteres)'); return; }
+    if(!cap){ alert('Por favor completa el captcha'); return; }
+    // Simular autenticación y mostrar panel de enfermero
+    state.role = 'enfermero'; state.name = email.split('@')[0];
     show('nurse');
-    // asegurar que el chat no se abra automáticamente cuando se loguea un enfermero
     if(typeof closeChat === 'function') closeChat();
     toast('Bienvenido, enfermero');
-  } else {
-    setupPatient();
-    show('patient');
-    // asegurar que el chat no se abra automáticamente al iniciar sesión como paciente
-    if(typeof closeChat === 'function') closeChat();
-    toast(`Bienvenida, ${name}`);
+    return;
   }
+  // Paciente flow (existing)
+  const name = $('#name').value || 'Paciente';
+  state.name = name;
+  const data = collectFormData();
+  const err = validateForm(data);
+  if(err){ alert(err); return; }
+  state.role = 'paciente';
+  localStorage.setItem('lastSessionPatient', JSON.stringify(data));
+  setupPatient();
+  show('patient');
+  if(typeof closeChat === 'function') closeChat();
+  toast(`Bienvenida, ${name}`);
 });
 
 // Logout
