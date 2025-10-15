@@ -77,6 +77,18 @@ button:active{transform:translateY(1px)}
 form label{display:block;margin:8px 0}
 input,select,textarea{width:100%;padding:8px;border:1px solid #d7e8ef;border-radius:6px}
 .form-actions{display:flex;gap:10px;margin-top:12px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.avatar-preview{margin-top:8px;width:84px;height:84px;border-radius:8px;overflow:hidden;border:1px solid #e6f0f6;display:flex;align-items:center;justify-content:center;background:#fff}
+.avatar-preview img{width:100%;height:100%;object-fit:cover}
+.avatar-label input[type="file"]{margin-top:8px}
+.consent{display:flex;align-items:center;gap:8px;font-size:14px;margin-top:8px}
+#save-demo,#load-demo{background:#fff;color:var(--text);border:1px solid #d7e8ef;padding:10px 12px;border-radius:8px}
+#save-demo:hover,#load-demo:hover{box-shadow:0 8px 24px rgba(16,40,60,0.06)}
+
+@media(max-width:800px){.two-col{grid-template-columns:1fr}}
+
+.patient-footer button#edit-profile{background:#fff;border:1px solid #d7e8ef;color:var(--text);padding:8px 12px;border-radius:8px;margin-right:8px}
+.dob-age{font-size:13px;color:var(--muted);margin-left:8px}
 .panel-header{display:flex;justify-content:space-between;align-items:center}
 .quick-actions button{background:var(--accent);color:var(--text);padding:10px 12px;border-radius:8px}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin-top:16px}
@@ -92,6 +104,34 @@ input,select,textarea{width:100%;padding:8px;border:1px solid #d7e8ef;border-rad
 .status.red{background:#ffdfdf;color:#6b1212}
 .edu-card{padding:12px;background:#f8fdff;border-radius:8px}
 .video-placeholder{height:120px;background:#eef7fb;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);margin:12px 0}
+
+/* IMC Calculator styles */
+.imc-card{margin-top:14px;padding:12px}
+.imc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
+.imc-result{margin-top:12px}
+.imc-values{display:flex;gap:12px;flex-wrap:wrap}
+.imc-bar{position:relative;height:18px;background:#f1f6f9;border-radius:12px;margin-top:10px;overflow:hidden}
+.imc-bar-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#ffd2d2,#dff6e9);width:0%;transition:width 400ms cubic-bezier(.2,.9,.2,1)}
+.imc-marker{position:absolute;top:-6px;width:2px;height:30px;background:#063247;left:0;transition:left 400ms cubic-bezier(.2,.9,.2,1)}
+.imc-message{margin-top:10px;padding:8px;border-radius:8px;background:#fff;color:var(--muted)}
+.imc-good{background:#dff6e9;color:#0b6b33}
+.imc-warning{background:#fff6d8;color:#6b4b00}
+.imc-bad{background:#ffdfdf;color:#6b1212}
+
+@media(max-width:700px){.imc-grid{grid-template-columns:1fr}}
+
+/* Patient meta styles */
+.patient-meta{display:flex;align-items:center;gap:12px}
+.patient-avatar{width:72px;height:72px;border-radius:12px;background:#fff;border:1px solid #e6f0f6;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.patient-avatar img{width:100%;height:100%;object-fit:cover}
+.patient-avatar{cursor:pointer}
+
+/* Reuse video-modal styles for avatar modal display */
+.video-modal .video-frame img{max-width:100%;height:auto;border-radius:8px}
+.video-modal .video-modal-content{max-width:640px}
+.patient-info-text h2{margin:0}
+.patient-imc-summary{font-size:14px;color:var(--muted);margin-top:4px}
+.meds-card p{margin:8px 0;color:var(--muted)}
 /* Video thumbnail and modal styles */
 .video-embed{margin:12px 0}
 .video-thumb{position:relative;background:linear-gradient(180deg,#f8fbff,#fff);border:1px solid #e6f0f6;border-radius:10px;padding:28px 18px;display:flex;align-items:center;justify-content:center;cursor:pointer}

@@ -96,9 +96,47 @@ $('#contact-form').addEventListener('submit', (e)=>{e.preventDefault(); toast('M
 
 function setupPatient(){
   const name = state.name || 'Paciente';
-  $('#patient-greet').textContent = `Hola, ${name}, tu enfermera es Ana Pérez`;
+  // compute age if available in stored profile
+  let ageTxt = '';
+  try{
+    const raw = localStorage.getItem('lastSessionPatient') || localStorage.getItem('demoPatient');
+    if(raw){ const p = JSON.parse(raw); if(p.dob){ const age = calculateAge(p.dob); if(age !== null) ageTxt = ` — ${age} años`; }}
+  }catch(e){}
+  $('#patient-greet').textContent = `Hola, ${name}${ageTxt}, tu enfermera es Ana Pérez`;
   $('#alert-text').textContent = 'Recuerda medir tu glucosa hoy a las 8 a.m.';
   $('#message-text').textContent = 'Tu enfermera ha revisado tus signos y te felicita por tu control.';
+  // populate meta (avatar, meds, imc)
+  populatePatientMeta();
+}
+
+// Avatar modal open on click
+document.addEventListener('click', (e)=>{
+  const av = e.target.closest && e.target.closest('#patient-avatar');
+  if(av && av.querySelector && av.querySelector('img')){
+    const src = av.querySelector('img').getAttribute('src');
+    const af = $('#avatar-frame'); af.innerHTML = `<img src="${src}" alt="avatar grande"/>`;
+    const am = $('#avatar-modal'); am.classList.remove('hidden'); am.setAttribute('aria-hidden','false');
+  }
+  if(e.target && e.target.matches && e.target.matches('#avatar-modal .video-modal-close')){
+    const am = $('#avatar-modal'); am.classList.add('hidden'); am.setAttribute('aria-hidden','true'); $('#avatar-frame').innerHTML='';
+  }
+  if(e.target && e.target.closest && e.target.closest('#avatar-modal .video-modal-backdrop')){
+    const am = $('#avatar-modal'); am.classList.add('hidden'); am.setAttribute('aria-hidden','true'); $('#avatar-frame').innerHTML='';
+  }
+});
+
+// Populate patient meta (avatar, meds, IMC) if available
+function populatePatientMeta(){
+  try{
+    const raw = localStorage.getItem('lastSessionPatient') || localStorage.getItem('demoPatient');
+    if(!raw) return;
+    const p = JSON.parse(raw);
+    if(p.avatar){ const av = $('#patient-avatar'); av.innerHTML = `<img src="${p.avatar}" alt="avatar"/>`; }
+    if(p.meds){ $('#patient-meds').textContent = p.meds; }
+    // load last IMC
+    const imcRaw = localStorage.getItem('lastIMC');
+    if(imcRaw){ const im = JSON.parse(imcRaw); $('#patient-imc-summary').textContent = `Último IMC: ${im.imc} (${im.category}). Peso ideal: ${im.minW}-${im.maxW} kg.`; }
+  }catch(e){ console.error('populatePatientMeta', e); }
 }
 
 // Initial view
@@ -168,6 +206,14 @@ function show(viewId){
   if(v) v.classList.remove('hidden');
   if(typeof closeChat === 'function') closeChat();
   if(viewId==='nurse' && !nurseInited){ initNursePanel(); nurseInited=true; }
+  // control visibility of Edit Profile button: only show on patient view when logged as paciente
+  try{
+    const ep = $('#edit-profile');
+    if(ep){
+      if(viewId === 'patient' && state.role === 'paciente') ep.style.display = '';
+      else ep.style.display = 'none';
+    }
+  }catch(e){}
 }
 
 // Mostrar campo 'Especifique' si la condición es 'Otra'
@@ -176,6 +222,154 @@ if(conditionSelect){
   conditionSelect.addEventListener('change', (e)=>{
     const other = $('#other-condition');
     if(e.target.value === 'Otra') other.classList.remove('hidden'); else other.classList.add('hidden');
+  });
+}
+
+// ------ Expanded patient form logic ------
+const loginForm = $('#login-form');
+const avatarInput = $('#avatar');
+const avatarPreview = $('#avatar-preview');
+const saveDemoBtn = $('#save-demo');
+const loadDemoBtn = $('#load-demo');
+const editProfileBtn = $('#edit-profile');
+const dobField = $('#dob');
+
+// live age display next to DOB
+function updateDobAge(){
+  const el = document.querySelector('.dob-age');
+  if(!dobField) return;
+  const val = dobField.value;
+  const age = calculateAge(val);
+  if(!el){
+    const label = dobField.parentNode;
+    const span = document.createElement('span'); span.className='dob-age'; span.textContent = age !== null ? `${age} años` : '';
+    label.appendChild(span);
+  } else { el.textContent = age !== null ? `${age} años` : ''; }
+}
+if(dobField) dobField.addEventListener('change', updateDobAge);
+
+function calculateAge(dob){
+  if(!dob) return null;
+  const b = new Date(dob); const diff = Date.now() - b.getTime(); const ageDt = new Date(diff); return Math.abs(ageDt.getUTCFullYear() - 1970);
+}
+
+if(avatarInput){
+  avatarInput.addEventListener('change', (e)=>{
+    const f = e.target.files && e.target.files[0];
+    if(!f) { avatarPreview.innerHTML=''; return; }
+    if(f.size > 2_000_000){ alert('La imagen es muy grande (máx 2MB)'); avatarInput.value=''; return; }
+    const reader = new FileReader();
+    reader.onload = ()=>{ avatarPreview.innerHTML = `<img src="${reader.result}" alt="avatar"/>`; avatarPreview.dataset.url = reader.result; };
+    reader.readAsDataURL(f);
+  });
+}
+
+function collectFormData(){
+  return {
+    name: $('#name').value || '',
+    dob: $('#dob').value || '',
+    email: $('#email').value || '',
+    phone: $('#phone').value || '',
+    condition: $('#condition').value || '',
+    otherCondition: $('#other-input').value || '',
+    meds: $('#meds').value || '',
+    allergies: $('#allergies').value || '',
+    emName: $('#em-name').value || '',
+    emPhone: $('#em-phone').value || '',
+    address: $('#address').value || '',
+    contactPref: $('#contact-pref').value || '',
+    lang: $('#lang').value || '',
+    consent: !!$('#consent').checked,
+    avatar: avatarPreview && avatarPreview.dataset && avatarPreview.dataset.url ? avatarPreview.dataset.url : null
+  };
+}
+
+function validateForm(data){
+  if(!data.name) return 'Por favor ingrese el nombre.';
+  if(!data.dob) return 'Por favor ingrese la fecha de nacimiento.';
+  if(new Date(data.dob) > new Date()) return 'La fecha de nacimiento no puede estar en el futuro.';
+  if(!data.email || !/\S+@\S+\.\S+/.test(data.email)) return 'Por favor ingrese un correo válido.';
+  if(!data.consent) return 'Debe aceptar el consentimiento para continuar.';
+  if($('#password').value !== $('#password2').value) return 'Las contraseñas no coinciden.';
+  if($('#password').value.length < 6) return 'La contraseña debe tener al menos 6 caracteres.';
+  return null;
+}
+
+if(saveDemoBtn) saveDemoBtn.addEventListener('click', ()=>{
+  const data = collectFormData();
+  try{
+    const exists = !!localStorage.getItem('demoPatient');
+    if(exists){
+      const ok = confirm('Ya existen datos guardados de demo. ¿Deseas sobrescribirlos?');
+      if(!ok){ toast('Guardado cancelado'); return; }
+    }
+    localStorage.setItem('demoPatient', JSON.stringify(data));
+    toast('Datos guardados en localStorage (demo)');
+  }catch(e){ console.error(e); toast('Error guardando datos'); }
+});
+
+if(loadDemoBtn) loadDemoBtn.addEventListener('click', ()=>{
+  const raw = localStorage.getItem('demoPatient');
+  if(!raw){ toast('No hay datos de demo guardados'); return; }
+  const d = JSON.parse(raw);
+  // fill fields
+  $('#name').value = d.name || '';
+  $('#dob').value = d.dob || '';
+  $('#email').value = d.email || '';
+  $('#phone').value = d.phone || '';
+  $('#condition').value = d.condition || '';
+  if(d.condition === 'Otra') $('#other-condition').classList.remove('hidden'); else $('#other-condition').classList.add('hidden');
+  $('#other-input').value = d.otherCondition || '';
+  $('#meds').value = d.meds || '';
+  $('#allergies').value = d.allergies || '';
+  $('#em-name').value = d.emName || '';
+  $('#em-phone').value = d.emPhone || '';
+  $('#address').value = d.address || '';
+  $('#contact-pref').value = d.contactPref || '';
+  $('#lang').value = d.lang || '';
+  if(d.avatar){ avatarPreview.innerHTML = `<img src="${d.avatar}" alt="avatar"/>`; avatarPreview.dataset.url = d.avatar; }
+  toast('Datos de demo cargados');
+});
+
+if(loginForm){
+  loginForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const data = collectFormData();
+    const err = validateForm(data);
+    if(err){ alert(err); return; }
+    // save patient to state and navigate
+    state.role = 'paciente'; state.name = data.name || 'Paciente';
+    // persist demo to localStorage user copy
+    localStorage.setItem('lastSessionPatient', JSON.stringify(data));
+    setupPatient();
+    show('patient');
+    toast(`Bienvenida, ${state.name}`);
+  });
+}
+
+// Edit profile button: load lastSessionPatient/demoPatient into form and open login view
+if(editProfileBtn){
+  editProfileBtn.addEventListener('click', ()=>{
+    const raw = localStorage.getItem('lastSessionPatient') || localStorage.getItem('demoPatient');
+    if(!raw){ toast('No hay perfil guardado para editar'); return; }
+    const p = JSON.parse(raw);
+    // populate form (reuse load logic)
+    $('#name').value = p.name || '';
+    $('#dob').value = p.dob || ''; updateDobAge();
+    $('#email').value = p.email || '';
+    $('#phone').value = p.phone || '';
+    $('#condition').value = p.condition || ''; if(p.condition==='Otra') $('#other-condition').classList.remove('hidden');
+    $('#other-input').value = p.otherCondition || '';
+    $('#meds').value = p.meds || '';
+    $('#allergies').value = p.allergies || '';
+    $('#em-name').value = p.emName || '';
+    $('#em-phone').value = p.emPhone || '';
+    $('#address').value = p.address || '';
+    $('#contact-pref').value = p.contactPref || '';
+    $('#lang').value = p.lang || '';
+    if(p.avatar){ avatarPreview.innerHTML = `<img src="${p.avatar}" alt="avatar"/>`; avatarPreview.dataset.url = p.avatar; }
+    show('login');
+    toast('Perfil cargado para edición');
   });
 }
 
@@ -312,3 +506,50 @@ document.addEventListener('click', (e)=>{
   if(e.target && e.target.matches && e.target.matches('.video-modal-close')) closeVideoModal();
   if(e.target && e.target.closest && e.target.closest('.video-modal-backdrop')) closeVideoModal();
 });
+
+// ------ IMC / BMI Calculator Logic ------
+(() => {
+  const inputWeight = $('#imc-weight');
+  const inputHeight = $('#imc-height');
+  const imcValueEl = $('#imc-value');
+  const imcIdealEl = $('#imc-ideal');
+  const imcBarFill = $('#imc-bar-fill');
+  const imcMarker = $('#imc-marker');
+  const imcMessage = $('#imc-message');
+
+  function resetIMC(){
+    if(imcValueEl) imcValueEl.textContent='--';
+    if(imcIdealEl) imcIdealEl.textContent='--';
+    if(imcBarFill) imcBarFill.style.width='0%';
+    if(imcMarker) imcMarker.style.left='0%';
+    if(imcMessage) { imcMessage.textContent='Introduce tus datos para calcular'; imcMessage.className='imc-message'; }
+  }
+
+  function computeIMC(){
+    const w = inputWeight ? parseFloat(inputWeight.value) : NaN;
+    const hcm = inputHeight ? parseFloat(inputHeight.value) : NaN;
+    if(!w || !hcm || hcm <= 0){ resetIMC(); return; }
+    const hm = hcm/100;
+    const imc = +(w / (hm*hm)).toFixed(1);
+    if(imcValueEl) imcValueEl.textContent = imc;
+    const minW = Math.round(18.5 * hm * hm);
+    const maxW = Math.round(24.9 * hm * hm);
+    if(imcIdealEl) imcIdealEl.textContent = `${minW} - ${maxW} kg`;
+    const min = 10, max = 40; const pct = Math.max(0, Math.min(100, (imc - min) / (max - min) * 100));
+    if(imcBarFill) imcBarFill.style.width = pct + '%';
+    if(imcMarker) imcMarker.style.left = pct + '%';
+    let cat='';
+    if(imc < 18.5) { cat='Bajo peso'; if(imcMessage) imcMessage.className='imc-message imc-warning'; }
+    else if(imc < 25) { cat='Normal'; if(imcMessage) imcMessage.className='imc-message imc-good'; }
+    else { cat='Sobrepeso / Obesidad'; if(imcMessage) imcMessage.className='imc-message imc-bad'; }
+    if(imcMessage) imcMessage.textContent = `${cat} — tu IMC es ${imc}. Rango ideal: ${minW}-${maxW} kg.`;
+    // save last IMC in localStorage for profile
+    try{
+      const payload = { imc, minW, maxW, category: cat, date: (new Date()).toISOString() };
+      localStorage.setItem('lastIMC', JSON.stringify(payload));
+    }catch(e){ /* ignore */ }
+  }
+
+  if(inputWeight) inputWeight.addEventListener('input', computeIMC);
+  if(inputHeight) inputHeight.addEventListener('input', computeIMC);
+})();

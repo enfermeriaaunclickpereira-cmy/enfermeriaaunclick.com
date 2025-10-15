@@ -39,27 +39,73 @@
       </div>
     </section>
 
-    <!-- Login simulado -->
+    <!-- Registro / Login simulado (ampliado) -->
     <section class="view hidden" id="login">
-      <h2 id="login-title">Registro / Login</h2>
-      <form id="login-form">
-        <label>Nombre<input type="text" id="name" placeholder="María" required></label>
-        <label>Correo<input type="email" id="email" placeholder="maria@mail.com" required></label>
-        <label>Contraseña<input type="password" id="password" required></label>
+      <h2 id="login-title">Registro / Login Paciente</h2>
+      <form id="login-form" enctype="multipart/form-data">
+        <div class="two-col">
+          <label>Nombre completo<input type="text" id="name" placeholder="María Pérez" required></label>
+          <label>Fecha de nacimiento<input type="date" id="dob" required></label>
+        </div>
+        <div class="two-col">
+          <label>Correo<input type="email" id="email" placeholder="maria@mail.com" required></label>
+          <label>Teléfono (móvil)<input type="tel" id="phone" placeholder="+56 9 1234 5678"></label>
+        </div>
+        <div class="two-col">
+          <label>Contraseña<input type="password" id="password" required></label>
+          <label>Confirmar contraseña<input type="password" id="password2" required></label>
+        </div>
+
         <label>Enfermedad
           <select id="condition">
             <option>Diabetes</option>
             <option>Hipertensión</option>
             <option>Asma</option>
-             <option>Epoc</option>
+            <option>Epoc</option>
             <option>Otra</option>
           </select>
         </label>
         <label id="other-condition" class="hidden">Especifique
           <input type="text" id="other-input" placeholder="Especifique la condición">
         </label>
+
+        <label>Medicaciones actuales<textarea id="meds" placeholder="Ej: Metformina 500mg, Insulina..." rows="2"></textarea></label>
+        <label>Alergias<textarea id="allergies" placeholder="Ej: Penicilina, Alergia a látex" rows="2"></textarea></label>
+
+        <div class="two-col">
+          <label>Contacto de emergencia - Nombre<input type="text" id="em-name" placeholder="Juan Pérez"></label>
+          <label>Contacto de emergencia - Teléfono<input type="tel" id="em-phone" placeholder="+56 9 8765 4321"></label>
+        </div>
+
+        <label>Dirección (opcional)<input type="text" id="address" placeholder="Calle, número, ciudad"></label>
+
+        <div class="two-col">
+          <label>Preferencia de contacto
+            <select id="contact-pref">
+              <option>Correo electrónico</option>
+              <option>Teléfono</option>
+              <option>WhatsApp</option>
+            </select>
+          </label>
+          <label>Idioma preferido
+            <select id="lang">
+              <option>Español</option>
+              <option>Inglés</option>
+            </select>
+          </label>
+        </div>
+
+        <label class="avatar-label">Foto de perfil (opcional)
+          <input type="file" id="avatar" accept="image/*">
+          <div id="avatar-preview" class="avatar-preview"></div>
+        </label>
+
+        <label class="consent"><input type="checkbox" id="consent" required> Acepto el uso de datos para esta demo (sin envío a servidor)</label>
+
         <div class="form-actions">
-          <button type="submit">Simular registro</button>
+          <button type="submit">Guardar y continuar</button>
+          <button type="button" id="save-demo">Guardar como demo (local)</button>
+          <button type="button" id="load-demo">Cargar datos de demo</button>
           <button type="button" data-action="back">Volver</button>
         </div>
       </form>
@@ -68,7 +114,13 @@
     <!-- Panel Paciente -->
     <section class="view hidden" id="patient">
       <div class="panel-header">
-        <h2 id="patient-greet">Hola, Paciente</h2>
+        <div class="patient-meta">
+          <div id="patient-avatar" class="patient-avatar" aria-hidden="true"></div>
+          <div class="patient-info-text">
+            <h2 id="patient-greet">Hola, Paciente</h2>
+            <div id="patient-imc-summary" class="patient-imc-summary" aria-live="polite"></div>
+          </div>
+        </div>
         <div class="quick-actions">
           <button data-action="video">Videollamada con mi enfermera</button>
           <button data-action="reminder">Recordatorios de medicación</button>
@@ -92,9 +144,34 @@
           <p>Video corto: Cómo medir la glucosa correctamente.</p>
           <button data-action="view-education">Ver más contenido</button>
         </article>
+        <article class="card meds-card">
+          <h3>Medicaciones actuales</h3>
+          <p id="patient-meds">No hay medicaciones registradas.</p>
+        </article>
       </div>
 
+      <!-- IMC / BMI Calculator -->
+      <section class="card imc-card">
+        <h3>Calculadora IMC (Índice de Masa Corporal)</h3>
+        <div class="imc-grid">
+          <label>Peso (kg)<input type="number" id="imc-weight" min="20" max="300" step="0.1" placeholder="70"></label>
+          <label>Estatura (cm)<input type="number" id="imc-height" min="80" max="250" step="0.1" placeholder="170"></label>
+        </div>
+        <div class="imc-result" id="imc-result">
+          <div class="imc-values">
+            <div>IMC: <strong id="imc-value">--</strong></div>
+            <div>Peso ideal estimado: <strong id="imc-ideal">--</strong></div>
+          </div>
+          <div class="imc-bar" id="imc-bar">
+            <div class="imc-bar-fill" id="imc-bar-fill" style="width:0%"></div>
+            <div class="imc-marker" id="imc-marker"></div>
+          </div>
+          <div id="imc-message" class="imc-message">Introduce tus datos para calcular</div>
+        </div>
+      </section>
+
       <div class="patient-footer">
+        <button id="edit-profile">Editar perfil</button>
         <button data-action="logout">Cerrar sesión</button>
       </div>
     </section>
@@ -236,6 +313,15 @@
         <button class="video-modal-close" aria-label="Cerrar video">✕</button>
         <div class="video-frame" id="video-frame"> <!-- iframe injected here --> </div>
         <p class="video-fallback" id="video-fallback" style="display:none">Si no se reproduce, <a id="video-open-link" href="#" target="_blank" rel="noopener">abrir en nueva pestaña</a>.</p>
+      </div>
+    </div>
+
+    <!-- Avatar modal -->
+    <div id="avatar-modal" class="video-modal hidden" aria-hidden="true">
+      <div class="video-modal-backdrop"></div>
+      <div class="video-modal-content">
+        <button class="video-modal-close" aria-label="Cerrar">✕</button>
+        <div class="video-frame" id="avatar-frame"> <!-- img injected here --> </div>
       </div>
     </div>
 
