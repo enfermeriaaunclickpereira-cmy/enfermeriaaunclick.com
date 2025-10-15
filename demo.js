@@ -174,9 +174,9 @@ function initNursePanel(){
 }
 
 function selectPatient(id){
-  // resolve elements dynamically in case they aren't initialized yet
-  const cw = (typeof chatWidget !== 'undefined' && chatWidget) ? chatWidget : document.getElementById('chat-widget');
-  const ci = (typeof chatInput !== 'undefined' && chatInput) ? chatInput : document.getElementById('chat-input');
+  // query DOM elements directly (avoid referencing variables that may be in TDZ)
+  const cw = document.getElementById('chat-widget');
+  const ci = document.getElementById('chat-input');
   if(!cw) return;
   // only open if hidden (avoid reopening)
   if(!cw.classList.contains('hidden')) return;
