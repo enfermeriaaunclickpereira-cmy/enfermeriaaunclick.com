@@ -65,7 +65,11 @@ $('#login-form').addEventListener('submit', (e)=>{
 });
 
 // Logout
-$all('button[data-action="logout"]').forEach(b=>b.addEventListener('click', ()=>{state.role=null; state.name=null; show('home'); toast('Sesión cerrada');}))
+$all('button[data-action="logout"]').forEach(b=>b.addEventListener('click', ()=>{
+  state.role=null; state.name=null; show('home'); toast('Sesión cerrada');
+  if(typeof closeChat === 'function') closeChat();
+  chatOpened = false;
+}))
 
 // Quick actions
 $all('button[data-action="video"]').forEach(b=>b.addEventListener('click', ()=>{
@@ -77,6 +81,14 @@ $all('button[data-action="reminder"]').forEach(b=>b.addEventListener('click', ()
 $all('button[data-action="chat"]').forEach(b=>b.addEventListener('click', ()=>{
   openChat();
 }));
+
+// Delegated listener: abrir chat sólo cuando se hace click en un elemento con data-action="chat"
+document.addEventListener('click', (e)=>{
+  try{
+    const el = e.target.closest && e.target.closest('[data-action="chat"]');
+    if(el){ e.preventDefault(); openChat(); }
+  }catch(err){ /* safe fallback for older browsers */ }
+});
 $all('button[data-action="view-education"]').forEach(b=>b.addEventListener('click', ()=>show('education')));
 
 // Contact form
