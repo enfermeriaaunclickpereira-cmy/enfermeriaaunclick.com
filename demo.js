@@ -549,7 +549,17 @@ document.addEventListener('click', (e)=>{
       localStorage.setItem('lastIMC', JSON.stringify(payload));
     }catch(e){ /* ignore */ }
   }
-
   if(inputWeight) inputWeight.addEventListener('input', computeIMC);
   if(inputHeight) inputHeight.addEventListener('input', computeIMC);
+  // Button to explicitly calculate IMC
+  const imcCalcBtn = $('#imc-calc');
+  if(imcCalcBtn) imcCalcBtn.addEventListener('click', (e)=>{
+    e.preventDefault();
+    // small press animation
+    imcCalcBtn.classList.add('pressed');
+    setTimeout(()=>imcCalcBtn.classList.remove('pressed'), 220);
+    computeIMC();
+    // feedback
+    try{ toast('IMC calculado'); }catch(e){}
+  });
 })();

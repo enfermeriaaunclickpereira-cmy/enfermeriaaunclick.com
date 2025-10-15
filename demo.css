@@ -109,6 +109,10 @@ input,select,textarea{width:100%;padding:8px;border:1px solid #d7e8ef;border-rad
 .imc-card{margin-top:14px;padding:12px}
 .imc-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px}
 .imc-result{margin-top:12px}
+.imc-actions{margin-top:10px}
+.btn.small{padding:8px 12px;border-radius:8px;font-size:14px}
+.btn.small:active{transform:translateY(1px) scale(0.995)}
+.btn.small:focus{outline:2px solid rgba(111,179,210,0.18);outline-offset:2px}
 .imc-values{display:flex;gap:12px;flex-wrap:wrap}
 .imc-bar{position:relative;height:18px;background:#f1f6f9;border-radius:12px;margin-top:10px;overflow:hidden}
 .imc-bar-fill{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,#ffd2d2,#dff6e9);width:0%;transition:width 400ms cubic-bezier(.2,.9,.2,1)}
