@@ -98,13 +98,19 @@ const chatWidget = $('#chat-widget');
 const chatMessages = $('#chat-messages');
 const chatForm = $('#chat-form');
 const chatInput = $('#chat-input');
+let chatOpened = false; // bandera para evitar mensajes de bienvenida duplicados
 
 function openChat(){
   if(!chatWidget) return;
+  // solo abrir si está oculto (evita reabrir si ya está visible)
+  if(!chatWidget.classList.contains('hidden')) return;
   chatWidget.classList.remove('hidden');
   chatWidget.setAttribute('aria-hidden','false');
-  // welcome message
-  addBotMessage('Hola 👋, soy tu enfermera virtual de demostración. ¿En qué puedo ayudarte hoy?');
+  // welcome message solo la primera vez por sesión
+  if(!chatOpened){
+    addBotMessage('Hola 👋, soy tu enfermera virtual de demostración. ¿En qué puedo ayudarte hoy?');
+    chatOpened = true;
+  }
 }
 
 function closeChat(){
