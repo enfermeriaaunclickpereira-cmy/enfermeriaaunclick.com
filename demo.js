@@ -87,15 +87,12 @@ $all('button[data-action="back-to"]').forEach(b=>b.addEventListener('click', e=>
 if($('#login-form')){
   $('#login-form').addEventListener('submit', (e)=>{
     e.preventDefault();
-    // Enfermero: only email + password
     if(state.role === 'enfermero'){
       const email = $('#email').value || '';
       const pass = $('#password').value || '';
       if(!email || !/\S+@\S+\.\S+/.test(email)){ alert('Ingrese un correo válido'); return; }
       if(!pass || pass.length < 4){ alert('Ingrese la contraseña (mínimo 4 caracteres)'); return; }
-      // Simular autenticación
       state.role = 'enfermero'; state.name = email.split('@')[0];
-      // cargar datos específicos de enfermero
       setupNurse(state.name);
       show('nurse');
       if(typeof closeChat === 'function') closeChat();
