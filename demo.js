@@ -29,21 +29,39 @@ $all('button[data-action="login"]').forEach(btn=>{
     $('#login-title').textContent = role === 'enfermero' ? 'Login Enfermero' : 'Registro / Login Paciente';
     // Prepare form fields depending on role
     if(role === 'enfermero'){
-      // hide patient-only fields
-      ['#name','#dob','#phone','#meds','#allergies','#em-name','#em-phone','#address','#condition','#other-condition','#other-input','#contact-pref','#lang','.avatar-label','.consent','#password2'].forEach(sel=>{
+      // hide and disable patient-only fields to avoid browser validation errors
+      const patientSelectors = ['#name','#dob','#phone','#meds','#allergies','#em-name','#em-phone','#address','#condition','#other-condition','#other-input','#contact-pref','#lang','.avatar-label','.consent','#password2'];
+      patientSelectors.forEach(sel=>{
         const el = document.querySelector(sel);
-        if(el) el.closest && el.closest('label') ? el.closest('label').classList.add('hidden') : el.classList.add('hidden');
+        if(!el) return;
+        // hide label or element
+        if(el.closest && el.closest('label')) el.closest('label').classList.add('hidden'); else el.classList.add('hidden');
+        // disable actual input(s) inside (if any) so form validation ignores them
+        const inputs = el.querySelectorAll ? Array.from(el.querySelectorAll('input,select,textarea')) : [];
+        if(inputs.length === 0){ if(['INPUT','SELECT','TEXTAREA'].includes(el.tagName)) inputs.push(el); }
+        inputs.forEach(i=>{ try{ i.disabled = true; i.removeAttribute('required'); }catch(e){} });
       });
-      // ensure email/password required (no captcha)
-      $('#email').required = true; $('#password').required = true;
+      // ensure email/password enabled and required for enfermero
+      const emailEl = $('#email'); const passEl = $('#password');
+      if(emailEl){ emailEl.disabled = false; emailEl.required = true; }
+      if(passEl){ passEl.disabled = false; passEl.required = true; }
     } else {
       // show all fields for paciente
-      ['#name','#dob','#phone','#meds','#allergies','#em-name','#em-phone','#address','#condition','#other-condition','#other-input','#contact-pref','#lang','.avatar-label','.consent','#password2'].forEach(sel=>{
+      const patientSelectors = ['#name','#dob','#phone','#meds','#allergies','#em-name','#em-phone','#address','#condition','#other-condition','#other-input','#contact-pref','#lang','.avatar-label','.consent','#password2'];
+      patientSelectors.forEach(sel=>{
         const el = document.querySelector(sel);
-        if(el) el.closest && el.closest('label') ? el.closest('label').classList.remove('hidden') : el.classList.remove('hidden');
+        if(!el) return;
+        if(el.closest && el.closest('label')) el.closest('label').classList.remove('hidden'); else el.classList.remove('hidden');
+        const inputs = el.querySelectorAll ? Array.from(el.querySelectorAll('input,select,textarea')) : [];
+        if(inputs.length === 0){ if(['INPUT','SELECT','TEXTAREA'].includes(el.tagName)) inputs.push(el); }
+        inputs.forEach(i=>{ try{ i.disabled = false; }catch(e){} });
       });
-      // no captcha to show
-      $('#email').required = true; $('#password').required = true; $('#password2').required = true;
+      // ensure proper required flags for paciente
+      const emailEl = $('#email'); const passEl = $('#password'); const pass2El = $('#password2'); const consentEl = $('#consent');
+      if(emailEl) emailEl.required = true;
+      if(passEl) passEl.required = true;
+      if(pass2El) pass2El.required = true;
+      if(consentEl) consentEl.required = true;
     }
     show('login');
   })
