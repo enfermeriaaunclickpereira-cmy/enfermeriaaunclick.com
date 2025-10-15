@@ -8,6 +8,8 @@ function show(viewId){
   $all('.view').forEach(v=>v.classList.add('hidden'));
   const v = $(`#${viewId}`);
   if(v) v.classList.remove('hidden');
+  // Al cambiar de vista, ocultar el chat para que solo se abra por el botón
+  if(typeof closeChat === 'function') closeChat();
 }
 
 function toast(msg, timeout=3000){
@@ -32,6 +34,8 @@ $all('button[data-action="guest"]').forEach(btn=>btn.addEventListener('click', (
   state.role = 'paciente'; state.name='María';
   setupPatient();
   show('patient');
+  // asegurar que el chat esté cerrado al entrar como invitado
+  if(typeof closeChat === 'function') closeChat();
   toast('Entrando en modo demostración...');
 }));
 
@@ -48,10 +52,14 @@ $('#login-form').addEventListener('submit', (e)=>{
   state.name = name;
   if(state.role === 'enfermero'){
     show('nurse');
+    // asegurar que el chat no se abra automáticamente cuando se loguea un enfermero
+    if(typeof closeChat === 'function') closeChat();
     toast('Bienvenido, enfermero');
   } else {
     setupPatient();
     show('patient');
+    // asegurar que el chat no se abra automáticamente al iniciar sesión como paciente
+    if(typeof closeChat === 'function') closeChat();
     toast(`Bienvenida, ${name}`);
   }
 });
@@ -99,6 +107,13 @@ const chatMessages = $('#chat-messages');
 const chatForm = $('#chat-form');
 const chatInput = $('#chat-input');
 let chatOpened = false; // bandera para evitar mensajes de bienvenida duplicados
+
+// Asegurar estado inicial: oculto y sin mensajes de bienvenida añadidos
+if(chatWidget){
+  chatWidget.classList.add('hidden');
+  chatWidget.setAttribute('aria-hidden','true');
+  chatOpened = false;
+}
 
 function openChat(){
   if(!chatWidget) return;
