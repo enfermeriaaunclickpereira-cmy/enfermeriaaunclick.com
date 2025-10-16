@@ -60,4 +60,8 @@ app.post("/api/videollamadas", (req, res) => {
   res.json(llamada);
 });
 
-app.listen(4000, () => console.log("✅ Servidor backend corriendo en http://localhost:4000"));
+const PORT = process.env.PORT || 4000;
+
+app.listen(PORT, () => {
+  console.log(`✅ Servidor backend corriendo en puerto ${PORT}`);
+});
