@@ -15,7 +15,7 @@
         <p class="lead">Prevención, confianza y cuidado en un solo click</p>
         <p class="hero-sub">Atención domiciliaria y acompañamiento profesional cuando lo necesites (Demo interactiva para mostrar flujos de paciente y enfermero).</p>
         <div class="hero-ctas">
-          <button class="btn primary" data-action="guest">Entrar como invitado (demo)</button>
+          <button class="btn primary" id="btn-continue">Continuar</button>
           <a class="btn secondary" href="#contact">Contacto</a>
         </div>
       </div>
@@ -58,8 +58,11 @@
         <div class="login-actions">
           <a href="#" id="forgot-password" class="forgot-link">¿Olvidó su clave?</a>
         </div>
-        <button type="submit" class="btn primary">Ingresar</button>
-        <button type="button" id="show-register" class="btn highlight">Registrarse</button>
+        <div class="login-buttons">
+          <button type="button" id="login-back" class="btn secondary">Atrás</button>
+          <button type="submit" class="btn primary">Ingresar</button>
+          <button type="button" id="show-register" class="btn highlight">Registrarse</button>
+        </div>
       </form>
     </section>
     
@@ -111,20 +114,34 @@
     <section class="view hidden" id="patient">
       <h2>Panel del Paciente</h2>
       <div class="patient-info">
-        <strong>Hola, María, tu enfermera es Ana Pérez</strong>
+        <div id="patient-greet"><strong>Hola, paciente</strong></div>
         <div class="quick-actions">
           <button data-action="call">Videollamada con mi enfermera</button>
           <button data-action="medication">Recordatorios de medicación</button>
           <button data-action="chat">Mensajes / Chat</button>
         </div>
-        <div class="alert">Recuerda medir tu glucosa hoy a las 8 a.m.</div>
-        <div class="msg">Tu enfermera ha revisado tus signos y te felicita por tu control.</div>
-        <button data-action="education">Educación en salud</button>
-        <button data-action="logout">Cerrar sesión</button>
+        <div class="alert" id="alert-text">Recuerda medir tu glucosa hoy a las 8 a.m.</div>
+        <div class="msg" id="message-text">Tu enfermera ha revisado tus signos y te felicita por tu control.</div>
+        <div class="patient-actions">
+          <button data-action="education">Educación en salud</button>
+          <button id="btn-contacts" data-action="contacts">Contactos</button>
+          <button data-action="logout">Cerrar sesión</button>
+        </div>
       </div>
     </section>
 
-    <!-- Panel Enfermero -->
+    <!-- Contactos del Paciente -->
+    <section class="view hidden" id="contacts">
+      <h2>Mis Contactos</h2>
+      <div id="contacts-list">
+        <!-- Se llenará con los datos del paciente registrado -->
+      </div>
+      <div class="form-actions">
+        <button data-action="back" class="btn">Volver</button>
+      </div>
+    </section>
+
+    <!-- Panel Enfermero - Login -->
     <section class="view hidden" id="nurse">
       <h2>Login Enfermero</h2>
       <form id="nurse-login-form">
@@ -136,6 +153,58 @@
         </label>
         <button type="submit" class="btn primary">Ingresar</button>
       </form>
+    </section>
+
+    <!-- Panel Enfermero - Dashboard -->
+    <section class="view hidden" id="nurse-panel">
+      <h2 id="nurse-title">Panel del Enfermero</h2>
+      <div class="nurse-grid">
+        <aside class="nurse-col list-col">
+          <div class="list-header">
+            <input id="patient-search" placeholder="Buscar paciente..." />
+            <div class="filters">
+              <button class="filter-btn active" data-filter="all">Todos</button>
+              <button class="filter-btn" data-filter="green">Estables</button>
+              <button class="filter-btn" data-filter="yellow">Observación</button>
+              <button class="filter-btn" data-filter="red">Alerta</button>
+            </div>
+          </div>
+          <div id="patient-list" class="nurse-list">
+            <!-- pacientes serán insertados dinámicamente -->
+          </div>
+        </aside>
+
+        <section class="nurse-col detail-col" id="nurse-detail">
+          <div class="detail-card">
+            <h3 id="detail-name">Selecciona un paciente</h3>
+            <div id="detail-vitals" class="vitals">
+              <div class="vitem"><strong>Glucosa</strong><span id="v-glu">--</span></div>
+              <div class="vitem"><strong>Presión</strong><span id="v-bp">--</span></div>
+              <div class="vitem"><strong>Frecuencia</strong><span id="v-hr">--</span></div>
+            </div>
+            <p id="detail-notes">Aquí aparecerán notas y recomendaciones del paciente.</p>
+            <div class="detail-actions">
+              <button class="btn" id="nurse-call">Videollamada</button>
+              <button class="btn" id="nurse-chat">Mensajes / Chat</button>
+              <button class="btn" id="nurse-alert">Agregar alerta</button>
+            </div>
+          </div>
+        </section>
+
+        <aside class="nurse-col stats-col">
+          <div class="stat-card">
+            <h4>Resumen</h4>
+            <p><strong id="count-total">0</strong> pacientes asignados</p>
+            <p><span class="status green inline">0</span> Estables • <span class="status yellow inline">0</span> Observación • <span class="status red inline">0</span> Alerta</p>
+          </div>
+          <div class="schedule-card">
+            <h4>Agenda</h4>
+            <ul>
+              <li>09:00 - Visita programada</li>
+            </ul>
+          </div>
+        </aside>
+      </div>
     </section>
 
     <!-- Modo Demo -->

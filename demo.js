@@ -36,19 +36,15 @@ $all('button[data-action="login"]').forEach(btn=>{
 
 // Show register form from login
 const showRegisterBtn = document.getElementById('show-register');
-if(showRegisterBtn){
-  showRegisterBtn.addEventListener('click', ()=>{
-    show('register');
-  });
-}
+if(showRegisterBtn){ showRegisterBtn.addEventListener('click', ()=>{ show('register'); }); }
 
 // Cancel register button
 const cancelRegisterBtn = document.getElementById('cancel-register');
-if(cancelRegisterBtn){
-  cancelRegisterBtn.addEventListener('click', ()=>{
-    show('login');
-  });
-}
+if(cancelRegisterBtn){ cancelRegisterBtn.addEventListener('click', ()=>{ show('login'); }); }
+
+// Login 'Atrás' button
+const loginBackBtn = document.getElementById('login-back');
+if(loginBackBtn){ loginBackBtn.addEventListener('click', ()=>{ show('home'); }); }
 
 // Register patient logic
 const registerForm = document.getElementById('register-form');
@@ -93,9 +89,67 @@ if(registerForm){
       edad: paciente.edad
     });
     localStorage.setItem('pacientes', JSON.stringify(pacientes));
+    // also set as lastSessionPatient so patient panel opens with data
+    const last = {
+      nombre: paciente.nombre,
+      apellido: paciente.apellido,
+      edad: paciente.edad,
+      contacto: paciente.contacto,
+      ciudad: paciente.ciudad,
+      enfermedad: paciente.enfermedad,
+      tipoDocumento: paciente.tipoDocumento,
+      numeroDocumento: paciente.numeroDocumento
+    };
+    localStorage.setItem('lastSessionPatient', JSON.stringify(last));
     toast('Registro exitoso');
-    show('login');
+    // show patient panel as logged-in
+    state.role = 'paciente'; state.name = paciente.nombre;
+    setupPatient(); show('patient');
   });
+}
+
+// Patient login submit (auth by document number + password optional)
+const loginFormEl = document.getElementById('login-form');
+if(loginFormEl){
+  loginFormEl.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const tipo = document.getElementById('login-doc-type').value;
+    const num = document.getElementById('login-doc-num').value.trim();
+    const pwd = document.getElementById('login-password').value;
+    let pacientes = [];
+    try{ pacientes = JSON.parse(localStorage.getItem('pacientes')) || []; }catch(e){}
+    const found = pacientes.find(p => p.numeroDocumento === num && p.tipoDocumento === tipo);
+    if(!found){ toast('Usuario no encontrado. Por favor registrese.'); show('register'); return; }
+    // in this demo we won't check password (or optionally check against reg password)
+    // save session and open patient panel
+    const last = Object.assign({}, found);
+    localStorage.setItem('lastSessionPatient', JSON.stringify(last));
+    state.role = 'paciente'; state.name = found.nombre;
+    setupPatient(); show('patient');
+    toast(`Bienvenido ${found.nombre} ${found.apellido}`);
+  });
+}
+
+// Contacts button
+const btnContacts = document.getElementById('btn-contacts');
+if(btnContacts){ btnContacts.addEventListener('click', ()=>{ show('contacts'); populateContacts(); }); }
+
+function populateContacts(){
+  const container = document.getElementById('contacts-list');
+  container.innerHTML = '';
+  const raw = localStorage.getItem('lastSessionPatient');
+  if(!raw){ container.innerHTML = '<p>No hay datos de contacto guardados.</p>'; return; }
+  const p = JSON.parse(raw);
+  container.innerHTML = `
+    <div class="contact-card">
+      <p><strong>Nombre:</strong> ${p.nombre || ''} ${p.apellido || ''}</p>
+      <p><strong>Edad:</strong> ${p.edad || ''}</p>
+      <p><strong>Ciudad:</strong> ${p.ciudad || ''}</p>
+      <p><strong>Enfermedad:</strong> ${p.enfermedad || ''}</p>
+      <p><strong>Contacto:</strong> ${p.contacto || ''}</p>
+      <p><strong>Documento:</strong> ${p.tipoDocumento || ''} ${p.numeroDocumento || ''}</p>
+    </div>
+  `;
 }
 
 $all('button[data-action="guest"]').forEach(btn=>btn.addEventListener('click', ()=>{
@@ -108,40 +162,17 @@ $all('button[data-action="guest"]').forEach(btn=>btn.addEventListener('click', (
   toast('Entrando en modo demostración...');
 }));
 
+// Hero continue button: just go to home (second menu)
+const heroContinue = document.getElementById('btn-continue');
+if(heroContinue){ heroContinue.addEventListener('click', ()=>{ show('home'); }); }
+
 // Back buttons
 $all('button[data-action="back"]').forEach(b=>b.addEventListener('click', ()=>show('home')));
 $all('button[data-action="back-to"]').forEach(b=>b.addEventListener('click', e=>{
   const target = e.currentTarget.dataset.target || 'home'; show(target);
 }));
 
-// Login form - unified handler for paciente and enfermero
-if($('#login-form')){
-  $('#login-form').addEventListener('submit', (e)=>{
-    e.preventDefault();
-    if(state.role === 'enfermero'){
-      const email = $('#email').value || '';
-      const pass = $('#password').value || '';
-      if(!email || !/\S+@\S+\.\S+/.test(email)){ alert('Ingrese un correo válido'); return; }
-      if(!pass || pass.length < 4){ alert('Ingrese la contraseña (mínimo 4 caracteres)'); return; }
-      state.role = 'enfermero'; state.name = email.split('@')[0];
-      setupNurse(state.name);
-      show('nurse');
-      if(typeof closeChat === 'function') closeChat();
-      toast('Bienvenido, enfermero ' + state.name);
-      return;
-    }
-    // Paciente flow
-    const data = collectFormData();
-    const err = validateForm(data);
-    if(err){ alert(err); return; }
-    state.role = 'paciente'; state.name = data.name || 'Paciente';
-    localStorage.setItem('lastSessionPatient', JSON.stringify(data));
-    setupPatient();
-    show('patient');
-    if(typeof closeChat === 'function') closeChat();
-    toast(`Bienvenida, ${state.name}`);
-  });
-}
+// Unified login handler removed — using separate handlers for patient and nurse now.
 
 // Setup nurse panel with nurse-specific data (no patient fields)
 function setupNurse(username){
@@ -204,17 +235,20 @@ $('#contact-form').addEventListener('submit', (e)=>{e.preventDefault(); toast('M
 
 function setupPatient(){
   const name = state.name || 'Paciente';
-  // compute age if available in stored profile
-  let ageTxt = '';
-  try{
-    const raw = localStorage.getItem('lastSessionPatient') || localStorage.getItem('demoPatient');
-    if(raw){ const p = JSON.parse(raw); if(p.dob){ const age = calculateAge(p.dob); if(age !== null) ageTxt = ` — ${age} años`; }}
-  }catch(e){}
-  $('#patient-greet').textContent = `Hola, ${name}${ageTxt}, tu enfermera es Ana Pérez`;
-  $('#alert-text').textContent = 'Recuerda medir tu glucosa hoy a las 8 a.m.';
-  $('#message-text').textContent = 'Tu enfermera ha revisado tus signos y te felicita por tu control.';
-  // populate meta (avatar, meds, imc)
-  populatePatientMeta();
+    try{
+      const raw = localStorage.getItem('lastSessionPatient') || localStorage.getItem('demoPatient');
+      if(raw){
+        const p = JSON.parse(raw);
+        const fullName = `${p.nombre || p.name || ''} ${p.apellido || ''}`.trim();
+        const age = p.edad || (p.dob ? calculateAge(p.dob) : null);
+        const ageTxt = age ? ` — ${age} años` : '';
+        const greet = `Hola, ${fullName}${ageTxt}. Tu enfermera es Ana Pérez`;
+        const el = document.getElementById('patient-greet'); if(el) el.textContent = greet;
+        const at = document.getElementById('alert-text'); if(at) at.textContent = 'Recuerda medir tu glucosa hoy a las 8 a.m.';
+        const mt = document.getElementById('message-text'); if(mt) mt.textContent = 'Tu enfermera ha revisado tus signos y te felicita por tu control.';
+      }
+    }catch(e){ console.error('setupPatient', e); }
+    populatePatientMeta();
 }
 
 // Avatar modal open on click
@@ -578,31 +612,67 @@ function closeVideoModal(){
 document.addEventListener('click', (e)=>{
   const thumb = e.target.closest && e.target.closest('.video-thumb');
   if(thumb){
-    const url = thumb.dataset.videoUrl;
-    const fb = thumb.dataset.videoFallback || url;
-    openVideoModal(url, fb);
-  }
-  if(e.target && e.target.matches && e.target.matches('.video-modal-close')) closeVideoModal();
-  if(e.target && e.target.closest && e.target.closest('.video-modal-backdrop')) closeVideoModal();
-});
-
-// ------ IMC / BMI Calculator Logic ------
-(() => {
-  const inputWeight = $('#imc-weight');
-  const inputHeight = $('#imc-height');
-  const imcValueEl = $('#imc-value');
-  const imcIdealEl = $('#imc-ideal');
-  const imcBarFill = $('#imc-bar-fill');
-  const imcMarker = $('#imc-marker');
-  const imcMessage = $('#imc-message');
-
-  function resetIMC(){
-    if(imcValueEl) imcValueEl.textContent='--';
-    if(imcIdealEl) imcIdealEl.textContent='--';
-    if(imcBarFill) imcBarFill.style.width='0%';
-    if(imcMarker) imcMarker.style.left='0%';
+      // show name in header
+      const title = $('#nurse-title'); if(title) title.textContent = `Panel del Enfermero — ${username}`;
+      // populate nurse list with registered patients
+      const nurseList = document.querySelector('.nurse-list');
+      if(nurseList){
+        nurseList.innerHTML = '';
+        let pacientes = [];
+        try { pacientes = JSON.parse(localStorage.getItem('pacientes')) || []; } catch(e){}
+        if(pacientes.length === 0){
+          nurseList.innerHTML = '<div>No hay pacientes registrados.</div>';
+        } else {
+          pacientes.forEach((p, idx) => {
+            const status = p.status || (idx % 3 === 0 ? 'green' : (idx % 3 === 1 ? 'yellow' : 'red'));
+            nurseList.innerHTML += `<div class="patient-item" data-id="${idx}" data-name="${p.nombre}" data-status="${status}">
+              <div class="pi-left"><strong>${p.nombre} ${p.apellido}</strong><small>${p.enfermedad || ''}</small></div>
+              <div class="pi-right"><span class="status ${status}">${status==='green'?'Estable':status==='yellow'?'Observación':'Alerta'}</span></div>
+            </div>`;
+          });
+        }
+      }
+      // update stats counts if elements exist
+      const items = Array.from(document.querySelectorAll('.patient-item'));
+      const statEl = $('#count-total'); if(statEl) statEl.textContent = items.length;
+      const red = items.filter(i=>i.dataset.status==='red').length;
+      const yellow = items.filter(i=>i.dataset.status==='yellow').length;
+      const green = items.filter(i=>i.dataset.status==='green').length;
+      const statText = document.querySelector('.stat-card p:nth-child(2)'); if(statText) statText.innerHTML = `<span class="status green inline">${green}</span> Estables • <span class="status yellow inline">${yellow}</span> Observación • <span class="status red inline">${red}</span> Alerta`;
+      // clear nurse detail area
+      const dn = $('#detail-name'); if(dn) dn.textContent = 'Selecciona un paciente';
+      const notes = $('#detail-notes'); if(notes) notes.textContent = 'Aquí aparecerán notas y recomendaciones del paciente.';
     if(imcMessage) { imcMessage.textContent='Introduce tus datos para calcular'; imcMessage.className='imc-message'; }
   }
+
+// Nurse login handling -> open nurse-panel dashboard
+const nurseLoginForm = document.getElementById('nurse-login-form');
+if(nurseLoginForm){
+  nurseLoginForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const email = document.getElementById('nurse-email').value.trim();
+    const pass = document.getElementById('nurse-password').value;
+    if(!email || !pass){ toast('Ingrese correo y clave'); return; }
+    state.role = 'enfermero'; state.name = email.split('@')[0];
+    setupNurse(state.name);
+    show('nurse-panel');
+    // after showing nurse-panel, wire patient-item click listeners to open detail
+    setTimeout(()=>{
+      document.querySelectorAll('.patient-item').forEach(it=>{
+        it.addEventListener('click', ()=>{
+          const idx = it.dataset.id;
+          const pacientes = JSON.parse(localStorage.getItem('pacientes')||'[]');
+          const p = pacientes[idx];
+          if(p){
+            const dn = document.getElementById('detail-name'); if(dn) dn.textContent = `${p.nombre} ${p.apellido}`;
+            const notes = document.getElementById('detail-notes'); if(notes) notes.textContent = `Contacto: ${p.contacto}. Ciudad: ${p.ciudad}. Enfermedad: ${p.enfermedad}`;
+          }
+        });
+      });
+    }, 50);
+    toast('Bienvenido, enfermero ' + state.name);
+  });
+}
 
   function computeIMC(){
     console.log('computeIMC() called');
