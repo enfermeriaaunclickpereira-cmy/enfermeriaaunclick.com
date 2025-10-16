@@ -13,6 +13,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DB_PATH = path.join(__dirname, "db.json");
 
+// === Rutas estáticas (frontend) ===
+app.use(express.static(path.join(__dirname, "../public")));
+
 function readDB() {
   try {
     const data = fs.readFileSync(DB_PATH, "utf8");
@@ -27,14 +30,12 @@ function writeDB(data) {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
 }
 
-// === Rutas ===
-
-// 1️⃣ Ruta raíz
-app.get("/", (req, res) => {
-  res.send("✅ Backend de Enfermería a un Click activo");
+// === Rutas backend ===
+app.get("/api", (req, res) => {
+  res.send("✅ API del backend está activa");
 });
 
-// 2️⃣ Pacientes
+// Pacientes
 app.get("/api/pacientes", (req, res) => {
   const db = readDB();
   res.json(db.pacientes || []);
@@ -53,13 +54,13 @@ app.post("/api/pacientes", (req, res) => {
   res.json({ mensaje: "Paciente registrado correctamente", paciente: nuevo });
 });
 
-// 3️⃣ Recordatorios
+// Recordatorios
 app.get("/api/recordatorios", (req, res) => {
   const db = readDB();
   res.json(db.recordatorios || []);
 });
 
-// 4️⃣ Videollamadas
+// Videollamadas
 app.post("/api/videollamadas", (req, res) => {
   const db = readDB();
   const llamada = {
@@ -72,7 +73,7 @@ app.post("/api/videollamadas", (req, res) => {
   res.json({ mensaje: "Videollamada registrada", llamada });
 });
 
-// 5️⃣ Observaciones clínicas (enfermero)
+// Observaciones (para enfermero)
 app.post("/api/observaciones", (req, res) => {
   const db = readDB();
   const nueva = {
@@ -91,6 +92,11 @@ app.get("/api/observaciones", (req, res) => {
   res.json(db.observaciones || []);
 });
 
-// === Puerto dinámico (Render asigna uno) ===
+// === Cualquier otra ruta -> sirve el frontend ===
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../public/index.html"));
+});
+
+// === Puerto dinámico ===
 const PORT = process.env.PORT || 10000;
-app.listen(PORT, () => console.log(`✅ Servidor backend corriendo en puerto ${PORT}`));
+app.listen(PORT, () => console.log(`✅ Servidor corriendo en puerto ${PORT}`));
