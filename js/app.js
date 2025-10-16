@@ -89,3 +89,32 @@ function abrirModal() {
 function cerrarModal() {
   document.getElementById("videollamadaModal").classList.add("hidden");
 }
+// Cargar recordatorios desde el backend
+async function cargarRecordatorios() {
+  try {
+    const res = await fetch(`${API_URL}/recordatorios`);
+    const recordatorios = await res.json();
+
+    const lista = document.getElementById("listaRecordatorios");
+    lista.innerHTML = "";
+
+    if (recordatorios.length === 0) {
+      lista.innerHTML = "<li>No hay recordatorios disponibles.</li>";
+      return;
+    }
+
+    recordatorios.forEach(r => {
+      const li = document.createElement("li");
+      li.innerHTML = `<strong>${r.medicamento}</strong> <span>${r.hora}</span>`;
+      lista.appendChild(li);
+    });
+  } catch (err) {
+    console.error("Error al cargar recordatorios:", err);
+  }
+}
+
+// Mostrar modal y recordatorios
+function abrirModal() {
+  cargarRecordatorios();
+  document.getElementById("videollamadaModal").classList.remove("hidden");
+}

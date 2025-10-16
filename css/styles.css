@@ -122,3 +122,26 @@ th, td {
   from { transform: scale(0.8); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
 }
+.recordatorios {
+  list-style: none;
+  margin: 15px 0;
+  padding: 0;
+  color: #cbd5e1;
+  text-align: left;
+}
+
+.recordatorios li {
+  background: rgba(56, 189, 248, 0.1);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  font-size: 15px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.recordatorios li span {
+  color: #38bdf8;
+  font-weight: 600;
+}
