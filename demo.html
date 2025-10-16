@@ -1,9 +1,9 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Enfermera a un CLICK - Demo</title>
+  <title>Enfermera a un CLICK - Demo Feria</title>
   <link rel="stylesheet" href="demo.css">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
@@ -11,17 +11,15 @@
   <header class="hero">
     <div class="hero-inner">
       <div class="hero-left">
-        <!-- Logo pequeño eliminado para un diseño más limpio -->
         <h1>Enfermera a un CLICK</h1>
         <p class="lead">Prevención, confianza y cuidado en un solo click</p>
         <p class="hero-sub">Atención domiciliaria y acompañamiento profesional cuando lo necesites (Demo interactiva para mostrar flujos de paciente y enfermero).</p>
         <div class="hero-ctas">
           <button class="btn primary" data-action="guest">Entrar como invitado (demo)</button>
-          <a class="btn secondary" href="demo.html#contact">Contacto</a>
+          <a class="btn secondary" href="#contact">Contacto</a>
         </div>
       </div>
       <div class="hero-right">
-        <!-- Reemplazo por logo grande -->
         <img class="hero-logo-large" src="imagenes/logo.png" alt="Logo Enfermería a un click" onerror="this.src='imagenes/logo.jpg'" />
       </div>
     </div>
@@ -39,306 +37,141 @@
       </div>
     </section>
 
-    <!-- Registro / Login simulado (ampliado) -->
+    <!-- Registro / Login simulado -->
     <section class="view hidden" id="login">
-
-      <!DOCTYPE html>
-      <html lang="es">
-      <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>Enfermera a un CLICK - Demo Feria</title>
-        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-        <style>
-          body { font-family: 'Poppins', Arial, sans-serif; background: #f6fbff; color: #234; margin:0; }
-          .hero { background: linear-gradient(90deg,#e3f6ff 60%,#d0f5e8 100%); padding:2rem 0; text-align:center; }
-          .hero-logo { width:80px; vertical-align:middle; margin-bottom:1rem; }
-          h1 { font-size:2.2rem; margin:0.5rem 0; }
-          .lead { font-size:1.1rem; color:#2a7; margin-bottom:0.5rem; }
-          .main-btns button { font-size:1.1rem; margin:0.5rem; padding:0.8em 2em; border-radius:8px; border:none; background:#4ecdc4; color:#fff; cursor:pointer; }
-          .main-btns button:hover { background:#38b2ac; }
-          .view { display:none; max-width:420px; margin:2rem auto; background:#fff; border-radius:12px; box-shadow:0 2px 12px #0001; padding:2rem; }
-          .view.active { display:block; }
-          .section-title { font-size:1.3rem; margin-bottom:1rem; color:#2a7; }
-          .quick-actions { display:flex; flex-wrap:wrap; gap:1rem; margin:1rem 0; }
-          .quick-actions button { flex:1; min-width:120px; background:#e3f6ff; color:#234; border:1px solid #4ecdc4; border-radius:8px; padding:0.7em; font-size:1rem; cursor:pointer; }
-          .quick-actions button:hover { background:#d0f5e8; }
-          .alert, .msg { background:#fffbe6; border-left:4px solid #f7b731; padding:0.7em; margin:1em 0; border-radius:6px; }
-          .msg { border-color:#38b2ac; }
-          .nurse-list { margin:1em 0; }
-          .nurse-patient { padding:0.5em 0.7em; border-radius:6px; margin-bottom:0.5em; background:#e3f6ff; display:flex; align-items:center; justify-content:space-between; }
-          .status { font-size:0.9em; padding:0.2em 0.7em; border-radius:12px; }
-          .status.green { background:#d0f5e8; color:#2a7; }
-          .status.yellow { background:#fffbe6; color:#f7b731; }
-          .status.red { background:#ffe3e3; color:#e74c3c; }
-          .edu-card { background:#e3f6ff; border-radius:8px; padding:1em; margin:1em 0; }
-          .contact-form input, .contact-form textarea { width:100%; margin-bottom:0.7em; padding:0.6em; border-radius:6px; border:1px solid #cce; font-size:1em; }
-          .contact-form button { background:#4ecdc4; color:#fff; border:none; border-radius:8px; padding:0.7em 2em; font-size:1em; cursor:pointer; }
-          .contact-form button:hover { background:#38b2ac; }
-          .toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:#4ecdc4; color:#fff; padding:1em 2em; border-radius:8px; box-shadow:0 2px 8px #0002; display:none; z-index:99; }
-          .toast.show { display:block; }
-        </style>
-      </head>
-      <body>
-        <div class="hero">
-        <img src="imagenes/logo.png" alt="Logo Enfermera a un CLICK" class="hero-logo" style="width:140px;max-width:90vw;margin-bottom:1rem;border-radius:16px;box-shadow:0 2px 12px #0002;" onerror="this.src='imagenes/logo.jpg'" />
-          <h1>Enfermera a un CLICK</h1>
-          <div class="lead">Prevención, confianza y cuidado en un solo click</div>
-          <div class="main-btns">
-            <button onclick="showView('login')">Paciente</button>
-            <button onclick="showView('nurse')">Enfermero</button>
-            <button onclick="showView('demo')">Invitado (demo)</button>
-          </div>
+      <h2>Login Paciente</h2>
+      <form id="login-form">
+        <label>Tipo de documento
+          <select id="login-doc-type" required>
+            <option value="">Seleccionar</option>
+            <option>PPT</option>
+            <option>Cédula de ciudadanía</option>
+            <option>Permiso extranjero</option>
+          </select>
+        </label>
+        <label>Número de documento
+          <input type="text" id="login-doc-num" placeholder="Número de documento" required />
+        </label>
+        <label>Clave
+          <input type="password" id="login-password" placeholder="Clave" required />
+        </label>
+        <div class="login-actions">
+          <a href="#" id="forgot-password" class="forgot-link">¿Olvidó su clave?</a>
         </div>
-
-        <div id="login" class="view">
-          <div class="section-title">Registro / Login (simulado)</div>
-          <form onsubmit="event.preventDefault();showView('patient')">
-            <input type="text" placeholder="Nombre" required />
-            <input type="email" placeholder="Correo" required />
-            <input type="password" placeholder="Contraseña" required />
-            <select required><option>Diabetes</option><option>Hipertensión</option><option>Otra</option></select>
-            <button type="submit">Ingresar</button>
-          </form>
-        </div>
-
-        <div id="patient" class="view">
-          <div class="section-title">Panel del Paciente</div>
-          <div><strong>Hola, María, tu enfermera es Ana Pérez</strong></div>
-          <div class="quick-actions">
-            <button onclick="toast('Su enfermera se conectará en 5 minutos')">Videollamada con mi enfermera</button>
-            <button onclick="toast('Recordatorio: Tomar medicación a las 8:00 AM')">Recordatorios de medicación</button>
-            <button onclick="toast('Chat abierto con tu enfermera')">Mensajes / Chat</button>
-          </div>
-          <div class="alert">Recuerda medir tu glucosa hoy a las 8 a.m.</div>
-          <div class="msg">Tu enfermera ha revisado tus signos y te felicita por tu control.</div>
-          <button onclick="showView('education')">Educación en salud</button>
-          <button onclick="showView('home')">Cerrar sesión</button>
-        </div>
-
-        <div id="nurse" class="view">
-          <div class="section-title">Panel del Enfermero</div>
-          <div class="nurse-list">
-            <div class="nurse-patient">María <span class="status green">Estable</span></div>
-            <div class="nurse-patient">Juan <span class="status yellow">Observación</span></div>
-            <div class="nurse-patient">Ana <span class="status red">Alerta</span></div>
-          </div>
-          <div class="quick-actions">
-            <button onclick="toast('Videollamada iniciada')">Videollamada</button>
-            <button onclick="toast('Chat abierto con paciente')">Chat</button>
-          </div>
-          <button onclick="showView('home')">Cerrar sesión</button>
-        </div>
-
-        <div id="demo" class="view">
-          <div class="section-title">Modo demostración</div>
-          <div><strong>Bienvenido al modo demo. Explora los flujos principales.</strong></div>
-          <button onclick="showView('patient')">Ver panel de paciente</button>
-          <button onclick="showView('nurse')">Ver panel de enfermero</button>
-          <button onclick="showView('home')">Volver al inicio</button>
-        </div>
-
-        <div id="education" class="view">
-          <div class="section-title">Educación en salud</div>
-          <div class="edu-card">
-            <strong>Tips para la diabetes</strong>
-            <p>Consejos prácticos para el manejo diario de la diabetes.</p>
-            <button onclick="toast('Video educativo reproducido')">Ver video</button>
-          </div>
-          <button onclick="showView('patient')">Volver al panel</button>
-        </div>
-
-        <div id="contact" class="view">
-          <div class="section-title">Contacto / Ayuda</div>
-          <form class="contact-form" onsubmit="event.preventDefault();toast('Mensaje enviado (simulado)')">
-            <input type="text" placeholder="Nombre" required />
-            <input type="email" placeholder="Correo" required />
-            <textarea placeholder="Mensaje" required></textarea>
-            <button type="submit">Enviar</button>
-          </form>
-          <button onclick="showView('home')">Volver</button>
-        </div>
-
-        <div id="toast" class="toast"></div>
-
-        <script>
-          function showView(id){
-            document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
-            var el = document.getElementById(id); if(el) el.classList.add('active');
-          }
-          function toast(msg){
-            var t = document.getElementById('toast');
-            t.textContent = msg;
-            t.classList.add('show');
-            setTimeout(()=>t.classList.remove('show'),2200);
-          }
-          // Inicial: mostrar home
-          showView('home');
-        </script>
-      </body>
-      </html>
-            <div class="imc-bar-fill" id="imc-bar-fill" style="width:0%"></div>
-            <div class="imc-marker" id="imc-marker"></div>
-          </div>
-          <div id="imc-message" class="imc-message">Introduce tus datos para calcular</div>
-        </div>
+        <button type="submit" class="btn primary">Ingresar</button>
+        <button type="button" id="show-register" class="btn highlight">Registrarse</button>
+      </form>
+    </section>
+    
+      <!-- Registro Paciente -->
+      <section class="view hidden" id="register">
+        <h2>Registro Paciente</h2>
+        <form id="register-form">
+          <label>Nombre
+            <input type="text" id="reg-nombre" placeholder="Nombre" required />
+          </label>
+          <label>Apellido
+            <input type="text" id="reg-apellido" placeholder="Apellido" required />
+          </label>
+          <label>Tipo de documento
+            <select id="reg-doc-type" required>
+              <option value="">Seleccionar</option>
+              <option>PPT</option>
+              <option>Cédula de ciudadanía</option>
+              <option>Permiso extranjero</option>
+            </select>
+          </label>
+          <label>Número de documento
+            <input type="text" id="reg-doc-num" placeholder="Número de documento" required />
+          </label>
+          <label>Ciudad de ubicación
+            <input type="text" id="reg-ciudad" placeholder="Ciudad" required />
+          </label>
+          <label>Enfermedad que padece
+            <input type="text" id="reg-enfermedad" placeholder="Enfermedad" required />
+          </label>
+          <label>Número de contacto
+            <input type="text" id="reg-contacto" placeholder="Número de contacto" required />
+          </label>
+          <label>Edad
+            <input type="number" id="reg-edad" placeholder="Edad" min="0" required />
+          </label>
+          <label>Contraseña
+            <input type="password" id="reg-password" placeholder="Contraseña" required />
+          </label>
+          <label>Confirmar contraseña
+            <input type="password" id="reg-password2" placeholder="Confirmar contraseña" required />
+          </label>
+          <button type="submit" class="btn primary">Registrarse</button>
+          <button type="button" id="cancel-register" class="btn secondary">Cancelar</button>
+        </form>
       </section>
 
-      <div class="patient-footer">
-        <button id="edit-profile">Editar perfil</button>
+    <!-- Panel Paciente -->
+    <section class="view hidden" id="patient">
+      <h2>Panel del Paciente</h2>
+      <div class="patient-info">
+        <strong>Hola, María, tu enfermera es Ana Pérez</strong>
+        <div class="quick-actions">
+          <button data-action="call">Videollamada con mi enfermera</button>
+          <button data-action="medication">Recordatorios de medicación</button>
+          <button data-action="chat">Mensajes / Chat</button>
+        </div>
+        <div class="alert">Recuerda medir tu glucosa hoy a las 8 a.m.</div>
+        <div class="msg">Tu enfermera ha revisado tus signos y te felicita por tu control.</div>
+        <button data-action="education">Educación en salud</button>
         <button data-action="logout">Cerrar sesión</button>
       </div>
     </section>
 
-    <!-- Panel Enfermero (estático) -->
+    <!-- Panel Enfermero -->
     <section class="view hidden" id="nurse">
-      <h2 id="nurse-title">Panel del Enfermero</h2>
-      <div class="nurse-grid">
-        <aside class="nurse-col list-col">
-          <div class="list-header">
-            <input id="patient-search" placeholder="Buscar paciente..." />
-            <div class="filters">
-              <button class="filter-btn active" data-filter="all">Todos</button>
-              <button class="filter-btn" data-filter="green">Estables</button>
-              <button class="filter-btn" data-filter="yellow">Observación</button>
-              <button class="filter-btn" data-filter="red">Alerta</button>
-            </div>
-          </div>
-          <div id="patient-list" class="patient-list">
-            <!-- items con data attributes -->
-            <div class="patient-item" data-id="1" data-name="María" data-status="green">
-              <div class="pi-left"><strong>María</strong><small>diabetes</small></div>
-              <div class="pi-right"><span class="status green">Estable</span></div>
-            </div>
-            <div class="patient-item" data-id="2" data-name="Juan" data-status="yellow">
-              <div class="pi-left"><strong>Juan</strong><small>hipertensión</small></div>
-              <div class="pi-right"><span class="status yellow">En observación</span></div>
-            </div>
-            <div class="patient-item" data-id="3" data-name="Ana" data-status="red">
-              <div class="pi-left"><strong>Ana</strong><small>asma</small></div>
-              <div class="pi-right"><span class="status red">Alerta</span></div>
-            </div>
-          </div>
-        </aside>
-
-        <section class="nurse-col detail-col" id="nurse-detail">
-          <div class="detail-card">
-            <h3 id="detail-name">Selecciona un paciente</h3>
-            <div id="detail-vitals" class="vitals">
-              <div class="vitem"><strong>Glucosa</strong><span id="v-glu">--</span></div>
-              <div class="vitem"><strong>Presión</strong><span id="v-bp">--</span></div>
-              <div class="vitem"><strong>Frecuencia</strong><span id="v-hr">--</span></div>
-            </div>
-            <p id="detail-notes">Aquí aparecerán notas y recomendaciones del paciente.</p>
-            <div class="detail-actions">
-              <button class="btn" id="nurse-call">Videollamada</button>
-              <button class="btn" id="nurse-chat">Mensajes / Chat</button>
-              <button class="btn" id="nurse-alert">Agregar alerta</button>
-            </div>
-          </div>
-        </section>
-
-        <aside class="nurse-col stats-col">
-          <div class="stat-card">
-            <h4>Resumen</h4>
-            <p><strong id="count-total">3</strong> pacientes asignados</p>
-            <p><span class="status green inline">2</span> Estables • <span class="status yellow inline">0</span> Observación • <span class="status red inline">1</span> Alerta</p>
-          </div>
-          <div class="schedule-card">
-            <h4>Agenda</h4>
-            <ul>
-              <li>09:00 - Visita a María</li>
-              <li>11:00 - Llamada con Juan</li>
-            </ul>
-          </div>
-        </aside>
-      </div>
+      <h2>Login Enfermero</h2>
+      <form id="nurse-login-form">
+        <label>Correo electrónico
+          <input type="email" id="nurse-email" placeholder="Correo" required />
+        </label>
+        <label>Clave
+          <input type="password" id="nurse-password" placeholder="Clave" required />
+        </label>
+        <button type="submit" class="btn primary">Ingresar</button>
+      </form>
     </section>
 
-    <!-- Educacion -->
+    <!-- Modo Demo -->
+    <section class="view hidden" id="demo">
+      <h2>Modo demostración</h2>
+      <strong>Bienvenido al modo demo. Explora los flujos principales.</strong>
+      <button data-action="demo-patient">Ver panel de paciente</button>
+      <button data-action="demo-nurse">Ver panel de enfermero</button>
+      <button data-action="home">Volver al inicio</button>
+    </section>
+
+    <!-- Educación en salud -->
     <section class="view hidden" id="education">
       <h2>Educación en salud</h2>
       <div class="edu-card">
-        <h3>Cómo lavarse las manos (demostrativo)</h3>
-        <p>Video demostrativo paso a paso para un lavado de manos correcto.</p>
-        <div class="video-embed">
-          <!-- Thumbnail that opens modal player -->
-          <div class="video-thumb" data-video-url="https://www.bing.com/videos/riverview/relatedvideo?q=video+demostrativo+de+como+lavrse+las+manos&&mid=9A60B1892EB2F1B10B4B9A60B1892EB2F1B10B4B&FORM=VAMGZC" data-video-fallback="https://www.bing.com/videos/riverview/relatedvideo?q=video+demostrativo+de+como+lavrse+las+manos&&mid=9A60B1892EB2F1B10B4B9A60B1892EB2F1B10B4B&FORM=VAMGZC">
-            <img src="imagenes/thumb_hands.svg" alt="Miniatura lavado de manos" style="width:100%;height:auto;border-radius:8px;" />
-            <div class="play-overlay">▶</div>
-            <div class="thumb-label">Ver: Cómo lavarse las manos</div>
-          </div>
-          <p class="video-link-fallback">Si el reproductor interno no funciona, ábralo en una nueva pestaña: <a href="https://www.bing.com/videos/riverview/relatedvideo?q=video+demostrativo+de+como+lavrse+las+manos&&mid=9A60B1892EB2F1B10B4B9A60B1892EB2F1B10B4B&FORM=VAMGZC" target="_blank" rel="noopener">Abrir video (Bing)</a></p>
-        </div>
-
-        <hr />
-
-        <h3>Tips para la diabetes</h3>
+        <strong>Tips para la diabetes</strong>
         <p>Consejos prácticos para el manejo diario de la diabetes.</p>
-        <div class="video-embed">
-          <div class="video-thumb" data-video-url="https://www.bing.com/videos/riverview/relatedvideo?q=tips+para+la+diabetes&mid=2438E28DDE8D7BF957B12438E28DDE8D7BF957B1&mmscn=stvo&FORM=VIRE" data-video-fallback="https://www.bing.com/videos/riverview/relatedvideo?q=tips+para+la+diabetes&mid=2438E28DDE8D7BF957B12438E28DDE8D7BF957B1&mmscn=stvo&FORM=VIRE">
-            <img src="imagenes/thumb_diabetes.svg" alt="Miniatura tips diabetes" style="width:100%;height:auto;border-radius:8px;" />
-            <div class="play-overlay">▶</div>
-            <div class="thumb-label">Ver: Tips para la diabetes</div>
-          </div>
-          <p class="video-link-fallback">Si el reproductor interno no funciona, ábralo en una nueva pestaña: <a href="https://www.bing.com/videos/riverview/relatedvideo?q=tips+para+la+diabetes&mid=2438E28DDE8D7BF957B12438E28DDE8D7BF957B1&mmscn=stvo&FORM=VIRE" target="_blank" rel="noopener">Abrir video (Bing)</a></p>
-        </div>
-
-        <div style="margin-top:12px">
-          <button data-action="back-to" data-target="patient">Volver al panel</button>
-        </div>
+        <button data-action="video">Ver video</button>
       </div>
+      <button data-action="back-patient">Volver al panel</button>
     </section>
 
     <!-- Contacto / Ayuda -->
     <section class="view hidden" id="contact">
       <h2>Contacto / Ayuda</h2>
-      <form id="contact-form">
-        <label>Nombre<input type="text" id="c-name"></label>
-        <label>Correo<input type="email" id="c-email"></label>
-        <label>Mensaje<textarea id="c-message"></textarea></label>
-        <div class="form-actions">
-          <button type="submit">Enviar (simulado)</button>
-          <button type="button" data-action="back">Volver</button>
-        </div>
-      </form>
-    </section>
-
-    <!-- Toast / modal -->
-    <div id="toast" class="hidden"></div>
-
-    <!-- Chat widget (demo) -->
-    <div id="chat-widget" class="chat-widget hidden" aria-hidden="true">
-      <div class="chat-header">
-        <strong>Chat con tu enfermera</strong>
-        <button class="chat-close" aria-label="Cerrar chat">✕</button>
-      </div>
-      <div class="chat-messages" id="chat-messages" role="log" aria-live="polite"></div>
-      <form id="chat-form" class="chat-form">
-        <input id="chat-input" type="text" placeholder="Escribe un mensaje..." autocomplete="off" />
+      <form class="contact-form">
+        <input type="text" placeholder="Nombre" required />
+        <input type="email" placeholder="Correo" required />
+        <textarea placeholder="Mensaje" required></textarea>
         <button type="submit">Enviar</button>
       </form>
-    </div>
+      <button data-action="home">Volver</button>
+    </section>
 
-    <!-- Modal video player -->
-    <div id="video-modal" class="video-modal hidden" aria-hidden="true">
-      <div class="video-modal-backdrop"></div>
-      <div class="video-modal-content">
-        <button class="video-modal-close" aria-label="Cerrar video">✕</button>
-        <div class="video-frame" id="video-frame"> <!-- iframe injected here --> </div>
-        <p class="video-fallback" id="video-fallback" style="display:none">Si no se reproduce, <a id="video-open-link" href="#" target="_blank" rel="noopener">abrir en nueva pestaña</a>.</p>
-      </div>
-    </div>
-
-    <!-- Avatar modal -->
-    <div id="avatar-modal" class="video-modal hidden" aria-hidden="true">
-      <div class="video-modal-backdrop"></div>
-      <div class="video-modal-content">
-        <button class="video-modal-close" aria-label="Cerrar">✕</button>
-        <div class="video-frame" id="avatar-frame"> <!-- img injected here --> </div>
-      </div>
-    </div>
-
+    <!-- Toast -->
+    <div id="toast" class="toast"></div>
   </main>
 
   <script src="demo.js"></script>

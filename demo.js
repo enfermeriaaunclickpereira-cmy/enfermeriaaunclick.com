@@ -26,46 +26,77 @@ $all('button[data-action="login"]').forEach(btn=>{
   btn.addEventListener('click', ()=>{
     const role = btn.dataset.role;
     state.role = role;
-    $('#login-title').textContent = role === 'enfermero' ? 'Login Enfermero' : 'Registro / Login Paciente';
-    // Prepare form fields depending on role
-    if(role === 'enfermero'){
-      // hide and disable patient-only fields to avoid browser validation errors
-      const patientSelectors = ['#name','#dob','#phone','#meds','#allergies','#em-name','#em-phone','#address','#condition','#other-condition','#other-input','#contact-pref','#lang','.avatar-label','.consent','#password2'];
-      patientSelectors.forEach(sel=>{
-        const el = document.querySelector(sel);
-        if(!el) return;
-        // hide label or element
-        if(el.closest && el.closest('label')) el.closest('label').classList.add('hidden'); else el.classList.add('hidden');
-        // disable actual input(s) inside (if any) so form validation ignores them
-        const inputs = el.querySelectorAll ? Array.from(el.querySelectorAll('input,select,textarea')) : [];
-        if(inputs.length === 0){ if(['INPUT','SELECT','TEXTAREA'].includes(el.tagName)) inputs.push(el); }
-        inputs.forEach(i=>{ try{ i.disabled = true; i.removeAttribute('required'); }catch(e){} });
-      });
-      // ensure email/password enabled and required for enfermero
-      const emailEl = $('#email'); const passEl = $('#password');
-      if(emailEl){ emailEl.disabled = false; emailEl.required = true; }
-      if(passEl){ passEl.disabled = false; passEl.required = true; }
+    if(role === 'enfermero') {
+      show('nurse');
     } else {
-      // show all fields for paciente
-      const patientSelectors = ['#name','#dob','#phone','#meds','#allergies','#em-name','#em-phone','#address','#condition','#other-condition','#other-input','#contact-pref','#lang','.avatar-label','.consent','#password2'];
-      patientSelectors.forEach(sel=>{
-        const el = document.querySelector(sel);
-        if(!el) return;
-        if(el.closest && el.closest('label')) el.closest('label').classList.remove('hidden'); else el.classList.remove('hidden');
-        const inputs = el.querySelectorAll ? Array.from(el.querySelectorAll('input,select,textarea')) : [];
-        if(inputs.length === 0){ if(['INPUT','SELECT','TEXTAREA'].includes(el.tagName)) inputs.push(el); }
-        inputs.forEach(i=>{ try{ i.disabled = false; }catch(e){} });
-      });
-      // ensure proper required flags for paciente
-      const emailEl = $('#email'); const passEl = $('#password'); const pass2El = $('#password2'); const consentEl = $('#consent');
-      if(emailEl) emailEl.required = true;
-      if(passEl) passEl.required = true;
-      if(pass2El) pass2El.required = true;
-      if(consentEl) consentEl.required = true;
+      show('login');
     }
-    show('login');
-  })
+  });
 });
+
+// Show register form from login
+const showRegisterBtn = document.getElementById('show-register');
+if(showRegisterBtn){
+  showRegisterBtn.addEventListener('click', ()=>{
+    show('register');
+  });
+}
+
+// Cancel register button
+const cancelRegisterBtn = document.getElementById('cancel-register');
+if(cancelRegisterBtn){
+  cancelRegisterBtn.addEventListener('click', ()=>{
+    show('login');
+  });
+}
+
+// Register patient logic
+const registerForm = document.getElementById('register-form');
+if(registerForm){
+  registerForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    // Collect data
+    const paciente = {
+      nombre: document.getElementById('reg-nombre').value.trim(),
+      apellido: document.getElementById('reg-apellido').value.trim(),
+      tipoDocumento: document.getElementById('reg-doc-type').value,
+      numeroDocumento: document.getElementById('reg-doc-num').value.trim(),
+      ciudad: document.getElementById('reg-ciudad').value.trim(),
+      enfermedad: document.getElementById('reg-enfermedad').value.trim(),
+      contacto: document.getElementById('reg-contacto').value.trim(),
+      edad: document.getElementById('reg-edad').value.trim(),
+      password: document.getElementById('reg-password').value,
+      password2: document.getElementById('reg-password2').value
+    };
+    // Validations
+    if(!paciente.nombre || !paciente.apellido || !paciente.tipoDocumento || !paciente.numeroDocumento || !paciente.ciudad || !paciente.enfermedad || !paciente.contacto || !paciente.edad || !paciente.password || !paciente.password2){
+      toast('Por favor complete todos los campos');
+      return;
+    }
+    if(paciente.password !== paciente.password2){
+      toast('Las contraseñas no coinciden');
+      return;
+    }
+    // Save to localStorage (array of patients)
+    let pacientes = [];
+    try {
+      pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
+    } catch(e) {}
+    pacientes.push({
+      nombre: paciente.nombre,
+      apellido: paciente.apellido,
+      tipoDocumento: paciente.tipoDocumento,
+      numeroDocumento: paciente.numeroDocumento,
+      ciudad: paciente.ciudad,
+      enfermedad: paciente.enfermedad,
+      contacto: paciente.contacto,
+      edad: paciente.edad
+    });
+    localStorage.setItem('pacientes', JSON.stringify(pacientes));
+    toast('Registro exitoso');
+    show('login');
+  });
+}
 
 $all('button[data-action="guest"]').forEach(btn=>btn.addEventListener('click', ()=>{
   // demo guest -> patient view with sample name
@@ -117,17 +148,24 @@ function setupNurse(username){
   try{
     // show name in header
     const title = $('#nurse-title'); if(title) title.textContent = `Panel del Enfermero — ${username}`;
-    // populate stats: use existing patient items to count
-    const items = Array.from($all('.patient-item'));
-    $('#count-total').textContent = items.length;
-    const red = items.filter(i=>i.dataset.status==='red').length;
-    const yellow = items.filter(i=>i.dataset.status==='yellow').length;
-    const green = items.filter(i=>i.dataset.status==='green').length;
-    // update inline counts
-    const statEl = $('#count-total'); if(statEl) statEl.textContent = items.length;
-    const statText = document.querySelector('.stat-card p:nth-child(2)'); if(statText) statText.innerHTML = `<span class="status green inline">${green}</span> Estables • <span class="status yellow inline">${yellow}</span> Observación • <span class="status red inline">${red}</span> Alerta`;
-    // populate schedule (basic demo)
-    const sched = document.querySelector('.schedule-card ul'); if(sched){ sched.innerHTML = `<li>09:00 - Visita a María</li><li>11:00 - Llamada con Juan</li><li>15:00 - Revisión de Ana</li>`; }
+    // populate nurse list with registered patients
+    const nurseList = document.querySelector('.nurse-list');
+    if(nurseList){
+      nurseList.innerHTML = '';
+      let pacientes = [];
+      try { pacientes = JSON.parse(localStorage.getItem('pacientes')) || []; } catch(e){}
+      if(pacientes.length === 0){
+        nurseList.innerHTML = '<div>No hay pacientes registrados.</div>';
+      } else {
+        pacientes.forEach(p => {
+          nurseList.innerHTML += `<div class="nurse-patient">
+            <strong>${p.nombre} ${p.apellido}</strong><br>
+            <span>Edad: ${p.edad} | Contacto: ${p.contacto}</span><br>
+            <span>Ciudad: ${p.ciudad} | Enfermedad: ${p.enfermedad}</span>
+          </div>`;
+        });
+      }
+    }
     // clear nurse detail area
     const dn = $('#detail-name'); if(dn) dn.textContent = 'Selecciona un paciente';
     const notes = $('#detail-notes'); if(notes) notes.textContent = 'Aquí aparecerán notas y recomendaciones del paciente.';
