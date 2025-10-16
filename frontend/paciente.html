@@ -2,101 +2,59 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Paciente | Enfermera a un CLICK</title>
-
-  <!-- Estilos del dashboard oscuro -->
-  <link rel="stylesheet" href="css/styles.css" />
-  <!-- Fuente (si la usas en tu CSS) -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
-  <!-- Chart.js para mini gráfica del paciente -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel del Paciente</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
+<body class="dashboard">
+  <header>
+    <h2>👋 Hola, María</h2>
+    <p>Tu enfermera asignada: <strong>Ana Pérez</strong></p>
+  </header>
 
-<!-- Modal de videollamada + recordatorios -->
-<div id="videollamadaModal" class="modal hidden">
-  <div class="modal-content">
-    <h2>📹 Tu enfermera se conectará contigo en breve</h2>
-    <p>Por favor, mantén tu dispositivo encendido. Mientras esperas, revisa tus recordatorios de medicación:</p>
-    <ul id="listaRecordatorios" class="recordatorios"></ul>
-    <button class="btn-primary" onclick="cerrarModal()">Aceptar</button>
-  </div>
-</div>
-
-
-<body class="dark-dashboard">
-
-  <!-- Barra superior -->
-  <nav class="navbar">
-    <div>
-      <strong id="saludo">Hola, Paciente 👋</strong>
+  <section class="cards">
+    <div class="card" onclick="alerta()">
+      <h3>💬 Chat con mi enfermera</h3>
+      <p>Enviar mensaje o revisar seguimiento</p>
     </div>
-    <div>
-      <button class="btn-primary" onclick="location.href='contacto.html'">Soporte</button>
-      <button class="btn-secondary" onclick="cerrarSesion()">Cerrar sesión</button>
+
+    <div class="card" onclick="videollamada()">
+      <h3>📞 Videollamada</h3>
+      <p>Conectarte con tu enfermera</p>
     </div>
-  </nav>
 
-  <main class="dashboard">
-    <!-- Acciones rápidas -->
-    <section class="cards">
-      <div class="card action" onclick="solicitarVideollamada()">
-        <h3>📹 Videollamada</h3>
-        <p>Conecta con tu enfermera en tiempo real.</p>
-      </div>
-      <div class="card action" onclick="recordatorioMedicacion()">
-        <h3>💊 Recordatorios</h3>
-        <p>Consulta y recibe alertas de medicación.</p>
-      </div>
-      <div class="card action" onclick="mensajeEnfermera()">
-        <h3>💬 Mensajes</h3>
-        <p>Comunícate con tu enfermera asignada.</p>
-      </div>
-      <div class="card action" onclick="recomendacionSalud()">
-        <h3>💡 Recomendaciones</h3>
-        <p>Consejos diarios para tu bienestar.</p>
-      </div>
-    </section>
+    <div class="card">
+      <h3>💊 Recordatorios</h3>
+      <p>Losartán 50mg — 8:00 a.m.</p>
+      <p>Metformina 500mg — 12:00 p.m.</p>
+    </div>
 
-    <!-- Mi estado (datos del paciente) -->
-    <section class="cards">
-      <div class="card">
-        <h3>🧑‍⚕️ Mis datos</h3>
-        <table style="width:100%">
-          <tbody>
-            <tr><td><strong>Nombre</strong></td><td id="pacienteNombre">-</td></tr>
-            <tr><td><strong>Edad</strong></td><td id="pacienteEdad">-</td></tr>
-            <tr><td><strong>Enfermedad</strong></td><td id="pacienteEnfermedad">-</td></tr>
-            <tr><td><strong>Presión</strong></td><td id="pacientePresion">-</td></tr>
-            <tr><td><strong>Ritmo</strong></td><td id="pacienteRitmo">-</td></tr>
-            <tr><td><strong>Estado</strong></td><td id="pacienteEstado">-</td></tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="card">
+      <h3>⚠️ Recomendación del día</h3>
+      <p>Recuerda hidratarte y medir tu glucosa antes del desayuno.</p>
+    </div>
+  </section>
 
-      <div class="card">
-        <h3>📈 Ritmo cardiaco</h3>
-        <canvas id="miRitmoChart" height="150"></canvas>
-      </div>
-    </section>
+  <footer>
+    <a href="login.html">Cerrar sesión</a>
+  </footer>
 
-    <!-- Alertas del día -->
-    <section class="chart-section">
-      <h3>🔔 Alertas y seguimiento</h3>
-      <ul id="alertas-list"></ul>
-    </section>
-  </main>
-
-  <!-- Lógica de la app (usa API_URL=http://localhost:4000/api o tu URL en producción) -->
-  <script src="js/app.js"></script>
   <script>
-    // Inicializaciones específicas de la página del paciente
-    (async function initPaciente() {
-      if (typeof initPacientePage === "function") {
-        // Si en app.js defines initPacientePage(), la llamamos para poblar datos y gráfica
-        await initPacientePage();
-      }
-    })();
+    function videollamada() {
+      const overlay = document.createElement("div");
+      overlay.classList.add("overlay");
+      overlay.innerHTML = `
+        <div class="popup">
+          <h2>📞 Conectando con tu enfermera...</h2>
+          <p>Tu enfermera se conectará en breve contigo ❤️</p>
+          <button onclick="this.parentNode.parentNode.remove()">Cerrar</button>
+        </div>`;
+      document.body.appendChild(overlay);
+    }
+    function alerta(){
+      alert("Tu enfermera ha revisado tus signos vitales. ¡Excelente progreso!");
+    }
   </script>
 </body>
 </html>

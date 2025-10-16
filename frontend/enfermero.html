@@ -2,46 +2,42 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel del Enfermero</title>
-  <link rel="stylesheet" href="css/styles.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body class="dark-dashboard">
-  <nav class="navbar">
-    <h2>Panel del Enfermero 👩‍⚕️</h2>
-    <button onclick="cerrarSesion()">Cerrar sesión</button>
-  </nav>
+<body class="dashboard">
+  <header>
+    <h2>👩‍⚕️ Bienvenido, Enfermero Juan</h2>
+    <p>Panel de gestión de pacientes</p>
+  </header>
 
-  <main class="dashboard">
-    <section class="cards">
-      <div class="card">
-        <h3>Pacientes activos</h3>
-        <p id="countPacientes">0</p>
-      </div>
-      <div class="card">
-        <h3>Videollamadas</h3>
-        <p id="countLlamadas">0</p>
-      </div>
-    </section>
+  <section class="cards">
+    <div class="card wide">
+      <h3>👨‍🦳 Lista de Pacientes</h3>
+      <ul>
+        <li>María López — Diabetes tipo II — <span class="estado estable">Estable</span></li>
+        <li>José Pérez — Hipertensión — <span class="estado observacion">En observación</span></li>
+        <li>Carmen Ruiz — Asma — <span class="estado alerta">Alerta</span></li>
+      </ul>
+    </div>
 
-    <section class="chart-section">
-      <canvas id="ritmoChart"></canvas>
-    </section>
+    <div class="card">
+      <h3>📞 Videollamadas pendientes</h3>
+      <ul>
+        <li>María López — 09:30 a.m.</li>
+      </ul>
+    </div>
 
-    <section class="tabla">
-      <h3>Lista de Pacientes</h3>
-      <table id="tablaPacientes">
-        <thead>
-          <tr>
-            <th>Nombre</th><th>Edad</th><th>Enfermedad</th><th>Presión</th><th>Ritmo</th><th>Estado</th>
-          </tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-    </section>
-  </main>
+    <div class="card">
+      <h3>💊 Recordatorios</h3>
+      <p>Revisar administración de medicamentos para José Pérez</p>
+    </div>
+  </section>
 
-  <script src="js/app.js"></script>
+  <footer>
+    <a href="login.html">Cerrar sesión</a>
+  </footer>
 </body>
 </html>
-1
