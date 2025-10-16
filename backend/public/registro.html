@@ -1,0 +1,43 @@
+<!-- Registro Paciente -->
+      <section class="view hidden" id="register">
+        <h2>Registro Paciente</h2>
+        <form id="register-form">
+          <label>Nombre
+            <input type="text" id="reg-nombre" placeholder="Nombre" required />
+          </label>
+          <label>Apellido
+            <input type="text" id="reg-apellido" placeholder="Apellido" required />
+          </label>
+          <label>Tipo de documento
+            <select id="reg-doc-type" required>
+              <option value="">Seleccionar</option>
+              <option>PPT</option>
+              <option>Cédula de ciudadanía</option>
+              <option>Permiso extranjero</option>
+            </select>
+          </label>
+          <label>Número de documento
+            <input type="text" id="reg-doc-num" placeholder="Número de documento" required />
+          </label>
+          <label>Ciudad de ubicación
+            <input type="text" id="reg-ciudad" placeholder="Ciudad" required />
+          </label>
+          <label>Enfermedad que padece
+            <input type="text" id="reg-enfermedad" placeholder="Enfermedad" required />
+          </label>
+          <label>Número de contacto
+            <input type="text" id="reg-contacto" placeholder="Número de contacto" required />
+          </label>
+          <label>Edad
+            <input type="number" id="reg-edad" placeholder="Edad" min="0" required />
+          </label>
+          <label>Contraseña
+            <input type="password" id="reg-password" placeholder="Contraseña" required />
+          </label>
+          <label>Confirmar contraseña
+            <input type="password" id="reg-password2" placeholder="Confirmar contraseña" required />
+          </label>
+          <button type="submit" class="btn primary">Registrarse</button>
+          <button type="button" id="cancel-register" class="btn secondary">Cancelar</button>
+        </form>
+      </section>
