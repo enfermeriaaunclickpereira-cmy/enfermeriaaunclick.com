@@ -1,121 +1,21 @@
-const API_URL = "https://enfermeriaaunclick-cem.onrender.com/api";
+// === Ejemplo básico de consumo de API ===
 
-
-async function login() {
-  const rol = document.getElementById("rol").value;
-  const nombre = document.getElementById("nombre").value;
-  const edad = document.getElementById("edad").value;
-  const enfermedad = document.getElementById("enfermedad").value;
-
-  if (!rol || !nombre) {
-    alert("Completa los campos requeridos");
-    return;
-  }
-
-  if (rol === "paciente") {
-    await fetch(`${API_URL}/pacientes`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre, edad, enfermedad }),
-    });
-    localStorage.setItem("usuario", nombre);
-    location.href = "paciente.html";
-  } else if (rol === "enfermero") {
-    location.href = "enfermero.html";
-  }
+// Mostrar recordatorios
+async function mostrarRecordatorios() {
+  const res = await fetch('/api/recordatorios');
+  const data = await res.json();
+  console.log('📋 Recordatorios:', data);
 }
 
-async function cargarDashboard() {
-  const pacientes = await fetch(`${API_URL}/pacientes`).then(r => r.json());
-  const llamadas = await fetch(`${API_URL}/videollamadas`).then(r => r.json());
-
-  document.getElementById("countPacientes").textContent = pacientes.length;
-  document.getElementById("countLlamadas").textContent = llamadas.length;
-
-  const tbody = document.querySelector("#tablaPacientes tbody");
-  tbody.innerHTML = "";
-  pacientes.forEach(p => {
-    tbody.innerHTML += `
-      <tr>
-        <td>${p.nombre}</td><td>${p.edad}</td><td>${p.enfermedad}</td>
-        <td>${p.presion}</td><td>${p.ritmo}</td><td>${p.estado}</td>
-      </tr>`;
+// Registrar videollamada
+async function nuevaVideollamada() {
+  await fetch('/api/videollamadas', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ paciente: 'Juan Pérez' })
   });
-
-  const ctx = document.getElementById("ritmoChart");
-  new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: pacientes.map(p => p.nombre),
-      datasets: [{
-        label: "Ritmo Cardiaco",
-        data: pacientes.map(p => p.ritmo),
-        borderColor: "#00e0c0",
-        backgroundColor: "rgba(0,224,192,0.2)",
-        fill: true,
-        tension: 0.3
-      }]
-    },
-    options: { scales: { y: { beginAtZero: false } } }
-  });
+  console.log('📞 Videollamada registrada');
 }
 
-function cerrarSesion() {
-  localStorage.clear();
-  location.href = "login.html";
-}
-
-if (location.pathname.endsWith("enfermero.html")) {
-  cargarDashboard();
-}
-// Mostrar modal de videollamada
-function solicitarVideollamada() {
-  fetch(`${API_URL}/videollamadas`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ paciente: localStorage.getItem("nombrePaciente") })
-  })
-  .then(res => res.json())
-  .then(data => {
-    console.log("Videollamada creada:", data);
-    abrirModal();
-  })
-  .catch(err => console.error("Error al crear videollamada:", err));
-}
-
-function abrirModal() {
-  document.getElementById("videollamadaModal").classList.remove("hidden");
-}
-
-function cerrarModal() {
-  document.getElementById("videollamadaModal").classList.add("hidden");
-}
-// Cargar recordatorios desde el backend
-async function cargarRecordatorios() {
-  try {
-    const res = await fetch(`${API_URL}/recordatorios`);
-    const recordatorios = await res.json();
-
-    const lista = document.getElementById("listaRecordatorios");
-    lista.innerHTML = "";
-
-    if (recordatorios.length === 0) {
-      lista.innerHTML = "<li>No hay recordatorios disponibles.</li>";
-      return;
-    }
-
-    recordatorios.forEach(r => {
-      const li = document.createElement("li");
-      li.innerHTML = `<strong>${r.medicamento}</strong> <span>${r.hora}</span>`;
-      lista.appendChild(li);
-    });
-  } catch (err) {
-    console.error("Error al cargar recordatorios:", err);
-  }
-}
-
-// Mostrar modal y recordatorios
-function abrirModal() {
-  cargarRecordatorios();
-  document.getElementById("videollamadaModal").classList.remove("hidden");
-}
+// Ejecutar al cargar
+mostrarRecordatorios();

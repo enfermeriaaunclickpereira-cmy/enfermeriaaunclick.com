@@ -29,7 +29,7 @@ function writeDB(data) {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
 }
 
-// --- SERVIR FRONTEND (Archivos estáticos) ---
+// --- SERVIR FRONTEND ---
 app.use(express.static(path.join(__dirname, "public")));
 
 // --- RUTA PRINCIPAL ---
