@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel del Enfermero</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="panel-enfermero">
+  <nav class="navbar">
+    <h2>👩‍⚕️ Panel del Enfermero</h2>
+    <button class="btn-secondary" onclick="cerrarSesion()">Cerrar Sesión</button>
+  </nav>
+
+  <div class="tabs">
+    <button class="tab active" onclick="mostrarTab('pacientes', this)">Pacientes</button>
+    <button class="tab" onclick="mostrarTab('estados', this)">Estados</button>
+    <button class="tab" onclick="mostrarTab('videollamadas', this)">Videollamadas</button>
+  </div>
+
+  <section id="pacientes" class="tab-content active">
+    <h3>👥 Pacientes Registrados</h3>
+    <table id="tablaPacientes">
+      <thead><tr><th>Nombre</th><th>Edad</th><th>Enfermedad</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section id="estados" class="tab-content">
+    <h3>📋 Estado y Medicamentos</h3>
+    <table id="tablaEstados">
+      <thead><tr><th>Paciente</th><th>Estado</th><th>Medicamentos</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <section id="videollamadas" class="tab-content">
+    <h3>📞 Videollamadas Pendientes</h3>
+    <ul id="listaLlamadas"></ul>
+  </section>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

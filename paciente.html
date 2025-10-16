@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel del Paciente</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="panel-paciente">
+  <nav class="navbar">
+    <div class="nav-left">
+      <img src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" class="nav-icon">
+      <span id="saludo"></span>
+    </div>
+    <button class="btn-secondary" onclick="location.href='contacto.html'">Soporte</button>
+  </nav>
+
+  <main class="panel">
+    <section class="card-grid">
+      <div class="card action" onclick="solicitarVideollamada()">
+        <img src="https://cdn-icons-png.flaticon.com/512/3523/3523063.png"><h4>Videollamada</h4>
+      </div>
+      <div class="card action" onclick="recordatorioMedicacion()">
+        <img src="https://cdn-icons-png.flaticon.com/512/2966/2966327.png"><h4>Recordatorios</h4>
+      </div>
+      <div class="card action" onclick="mensajeEnfermera()">
+        <img src="https://cdn-icons-png.flaticon.com/512/893/893292.png"><h4>Mensajes</h4>
+      </div>
+      <div class="card action" onclick="recomendacionSalud()">
+        <img src="https://cdn-icons-png.flaticon.com/512/1053/1053210.png"><h4>Recomendaciones</h4>
+      </div>
+    </section>
+
+    <section class="alert-section">
+      <h3>🔔 Alertas y Seguimiento</h3>
+      <ul id="alertas"></ul>
+    </section>
+  </main>
+  <script src="js/app.js"></script>
+</body>
+</html>
