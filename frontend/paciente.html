@@ -12,6 +12,16 @@
   <!-- Chart.js para mini gráfica del paciente -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
+
+<!-- Modal de videollamada -->
+<div id="videollamadaModal" class="modal hidden">
+  <div class="modal-content">
+    <h2>📹 Tu enfermera se conectará contigo en breve</h2>
+    <p>Por favor, mantén tu dispositivo encendido y estable. Mientras tanto, revisa tus recordatorios de medicación.</p>
+    <button class="btn-primary" onclick="cerrarModal()">Aceptar</button>
+  </div>
+</div>
+
 <body class="dark-dashboard">
 
   <!-- Barra superior -->

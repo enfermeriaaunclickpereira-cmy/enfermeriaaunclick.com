@@ -67,3 +67,25 @@ function cerrarSesion() {
 if (location.pathname.endsWith("enfermero.html")) {
   cargarDashboard();
 }
+// Mostrar modal de videollamada
+function solicitarVideollamada() {
+  fetch(`${API_URL}/videollamadas`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ paciente: localStorage.getItem("nombrePaciente") })
+  })
+  .then(res => res.json())
+  .then(data => {
+    console.log("Videollamada creada:", data);
+    abrirModal();
+  })
+  .catch(err => console.error("Error al crear videollamada:", err));
+}
+
+function abrirModal() {
+  document.getElementById("videollamadaModal").classList.remove("hidden");
+}
+
+function cerrarModal() {
+  document.getElementById("videollamadaModal").classList.add("hidden");
+}

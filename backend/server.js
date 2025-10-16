@@ -65,3 +65,10 @@ const PORT = process.env.PORT || 4000;
 app.listen(PORT, () => {
   console.log(`✅ Servidor backend corriendo en puerto ${PORT}`);
 });
+
+// GET recordatorios de medicación
+app.get("/api/recordatorios", (req, res) => {
+  const db = readDB();
+  res.json(db.recordatorios || []);
+});
+
