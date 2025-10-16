@@ -41,133 +41,142 @@
 
     <!-- Registro / Login simulado (ampliado) -->
     <section class="view hidden" id="login">
-      <h2 id="login-title">Registro / Login Paciente</h2>
-      <form id="login-form" enctype="multipart/form-data">
-        <div class="two-col">
-          <label>Nombre completo<input type="text" id="name" placeholder="María Pérez" required></label>
-          <label>Fecha de nacimiento<input type="date" id="dob" required></label>
-        </div>
-        <div class="two-col">
-          <label>Correo<input type="email" id="email" placeholder="maria@mail.com" required></label>
-          <label>Teléfono (móvil)<input type="tel" id="phone" placeholder="+56 9 1234 5678"></label>
-        </div>
-        <div class="two-col">
-          <label>Contraseña<input type="password" id="password" required></label>
-          <label>Confirmar contraseña<input type="password" id="password2" required></label>
-        </div>
 
-  <!-- Captcha removed per request (login enfermero ahora solo usuario/contraseña) -->
-
-        <label>Enfermedad
-          <select id="condition">
-            <option>Diabetes</option>
-            <option>Hipertensión</option>
-            <option>Asma</option>
-            <option>Epoc</option>
-            <option>Otra</option>
-          </select>
-        </label>
-        <label id="other-condition" class="hidden">Especifique
-          <input type="text" id="other-input" placeholder="Especifique la condición">
-        </label>
-
-        <label>Medicaciones actuales<textarea id="meds" placeholder="Ej: Metformina 500mg, Insulina..." rows="2"></textarea></label>
-        <label>Alergias<textarea id="allergies" placeholder="Ej: Penicilina, Alergia a látex" rows="2"></textarea></label>
-
-        <div class="two-col">
-          <label>Contacto de emergencia - Nombre<input type="text" id="em-name" placeholder="Juan Pérez"></label>
-          <label>Contacto de emergencia - Teléfono<input type="tel" id="em-phone" placeholder="+56 9 8765 4321"></label>
-        </div>
-
-        <label>Dirección (opcional)<input type="text" id="address" placeholder="Calle, número, ciudad"></label>
-
-        <div class="two-col">
-          <label>Preferencia de contacto
-            <select id="contact-pref">
-              <option>Correo electrónico</option>
-              <option>Teléfono</option>
-              <option>WhatsApp</option>
-            </select>
-          </label>
-          <label>Idioma preferido
-            <select id="lang">
-              <option>Español</option>
-              <option>Inglés</option>
-            </select>
-          </label>
-        </div>
-
-        <label class="avatar-label">Foto de perfil (opcional)
-          <input type="file" id="avatar" accept="image/*">
-          <div id="avatar-preview" class="avatar-preview"></div>
-        </label>
-
-        <label class="consent"><input type="checkbox" id="consent" required> Acepto el uso de datos para esta demo (sin envío a servidor)</h2>
-
-        <div class="form-actions">
-          <button type="submit">Guardar y continuar</button>
-          <button type="button" id="save-demo">Guardar como demo (local)</button>
-          <button type="button" id="load-demo">Cargar datos de demo</button>
-          <button type="button" data-action="back">Volver</button>
-        </div>
-      </form>
-    </section>
-
-    <!-- Panel Paciente -->
-    <section class="view hidden" id="patient">
-      <div class="panel-header">
-        <div class="patient-meta">
-          <div id="patient-avatar" class="patient-avatar" aria-hidden="true"></div>
-          <div class="patient-info-text">
-            <h2 id="patient-greet">Hola, Paciente</h2>
-            <div id="patient-imc-summary" class="patient-imc-summary" aria-live="polite"></div>
+      <!DOCTYPE html>
+      <html lang="es">
+      <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width,initial-scale=1">
+        <title>Enfermera a un CLICK - Demo Feria</title>
+        <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+        <style>
+          body { font-family: 'Poppins', Arial, sans-serif; background: #f6fbff; color: #234; margin:0; }
+          .hero { background: linear-gradient(90deg,#e3f6ff 60%,#d0f5e8 100%); padding:2rem 0; text-align:center; }
+          .hero-logo { width:80px; vertical-align:middle; margin-bottom:1rem; }
+          h1 { font-size:2.2rem; margin:0.5rem 0; }
+          .lead { font-size:1.1rem; color:#2a7; margin-bottom:0.5rem; }
+          .main-btns button { font-size:1.1rem; margin:0.5rem; padding:0.8em 2em; border-radius:8px; border:none; background:#4ecdc4; color:#fff; cursor:pointer; }
+          .main-btns button:hover { background:#38b2ac; }
+          .view { display:none; max-width:420px; margin:2rem auto; background:#fff; border-radius:12px; box-shadow:0 2px 12px #0001; padding:2rem; }
+          .view.active { display:block; }
+          .section-title { font-size:1.3rem; margin-bottom:1rem; color:#2a7; }
+          .quick-actions { display:flex; flex-wrap:wrap; gap:1rem; margin:1rem 0; }
+          .quick-actions button { flex:1; min-width:120px; background:#e3f6ff; color:#234; border:1px solid #4ecdc4; border-radius:8px; padding:0.7em; font-size:1rem; cursor:pointer; }
+          .quick-actions button:hover { background:#d0f5e8; }
+          .alert, .msg { background:#fffbe6; border-left:4px solid #f7b731; padding:0.7em; margin:1em 0; border-radius:6px; }
+          .msg { border-color:#38b2ac; }
+          .nurse-list { margin:1em 0; }
+          .nurse-patient { padding:0.5em 0.7em; border-radius:6px; margin-bottom:0.5em; background:#e3f6ff; display:flex; align-items:center; justify-content:space-between; }
+          .status { font-size:0.9em; padding:0.2em 0.7em; border-radius:12px; }
+          .status.green { background:#d0f5e8; color:#2a7; }
+          .status.yellow { background:#fffbe6; color:#f7b731; }
+          .status.red { background:#ffe3e3; color:#e74c3c; }
+          .edu-card { background:#e3f6ff; border-radius:8px; padding:1em; margin:1em 0; }
+          .contact-form input, .contact-form textarea { width:100%; margin-bottom:0.7em; padding:0.6em; border-radius:6px; border:1px solid #cce; font-size:1em; }
+          .contact-form button { background:#4ecdc4; color:#fff; border:none; border-radius:8px; padding:0.7em 2em; font-size:1em; cursor:pointer; }
+          .contact-form button:hover { background:#38b2ac; }
+          .toast { position:fixed; bottom:2rem; left:50%; transform:translateX(-50%); background:#4ecdc4; color:#fff; padding:1em 2em; border-radius:8px; box-shadow:0 2px 8px #0002; display:none; z-index:99; }
+          .toast.show { display:block; }
+        </style>
+      </head>
+      <body>
+        <div class="hero">
+        <img src="imagenes/logo.png" alt="Logo Enfermera a un CLICK" class="hero-logo" style="width:140px;max-width:90vw;margin-bottom:1rem;border-radius:16px;box-shadow:0 2px 12px #0002;" onerror="this.src='imagenes/logo.jpg'" />
+          <h1>Enfermera a un CLICK</h1>
+          <div class="lead">Prevención, confianza y cuidado en un solo click</div>
+          <div class="main-btns">
+            <button onclick="showView('login')">Paciente</button>
+            <button onclick="showView('nurse')">Enfermero</button>
+            <button onclick="showView('demo')">Invitado (demo)</button>
           </div>
         </div>
-        <div class="quick-actions">
-          <button data-action="video">Videollamada con mi enfermera</button>
-          <button data-action="reminder">Recordatorios de medicación</button>
-          <button data-action="chat">Mensajes / Chat</button>
+
+        <div id="login" class="view">
+          <div class="section-title">Registro / Login (simulado)</div>
+          <form onsubmit="event.preventDefault();showView('patient')">
+            <input type="text" placeholder="Nombre" required />
+            <input type="email" placeholder="Correo" required />
+            <input type="password" placeholder="Contraseña" required />
+            <select required><option>Diabetes</option><option>Hipertensión</option><option>Otra</option></select>
+            <button type="submit">Ingresar</button>
+          </form>
         </div>
-      </div>
 
-      <div class="cards">
-        <article class="card alert">
-          <h3>Alerta</h3>
-          <p id="alert-text">Recuerda medir tu glucosa hoy a las 8 a.m.</p>
-        </article>
-
-        <article class="card message">
-          <h3>Mensaje nuevo</h3>
-          <p id="message-text">Tu enfermera ha revisado tus signos y te felicita por tu control.</p>
-        </article>
-
-        <article class="card education">
-          <h3>Educación en salud</h3>
-          <p>Video corto: Cómo medir la glucosa correctamente.</p>
-          <button data-action="view-education">Ver más contenido</button>
-        </article>
-        <article class="card meds-card">
-          <h3>Medicaciones actuales</h3>
-          <p id="patient-meds">No hay medicaciones registradas.</p>
-        </article>
-      </div>
-
-      <!-- IMC / BMI Calculator -->
-      <section class="card imc-card">
-        <h3>Calculadora IMC (Índice de Masa Corporal)</h3>
-        <div class="imc-grid">
-          <label>Peso (kg)<input type="number" id="imc-weight" min="20" max="300" step="0.1" placeholder="70"></label>
-          <label>Estatura (cm)<input type="number" id="imc-height" min="80" max="250" step="0.1" placeholder="170"></label>
+        <div id="patient" class="view">
+          <div class="section-title">Panel del Paciente</div>
+          <div><strong>Hola, María, tu enfermera es Ana Pérez</strong></div>
+          <div class="quick-actions">
+            <button onclick="toast('Su enfermera se conectará en 5 minutos')">Videollamada con mi enfermera</button>
+            <button onclick="toast('Recordatorio: Tomar medicación a las 8:00 AM')">Recordatorios de medicación</button>
+            <button onclick="toast('Chat abierto con tu enfermera')">Mensajes / Chat</button>
+          </div>
+          <div class="alert">Recuerda medir tu glucosa hoy a las 8 a.m.</div>
+          <div class="msg">Tu enfermera ha revisado tus signos y te felicita por tu control.</div>
+          <button onclick="showView('education')">Educación en salud</button>
+          <button onclick="showView('home')">Cerrar sesión</button>
         </div>
-          <div class="imc-actions">
-            <button id="imc-calc" class="btn primary small" type="button">Calcular</button>
+
+        <div id="nurse" class="view">
+          <div class="section-title">Panel del Enfermero</div>
+          <div class="nurse-list">
+            <div class="nurse-patient">María <span class="status green">Estable</span></div>
+            <div class="nurse-patient">Juan <span class="status yellow">Observación</span></div>
+            <div class="nurse-patient">Ana <span class="status red">Alerta</span></div>
           </div>
-        <div class="imc-result" id="imc-result">
-          <div class="imc-values">
-            <div>IMC: <strong id="imc-value">--</strong></div>
-            <div>Peso ideal estimado: <strong id="imc-ideal">--</strong></div>
+          <div class="quick-actions">
+            <button onclick="toast('Videollamada iniciada')">Videollamada</button>
+            <button onclick="toast('Chat abierto con paciente')">Chat</button>
           </div>
-          <div class="imc-bar" id="imc-bar">
+          <button onclick="showView('home')">Cerrar sesión</button>
+        </div>
+
+        <div id="demo" class="view">
+          <div class="section-title">Modo demostración</div>
+          <div><strong>Bienvenido al modo demo. Explora los flujos principales.</strong></div>
+          <button onclick="showView('patient')">Ver panel de paciente</button>
+          <button onclick="showView('nurse')">Ver panel de enfermero</button>
+          <button onclick="showView('home')">Volver al inicio</button>
+        </div>
+
+        <div id="education" class="view">
+          <div class="section-title">Educación en salud</div>
+          <div class="edu-card">
+            <strong>Tips para la diabetes</strong>
+            <p>Consejos prácticos para el manejo diario de la diabetes.</p>
+            <button onclick="toast('Video educativo reproducido')">Ver video</button>
+          </div>
+          <button onclick="showView('patient')">Volver al panel</button>
+        </div>
+
+        <div id="contact" class="view">
+          <div class="section-title">Contacto / Ayuda</div>
+          <form class="contact-form" onsubmit="event.preventDefault();toast('Mensaje enviado (simulado)')">
+            <input type="text" placeholder="Nombre" required />
+            <input type="email" placeholder="Correo" required />
+            <textarea placeholder="Mensaje" required></textarea>
+            <button type="submit">Enviar</button>
+          </form>
+          <button onclick="showView('home')">Volver</button>
+        </div>
+
+        <div id="toast" class="toast"></div>
+
+        <script>
+          function showView(id){
+            document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+            var el = document.getElementById(id); if(el) el.classList.add('active');
+          }
+          function toast(msg){
+            var t = document.getElementById('toast');
+            t.textContent = msg;
+            t.classList.add('show');
+            setTimeout(()=>t.classList.remove('show'),2200);
+          }
+          // Inicial: mostrar home
+          showView('home');
+        </script>
+      </body>
+      </html>
             <div class="imc-bar-fill" id="imc-bar-fill" style="width:0%"></div>
             <div class="imc-marker" id="imc-marker"></div>
           </div>
