@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Paciente | Enfermera a un CLICK</title>
+
+  <!-- Estilos del dashboard oscuro -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- Fuente (si la usas en tu CSS) -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <!-- Chart.js para mini gráfica del paciente -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="dark-dashboard">
+
+  <!-- Barra superior -->
+  <nav class="navbar">
+    <div>
+      <strong id="saludo">Hola, Paciente 👋</strong>
+    </div>
+    <div>
+      <button class="btn-primary" onclick="location.href='contacto.html'">Soporte</button>
+      <button class="btn-secondary" onclick="cerrarSesion()">Cerrar sesión</button>
+    </div>
+  </nav>
+
+  <main class="dashboard">
+    <!-- Acciones rápidas -->
+    <section class="cards">
+      <div class="card action" onclick="solicitarVideollamada()">
+        <h3>📹 Videollamada</h3>
+        <p>Conecta con tu enfermera en tiempo real.</p>
+      </div>
+      <div class="card action" onclick="recordatorioMedicacion()">
+        <h3>💊 Recordatorios</h3>
+        <p>Consulta y recibe alertas de medicación.</p>
+      </div>
+      <div class="card action" onclick="mensajeEnfermera()">
+        <h3>💬 Mensajes</h3>
+        <p>Comunícate con tu enfermera asignada.</p>
+      </div>
+      <div class="card action" onclick="recomendacionSalud()">
+        <h3>💡 Recomendaciones</h3>
+        <p>Consejos diarios para tu bienestar.</p>
+      </div>
+    </section>
+
+    <!-- Mi estado (datos del paciente) -->
+    <section class="cards">
+      <div class="card">
+        <h3>🧑‍⚕️ Mis datos</h3>
+        <table style="width:100%">
+          <tbody>
+            <tr><td><strong>Nombre</strong></td><td id="pacienteNombre">-</td></tr>
+            <tr><td><strong>Edad</strong></td><td id="pacienteEdad">-</td></tr>
+            <tr><td><strong>Enfermedad</strong></td><td id="pacienteEnfermedad">-</td></tr>
+            <tr><td><strong>Presión</strong></td><td id="pacientePresion">-</td></tr>
+            <tr><td><strong>Ritmo</strong></td><td id="pacienteRitmo">-</td></tr>
+            <tr><td><strong>Estado</strong></td><td id="pacienteEstado">-</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <h3>📈 Ritmo cardiaco</h3>
+        <canvas id="miRitmoChart" height="150"></canvas>
+      </div>
+    </section>
+
+    <!-- Alertas del día -->
+    <section class="chart-section">
+      <h3>🔔 Alertas y seguimiento</h3>
+      <ul id="alertas-list"></ul>
+    </section>
+  </main>
+
+  <!-- Lógica de la app (usa API_URL=http://localhost:4000/api o tu URL en producción) -->
+  <script src="js/app.js"></script>
+  <script>
+    // Inicializaciones específicas de la página del paciente
+    (async function initPaciente() {
+      if (typeof initPacientePage === "function") {
+        // Si en app.js defines initPacientePage(), la llamamos para poblar datos y gráfica
+        await initPacientePage();
+      }
+    })();
+  </script>
+</body>
+</html>
