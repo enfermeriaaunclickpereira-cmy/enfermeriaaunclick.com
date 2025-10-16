@@ -103,6 +103,13 @@ input,select,textarea{width:100%;padding:8px;border:1px solid #d7e8ef;border-rad
 .status.yellow{background:#fff6d8;color:#6b4b00}
 .status.red{background:#ffdfdf;color:#6b1212}
 .edu-card{padding:12px;background:#f8fdff;border-radius:8px}
+.nurse-list{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.patient-item{display:flex;justify-content:space-between;align-items:center;padding:10px;border-radius:10px;background:linear-gradient(180deg,#fff,#fbfeff);border:1px solid #eef7fb;cursor:pointer}
+.patient-item .pi-left{display:flex;flex-direction:column}
+.patient-item .pi-left small{color:var(--muted)}
+.patient-item .pi-right{display:flex;align-items:center;gap:8px}
+.detail-card h3{margin-top:0}
+.detail-card .card{margin-top:10px}
 .video-placeholder{height:120px;background:#eef7fb;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--muted);margin:12px 0}
 
 /* IMC Calculator styles */

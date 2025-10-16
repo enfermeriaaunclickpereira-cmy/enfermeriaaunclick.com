@@ -114,14 +114,39 @@
     <section class="view hidden" id="patient">
       <h2>Panel del Paciente</h2>
       <div class="patient-info">
-        <div id="patient-greet"><strong>Hola, paciente</strong></div>
+        <div class="patient-meta">
+          <div class="patient-avatar" id="patient-avatar"><img src="imagenes/avatar-placeholder.png" alt="avatar"/></div>
+          <div class="patient-info-text">
+            <h2 id="patient-greet"><strong>Hola, paciente</strong></h2>
+            <div class="patient-imc-summary" id="patient-imc-summary">Último IMC: --</div>
+            <div class="dob-age" id="patient-age"></div>
+          </div>
+        </div>
+
         <div class="quick-actions">
           <button data-action="call">Videollamada con mi enfermera</button>
           <button data-action="medication">Recordatorios de medicación</button>
           <button data-action="chat">Mensajes / Chat</button>
         </div>
+
         <div class="alert" id="alert-text">Recuerda medir tu glucosa hoy a las 8 a.m.</div>
         <div class="msg" id="message-text">Tu enfermera ha revisado tus signos y te felicita por tu control.</div>
+
+        <div class="cards">
+          <div class="card meds-card">
+            <h4>Medicación actual</h4>
+            <div id="patient-meds">No hay medicación registrada.</div>
+          </div>
+          <div class="card">
+            <h4>Alergias</h4>
+            <div id="patient-allergies">No registradas</div>
+          </div>
+          <div class="card">
+            <h4>Historial rápido</h4>
+            <div id="patient-history">Sin visitas recientes</div>
+          </div>
+        </div>
+
         <div class="patient-actions">
           <button data-action="education">Educación en salud</button>
           <button id="btn-contacts" data-action="contacts">Contactos</button>
@@ -178,11 +203,30 @@
           <div class="detail-card">
             <h3 id="detail-name">Selecciona un paciente</h3>
             <div id="detail-vitals" class="vitals">
-              <div class="vitem"><strong>Glucosa</strong><span id="v-glu">--</span></div>
-              <div class="vitem"><strong>Presión</strong><span id="v-bp">--</span></div>
-              <div class="vitem"><strong>Frecuencia</strong><span id="v-hr">--</span></div>
+              <div class="vitem"><strong>Glucosa</strong><div id="v-glu">-- mg/dL</div></div>
+              <div class="vitem"><strong>Presión</strong><div id="v-bp">-- / -- mmHg</div></div>
+              <div class="vitem"><strong>Frecuencia</strong><div id="v-hr">-- bpm</div></div>
+              <div class="vitem"><strong>Temperatura</strong><div id="v-temp">-- °C</div></div>
             </div>
             <p id="detail-notes">Aquí aparecerán notas y recomendaciones del paciente.</p>
+            <div class="cards">
+              <div class="card meds-card">
+                <h4>Medicación</h4>
+                <div id="detail-meds">-</div>
+              </div>
+              <div class="card">
+                <h4>Alergias</h4>
+                <div id="detail-allergies">-</div>
+              </div>
+              <div class="card">
+                <h4>Contacto de emergencia</h4>
+                <div id="detail-emergency">-</div>
+              </div>
+            </div>
+            <div class="card">
+              <h4>Historial de visitas</h4>
+              <ul id="detail-history" class="patient-list"></ul>
+            </div>
             <div class="detail-actions">
               <button class="btn" id="nurse-call">Videollamada</button>
               <button class="btn" id="nurse-chat">Mensajes / Chat</button>

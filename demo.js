@@ -88,23 +88,45 @@ if(registerForm){
       contacto: paciente.contacto,
       edad: paciente.edad
     });
-    localStorage.setItem('pacientes', JSON.stringify(pacientes));
-    // also set as lastSessionPatient so patient panel opens with data
-    const last = {
+    // Try to register against backend API first
+    const apiUrl = 'http://localhost:4000/api/patients/register';
+    fetch(apiUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({
       nombre: paciente.nombre,
       apellido: paciente.apellido,
-      edad: paciente.edad,
-      contacto: paciente.contacto,
+      tipoDocumento: paciente.tipoDocumento,
+      numeroDocumento: paciente.numeroDocumento,
       ciudad: paciente.ciudad,
       enfermedad: paciente.enfermedad,
-      tipoDocumento: paciente.tipoDocumento,
-      numeroDocumento: paciente.numeroDocumento
-    };
-    localStorage.setItem('lastSessionPatient', JSON.stringify(last));
-    toast('Registro exitoso');
-    // show patient panel as logged-in
-    state.role = 'paciente'; state.name = paciente.nombre;
-    setupPatient(); show('patient');
+      contacto: paciente.contacto,
+      edad: paciente.edad,
+      password: paciente.password
+    })}).then(r=>{
+      if(!r.ok) throw new Error('server');
+      return r.json();
+    }).then(js=>{
+      // backend registered
+      localStorage.setItem('lastSessionPatient', JSON.stringify(js.patient));
+      toast('Registro exitoso (servidor)');
+      state.role = 'paciente'; state.name = js.patient.nombre;
+      setupPatient(); show('patient');
+    }).catch(err=>{
+      // fallback to localStorage-only behavior
+      localStorage.setItem('pacientes', JSON.stringify(pacientes));
+      const last = {
+        nombre: paciente.nombre,
+        apellido: paciente.apellido,
+        edad: paciente.edad,
+        contacto: paciente.contacto,
+        ciudad: paciente.ciudad,
+        enfermedad: paciente.enfermedad,
+        tipoDocumento: paciente.tipoDocumento,
+        numeroDocumento: paciente.numeroDocumento
+      };
+      localStorage.setItem('lastSessionPatient', JSON.stringify(last));
+      toast('Registro exitoso (offline)');
+      state.role = 'paciente'; state.name = paciente.nombre;
+      setupPatient(); show('patient');
+    });
   });
 }
 
@@ -116,17 +138,29 @@ if(loginFormEl){
     const tipo = document.getElementById('login-doc-type').value;
     const num = document.getElementById('login-doc-num').value.trim();
     const pwd = document.getElementById('login-password').value;
-    let pacientes = [];
-    try{ pacientes = JSON.parse(localStorage.getItem('pacientes')) || []; }catch(e){}
-    const found = pacientes.find(p => p.numeroDocumento === num && p.tipoDocumento === tipo);
-    if(!found){ toast('Usuario no encontrado. Por favor registrese.'); show('register'); return; }
-    // in this demo we won't check password (or optionally check against reg password)
-    // save session and open patient panel
-    const last = Object.assign({}, found);
-    localStorage.setItem('lastSessionPatient', JSON.stringify(last));
-    state.role = 'paciente'; state.name = found.nombre;
-    setupPatient(); show('patient');
-    toast(`Bienvenido ${found.nombre} ${found.apellido}`);
+    // Try backend login first
+    const apiUrl = 'http://localhost:4000/api/patients/login';
+    fetch(apiUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ tipoDocumento: tipo, numeroDocumento: num, password: pwd }) })
+      .then(r=>{
+        if(!r.ok) throw new Error('server');
+        return r.json();
+      }).then(js=>{
+        localStorage.setItem('lastSessionPatient', JSON.stringify(js.patient));
+        toast(`Bienvenido ${js.patient.nombre} ${js.patient.apellido}`);
+        state.role='paciente'; state.name = js.patient.nombre;
+        setupPatient(); show('patient');
+      }).catch(err=>{
+        // fallback: try localStorage match without password
+        let pacientes = [];
+        try{ pacientes = JSON.parse(localStorage.getItem('pacientes')) || []; }catch(e){}
+        const found = pacientes.find(p => p.numeroDocumento === num && p.tipoDocumento === tipo);
+        if(!found){ toast('Usuario no encontrado. Por favor registrese.'); show('register'); return; }
+        const last = Object.assign({}, found);
+        localStorage.setItem('lastSessionPatient', JSON.stringify(last));
+        state.role = 'paciente'; state.name = found.nombre;
+        setupPatient(); show('patient');
+        toast(`Bienvenido ${found.nombre} ${found.apellido} (offline)`);
+      });
   });
 }
 
@@ -180,27 +214,67 @@ function setupNurse(username){
     // show name in header
     const title = $('#nurse-title'); if(title) title.textContent = `Panel del Enfermero — ${username}`;
     // populate nurse list with registered patients
-    const nurseList = document.querySelector('.nurse-list');
-    if(nurseList){
-      nurseList.innerHTML = '';
-      let pacientes = [];
-      try { pacientes = JSON.parse(localStorage.getItem('pacientes')) || []; } catch(e){}
-      if(pacientes.length === 0){
-        nurseList.innerHTML = '<div>No hay pacientes registrados.</div>';
-      } else {
-        pacientes.forEach(p => {
-          nurseList.innerHTML += `<div class="nurse-patient">
-            <strong>${p.nombre} ${p.apellido}</strong><br>
-            <span>Edad: ${p.edad} | Contacto: ${p.contacto}</span><br>
-            <span>Ciudad: ${p.ciudad} | Enfermedad: ${p.enfermedad}</span>
-          </div>`;
-        });
-      }
-    }
+    const nurseList = document.getElementById('patient-list');
+    if(!nurseList) return;
+    const pacientes = readPatients();
+    renderPatientList(pacientes);
+    updateNurseStats(pacientes);
     // clear nurse detail area
     const dn = $('#detail-name'); if(dn) dn.textContent = 'Selecciona un paciente';
     const notes = $('#detail-notes'); if(notes) notes.textContent = 'Aquí aparecerán notas y recomendaciones del paciente.';
   }catch(e){ console.error('setupNurse error', e); }
+}
+
+function readPatients(){
+  try{ return JSON.parse(localStorage.getItem('pacientes')) || []; }catch(e){ return []; }
+}
+
+function renderPatientList(patients){
+  const list = document.getElementById('patient-list');
+  list.innerHTML = '';
+  if(!patients || patients.length === 0){ list.innerHTML = '<div>No hay pacientes registrados.</div>'; return; }
+  patients.forEach((p, idx) => {
+    const status = p.status || (idx % 3 === 0 ? 'green' : (idx % 3 === 1 ? 'yellow' : 'red'));
+    const item = document.createElement('div');
+    item.className = 'patient-item';
+    item.dataset.id = idx; item.dataset.name = `${p.nombre} ${p.apellido}`; item.dataset.status = status;
+    item.innerHTML = `<div class="pi-left"><strong>${p.nombre} ${p.apellido}</strong><small>${p.enfermedad || ''}</small></div>
+      <div class="pi-right"><span class="status ${status}">${status==='green'?'Estable':status==='yellow'?'Observación':'Alerta'}</span></div>`;
+    item.addEventListener('click', ()=> onSelectPatient(idx));
+    list.appendChild(item);
+  });
+}
+
+function updateNurseStats(patients){
+  const totalEl = document.getElementById('count-total'); if(totalEl) totalEl.textContent = (patients||[]).length;
+  const green = (patients||[]).filter((p,i)=> (p.status || (i%3===0?'green':i%3===1?'yellow':'red')) === 'green').length;
+  const yellow = (patients||[]).filter((p,i)=> (p.status || (i%3===0?'green':i%3===1?'yellow':'red')) === 'yellow').length;
+  const red = (patients||[]).filter((p,i)=> (p.status || (i%3===0?'green':i%3===1?'yellow':'red')) === 'red').length;
+  const statEl = document.querySelector('.stat-card p:nth-child(2)');
+  if(statEl) statEl.innerHTML = `<span class="status green inline">${green}</span> Estables • <span class="status yellow inline">${yellow}</span> Observación • <span class="status red inline">${red}</span> Alerta`;
+}
+
+function onSelectPatient(index){
+  const patients = readPatients();
+  const p = patients[index];
+  if(!p) return;
+  // populate detail pane
+  $('#detail-name').textContent = `${p.nombre} ${p.apellido} • ${p.edad || ''} años`;
+  $('#v-glu').textContent = p.vitals && p.vitals.glucose ? (p.vitals.glucose + ' mg/dL') : '-- mg/dL';
+  $('#v-bp').textContent = p.vitals && p.vitals.bp ? p.vitals.bp : '-- / -- mmHg';
+  $('#v-hr').textContent = p.vitals && p.vitals.hr ? (p.vitals.hr + ' bpm') : '-- bpm';
+  $('#v-temp').textContent = p.vitals && p.vitals.temp ? (p.vitals.temp + ' °C') : '-- °C';
+  $('#detail-meds').textContent = p.meds || p.medicacion || 'No registrada';
+  $('#detail-allergies').textContent = p.allergies || '-';
+  $('#detail-emergency').textContent = (p.emName ? `${p.emName} (${p.emPhone||''})` : '-');
+  // history list
+  const hist = $('#detail-history'); hist.innerHTML = '';
+  const history = p.history || [];
+  if(history.length === 0) hist.innerHTML = '<li>No hay visitas registradas</li>'; else history.forEach(h=>{ const li = document.createElement('li'); li.textContent = `${h.date} — ${h.summary}`; hist.appendChild(li); });
+  // notes
+  $('#detail-notes').textContent = p.notes || 'Sin notas recientes';
+  // open nurse detail view if not visible (for smaller screens)
+  show('nurse-panel');
 }
 
 // Logout
@@ -612,37 +686,11 @@ function closeVideoModal(){
 document.addEventListener('click', (e)=>{
   const thumb = e.target.closest && e.target.closest('.video-thumb');
   if(thumb){
-      // show name in header
-      const title = $('#nurse-title'); if(title) title.textContent = `Panel del Enfermero — ${username}`;
-      // populate nurse list with registered patients
-      const nurseList = document.querySelector('.nurse-list');
-      if(nurseList){
-        nurseList.innerHTML = '';
-        let pacientes = [];
-        try { pacientes = JSON.parse(localStorage.getItem('pacientes')) || []; } catch(e){}
-        if(pacientes.length === 0){
-          nurseList.innerHTML = '<div>No hay pacientes registrados.</div>';
-        } else {
-          pacientes.forEach((p, idx) => {
-            const status = p.status || (idx % 3 === 0 ? 'green' : (idx % 3 === 1 ? 'yellow' : 'red'));
-            nurseList.innerHTML += `<div class="patient-item" data-id="${idx}" data-name="${p.nombre}" data-status="${status}">
-              <div class="pi-left"><strong>${p.nombre} ${p.apellido}</strong><small>${p.enfermedad || ''}</small></div>
-              <div class="pi-right"><span class="status ${status}">${status==='green'?'Estable':status==='yellow'?'Observación':'Alerta'}</span></div>
-            </div>`;
-          });
-        }
-      }
-      // update stats counts if elements exist
-      const items = Array.from(document.querySelectorAll('.patient-item'));
-      const statEl = $('#count-total'); if(statEl) statEl.textContent = items.length;
-      const red = items.filter(i=>i.dataset.status==='red').length;
-      const yellow = items.filter(i=>i.dataset.status==='yellow').length;
-      const green = items.filter(i=>i.dataset.status==='green').length;
-      const statText = document.querySelector('.stat-card p:nth-child(2)'); if(statText) statText.innerHTML = `<span class="status green inline">${green}</span> Estables • <span class="status yellow inline">${yellow}</span> Observación • <span class="status red inline">${red}</span> Alerta`;
-      // clear nurse detail area
-      const dn = $('#detail-name'); if(dn) dn.textContent = 'Selecciona un paciente';
-      const notes = $('#detail-notes'); if(notes) notes.textContent = 'Aquí aparecerán notas y recomendaciones del paciente.';
-    if(imcMessage) { imcMessage.textContent='Introduce tus datos para calcular'; imcMessage.className='imc-message'; }
+      // refresh nurse list from stored patients (keeps consistent behavior)
+      const patients = readPatients();
+      renderPatientList(patients);
+      updateNurseStats(patients);
+      if(imcMessage) { imcMessage.textContent='Introduce tus datos para calcular'; imcMessage.className='imc-message'; }
   }
 
 // Nurse login handling -> open nurse-panel dashboard
@@ -653,24 +701,26 @@ if(nurseLoginForm){
     const email = document.getElementById('nurse-email').value.trim();
     const pass = document.getElementById('nurse-password').value;
     if(!email || !pass){ toast('Ingrese correo y clave'); return; }
-    state.role = 'enfermero'; state.name = email.split('@')[0];
-    setupNurse(state.name);
-    show('nurse-panel');
-    // after showing nurse-panel, wire patient-item click listeners to open detail
-    setTimeout(()=>{
-      document.querySelectorAll('.patient-item').forEach(it=>{
-        it.addEventListener('click', ()=>{
-          const idx = it.dataset.id;
-          const pacientes = JSON.parse(localStorage.getItem('pacientes')||'[]');
-          const p = pacientes[idx];
-          if(p){
-            const dn = document.getElementById('detail-name'); if(dn) dn.textContent = `${p.nombre} ${p.apellido}`;
-            const notes = document.getElementById('detail-notes'); if(notes) notes.textContent = `Contacto: ${p.contacto}. Ciudad: ${p.ciudad}. Enfermedad: ${p.enfermedad}`;
-          }
-        });
+    const apiLogin = 'http://localhost:4000/api/nurse/login';
+    fetch(apiLogin, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email, password: pass }) })
+      .then(r=>{ if(!r.ok) throw new Error('server'); return r.json(); })
+      .then(js=>{
+        state.role = 'enfermero'; state.name = js.nurse.email.split('@')[0];
+        // fetch patients
+        return fetch('http://localhost:4000/api/patients', { headers: { 'Authorization': 'Bearer '+js.token } }).then(r=>{ if(!r.ok) throw new Error('server'); return r.json(); });
+      }).then(data=>{
+        // populate nurse-panel with server data
+        localStorage.setItem('pacientes', JSON.stringify(data.patients));
+        setupNurse(state.name);
+        show('nurse-panel');
+        toast('Bienvenido, enfermero ' + state.name);
+      }).catch(err=>{
+        // fallback: localStorage
+        state.role = 'enfermero'; state.name = email.split('@')[0];
+        setupNurse(state.name);
+        show('nurse-panel');
+        toast('Bienvenido, enfermero ' + state.name + ' (offline)');
       });
-    }, 50);
-    toast('Bienvenido, enfermero ' + state.name);
   });
 }
 
