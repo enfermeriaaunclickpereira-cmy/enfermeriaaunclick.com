@@ -1,45 +1,31 @@
-<link rel="stylesheet" href="/styles.css">
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel del Enfermero</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Enfermero - Panel de Gestión</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
-<body class="dashboard">
-  <header>
-    <h2>👩‍⚕️ Bienvenido, Enfermero Juan</h2>
-    <p>Panel de gestión de pacientes</p>
-  </header>
+<body>
+  <header><h1>👨‍⚕️ Panel del Enfermero</h1></header>
 
-  <section class="cards">
-    <div class="card wide">
-      <h3>👨‍🦳 Lista de Pacientes</h3>
-      <ul>
-        <li>María López — Diabetes tipo II — <span class="estado estable">Estable</span></li>
-        <li>José Pérez — Hipertensión — <span class="estado observacion">En observación</span></li>
-        <li>Carmen Ruiz — Asma — <span class="estado alerta">Alerta</span></li>
-      </ul>
-    </div>
+  <main>
+    <section class="card">
+      <h2>👥 Pacientes registrados</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th><th>Nombre</th><th>Edad</th><th>Condición</th><th>Acción</th>
+          </tr>
+        </thead>
+        <tbody id="tablaPacientes"></tbody>
+      </table>
+    </section>
+  </main>
 
-    <div class="card">
-      <h3>📞 Videollamadas pendientes</h3>
-      <ul>
-        <li>María López — 09:30 a.m.</li>
-      </ul>
-    </div>
+  <div id="modalContainer"></div>
+  <footer>© 2025 Enfermería a un Click</footer>
 
-    <div class="card">
-      <h3>💊 Recordatorios</h3>
-      <p>Revisar administración de medicamentos para José Pérez</p>
-    </div>
-  </section>
-
-  <footer>
-    <a href="login.html">Cerrar sesión</a>
-  </footer>
+  <script src="/app.js" defer></script>
 </body>
 </html>
