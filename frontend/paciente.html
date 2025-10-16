@@ -3,147 +3,145 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Panel del Paciente</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
+  <title>Panel del Paciente 🏥</title>
+  <style>
+    body {
+      background-color: #0d1117;
+      color: #e6edf3;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    header {
+      background: #161b22;
+      width: 100%;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 0 10px #58a6ff50;
+    }
+    h1 {
+      color: #58a6ff;
+      font-size: 1.8rem;
+    }
+    .card {
+      background: #161b22;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #58a6ff30;
+      width: 90%;
+      max-width: 600px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+    h2 {
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 10px;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      background: #21262d;
+      margin: 10px 0;
+      padding: 10px 15px;
+      border-radius: 8px;
+      transition: transform 0.2s ease;
+    }
+    li:hover {
+      transform: scale(1.02);
+      background: #2d333b;
+    }
+    button {
+      background: #238636;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      padding: 10px 20px;
+      font-size: 1rem;
+      margin-top: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #2ea043;
+    }
+    .alerta {
+      margin-top: 20px;
+      background: #23863620;
+      color: #58a6ff;
+      padding: 10px;
+      border-radius: 8px;
+      display: none;
+      animation: fadeIn 0.5s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
 </head>
-
-<!-- Modal de Videollamada con corazón latiente -->
-<div id="vc-overlay" class="overlay" style="display:none" role="dialog" aria-modal="true" aria-labelledby="vc-title">
-  <div class="popup">
-    <div class="heart-wrap" aria-hidden="true">
-      <!-- SVG corazón -->
-      <svg class="heart" viewBox="0 0 24 24" fill="#7ff7e6" xmlns="http://www.w3.org/2000/svg">
-        <path d="M12 21s-6.716-4.22-9.193-8.006C.59 9.77 1.43 6.34 4.2 5.2c2.02-.85 4.37-.07 5.8 1.45 1.43-1.52 3.78-2.3 5.8-1.45 2.77 1.14 3.61 4.57 1.39 7.794C18.716 16.78 12 21 12 21z"/>
-      </svg>
-    </div>
-
-    <h2 id="vc-title">Conectando con tu enfermera…</h2>
-    <div class="progress-dots" aria-hidden="true">
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
-    </div>
-    <p>Tu enfermera se conectará en breve. Mientras esperas, revisa tus recordatorios de medicación:</p>
-
-    <div id="vc-pills" class="pills" aria-live="polite">
-      <!-- aquí se insertan los recordatorios -->
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn-ghost" onclick="cerrarVC()">Cancelar</button>
-      <button class="btn-primary" onclick="cerrarVC()">Aceptar</button>
-    </div>
-  </div>
-</div>
-
-<script>
-  // Si ya usas app.js, respeta el API_URL global; si no, setea el de Render:
-  const API_URL = window.API_URL || "https://enfermeriaaunclick-cem.onrender.com/api";
-
-  async function videollamada(){
-    // (1) Crea la solicitud en backend si está disponible
-    try {
-      const nombre = localStorage.getItem("nombrePaciente") || "Paciente";
-      await fetch(`${API_URL}/videollamadas`, {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ paciente: nombre })
-      });
-    } catch(e) {
-      console.warn("No se pudo registrar la videollamada (modo demo o sin red).", e);
-    }
-
-    // (2) Carga recordatorios y muestra modal
-    await cargarRecordatoriosEnModal();
-    abrirVC();
-
-    // (3) Cierre automático suave (opcional)
-    window.__vcTimer && clearTimeout(window.__vcTimer);
-    window.__vcTimer = setTimeout(() => cerrarVC(), 8000);
-  }
-
-  function abrirVC(){ document.getElementById("vc-overlay").style.display = "flex"; }
-  function cerrarVC(){ 
-    document.getElementById("vc-overlay").style.display = "none"; 
-    window.__vcTimer && clearTimeout(window.__vcTimer);
-  }
-
-  async function cargarRecordatoriosEnModal(){
-    const cont = document.getElementById("vc-pills");
-    cont.innerHTML = `<div class="pill">Cargando recordatorios…</div>`;
-    try {
-      const res = await fetch(`${API_URL}/recordatorios`, { cache: "no-store" });
-      if(!res.ok) throw new Error("HTTP " + res.status);
-      const data = await res.json();
-
-      if(!data || !data.length){
-        cont.innerHTML = `<div class="pill">No hay recordatorios por ahora.</div>`;
-        return;
-      }
-
-      cont.innerHTML = data.map(r => `
-        <div class="pill">
-          <div><strong>${r.medicamento}</strong></div>
-          <span>${r.hora}</span>
-        </div>
-      `).join("");
-    } catch(err){
-      cont.innerHTML = `
-        <div class="pill">
-          No se pudieron cargar recordatorios. <span>Intenta más tarde</span>
-        </div>`;
-      console.error(err);
-    }
-  }
-</script>
-
-<body class="dashboard">
+<body>
   <header>
-    <h2>👋 Hola, María</h2>
-    <p>Tu enfermera asignada: <strong>Ana Pérez</strong></p>
+    <h1>Enfermería a un Click 👩‍⚕️</h1>
   </header>
 
-  <section class="cards">
-    <div class="card" onclick="alerta()">
-      <h3>💬 Chat con mi enfermera</h3>
-      <p>Enviar mensaje o revisar seguimiento</p>
-    </div>
+  <div class="card">
+    <h2>💊 Recordatorios de Medicamentos</h2>
+    <ul id="lista-recordatorios"></ul>
 
-    <div class="card" onclick="videollamada()">
-      <h3>📞 Videollamada</h3>
-      <p>Conectarte con tu enfermera</p>
-    </div>
-
-    <div class="card">
-      <h3>💊 Recordatorios</h3>
-      <p>Losartán 50mg — 8:00 a.m.</p>
-      <p>Metformina 500mg — 12:00 p.m.</p>
-    </div>
-
-    <div class="card">
-      <h3>⚠️ Recomendación del día</h3>
-      <p>Recuerda hidratarte y medir tu glucosa antes del desayuno.</p>
-    </div>
-  </section>
-
-  <footer>
-    <a href="login.html">Cerrar sesión</a>
-  </footer>
+    <button onclick="iniciarVideollamada()">📞 Iniciar videollamada</button>
+    <div id="mensaje" class="alerta">🔔 Videollamada registrada correctamente</div>
+  </div>
 
   <script>
-    function videollamada() {
-      const overlay = document.createElement("div");
-      overlay.classList.add("overlay");
-      overlay.innerHTML = `
-        <div class="popup">
-          <h2>📞 Conectando con tu enfermera...</h2>
-          <p>Tu enfermera se conectará en breve contigo ❤️</p>
-          <button onclick="this.parentNode.parentNode.remove()">Cerrar</button>
-        </div>`;
-      document.body.appendChild(overlay);
+    const API_URL = "https://enfermeriaaunclick-cem.onrender.com";
+
+    // --- Cargar recordatorios ---
+    async function cargarRecordatorios() {
+      try {
+        const res = await fetch(`${API_URL}/api/recordatorios`);
+        const recordatorios = await res.json();
+
+        const lista = document.getElementById("lista-recordatorios");
+        lista.innerHTML = "";
+
+        if (recordatorios.length === 0) {
+          lista.innerHTML = "<li>No hay recordatorios por ahora 💤</li>";
+          return;
+        }
+
+        recordatorios.forEach(r => {
+          const item = document.createElement("li");
+          item.textContent = `💊 ${r.medicamento} - ${r.hora}`;
+          lista.appendChild(item);
+        });
+      } catch (error) {
+        console.error("Error cargando recordatorios:", error);
+      }
     }
-    function alerta(){
-      alert("Tu enfermera ha revisado tus signos vitales. ¡Excelente progreso!");
+
+    // --- Enviar videollamada ---
+    async function iniciarVideollamada() {
+      try {
+        await fetch(`${API_URL}/api/videollamadas`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ paciente: "Usuario en línea" })
+        });
+        const msg = document.getElementById("mensaje");
+        msg.style.display = "block";
+        setTimeout(() => (msg.style.display = "none"), 4000);
+      } catch (error) {
+        console.error("Error registrando videollamada:", error);
+      }
     }
+
+    // Cargar datos al iniciar
+    cargarRecordatorios();
   </script>
 </body>
 </html>
