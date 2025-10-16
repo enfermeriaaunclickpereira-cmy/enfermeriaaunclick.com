@@ -1,9 +1,5 @@
 {
   "pacientes": [],
-  "videollamadas": []
-}
-{
-  "pacientes": [],
   "videollamadas": [],
   "recordatorios": [
     { "id": 1, "medicamento": "Losartán 50mg", "hora": "08:00 AM" },
