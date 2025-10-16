@@ -1,3 +1,4 @@
+// --- IMPORTS ---
 import express from "express";
 import cors from "cors";
 import fs from "fs";
@@ -28,9 +29,12 @@ function writeDB(data) {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
 }
 
-// --- RUTAS PRINCIPALES ---
+// --- SERVIR FRONTEND (Archivos estáticos) ---
+app.use(express.static(path.join(__dirname, "public")));
+
+// --- RUTA PRINCIPAL ---
 app.get("/", (req, res) => {
-  res.send("🩺 Backend de Enfermería a un Click está activo ✅");
+  res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
 // --- RUTA: Pacientes ---
@@ -49,7 +53,7 @@ app.get("/api/recordatorios", (req, res) => {
 app.post("/api/videollamadas", (req, res) => {
   const db = readDB();
   const nuevaLlamada = {
-    paciente: req.body.paciente,
+    paciente: req.body.paciente || "Anónimo",
     hora: new Date().toLocaleTimeString(),
   };
   db.videollamadas.push(nuevaLlamada);
