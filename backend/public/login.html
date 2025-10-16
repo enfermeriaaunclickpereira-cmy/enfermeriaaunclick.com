@@ -1,45 +1,32 @@
-<link rel="stylesheet" href="/styles.css">
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Enfermera a un CLICK - Iniciar sesión</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="css/style.css" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión - Enfermería a un Click</title>
+  <link rel="stylesheet" href="/styles.css">
 </head>
-<body class="login-page">
-  <div class="login-container">
-    <div class="login-card">
-      <h1>🩺 Enfermera a un CLICK</h1>
-      <p>Prevención, confianza y cuidado en un solo click</p>
+<body>
+  <header><h1>👩‍⚕️ Enfermería a un Click</h1></header>
 
+  <main>
+    <section class="card login">
+      <h2>🔐 Iniciar sesión</h2>
       <form id="loginForm">
-        <input type="email" placeholder="Correo electrónico" required />
-        <input type="password" placeholder="Contraseña" required />
-        <select id="rol">
+        <input type="text" id="usuario" placeholder="Nombre de usuario" required>
+        <input type="password" id="clave" placeholder="Contraseña" required>
+        <select id="rol" required>
+          <option value="">Selecciona tu rol</option>
           <option value="paciente">Paciente</option>
           <option value="enfermero">Enfermero</option>
         </select>
-        <button type="submit">Iniciar sesión</button>
+        <button type="submit">Entrar</button>
       </form>
+    </section>
+  </main>
 
-      <p class="link">¿No tienes cuenta? <a href="registro.html">Regístrate aquí</a></p>
-    </div>
-  </div>
+  <footer>© 2025 Enfermería a un Click</footer>
 
-  <script>
-    document.getElementById("loginForm").addEventListener("submit", (e) => {
-      e.preventDefault();
-      const rol = document.getElementById("rol").value;
-      if (rol === "paciente") {
-        window.location.href = "paciente.html";
-      } else {
-        window.location.href = "enfermero.html";
-      }
-    });
-  </script>
+  <script src="/app.js" defer></script>
 </body>
 </html>

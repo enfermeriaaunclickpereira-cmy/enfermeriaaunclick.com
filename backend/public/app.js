@@ -127,3 +127,50 @@ window.onload = () => {
   cargarPacientes();
   crearGrafico();
 };
+// === Login simple ===
+const loginForm = document.getElementById("loginForm");
+if (loginForm) {
+  loginForm.addEventListener("submit", e => {
+    e.preventDefault();
+    const usuario = document.getElementById("usuario").value.trim();
+    const clave = document.getElementById("clave").value.trim();
+    const rol = document.getElementById("rol").value;
+
+    if (!usuario || !clave || !rol) {
+      alert("⚠️ Completa todos los campos");
+      return;
+    }
+
+    // Validación simple simulada
+    if (rol === "paciente" && clave === "1234") {
+      localStorage.setItem("rol", "paciente");
+      localStorage.setItem("usuario", usuario);
+      window.location.href = "/paciente.html";
+    } else if (rol === "enfermero" && clave === "admin") {
+      localStorage.setItem("rol", "enfermero");
+      localStorage.setItem("usuario", usuario);
+      window.location.href = "/enfermero.html";
+    } else {
+      alert("❌ Usuario o contraseña incorrectos");
+    }
+  });
+}
+
+// === Bloqueo de acceso directo a páginas ===
+const pagina = window.location.pathname;
+if (pagina.includes("paciente.html") || pagina.includes("enfermero.html")) {
+  const rol = localStorage.getItem("rol");
+  if (pagina.includes("paciente") && rol !== "paciente") {
+    window.location.href = "/login.html";
+  }
+  if (pagina.includes("enfermero") && rol !== "enfermero") {
+    window.location.href = "/login.html";
+  }
+}
+const cerrarSesion = document.getElementById("cerrarSesion");
+if (cerrarSesion) {
+  cerrarSesion.addEventListener("click", () => {
+    localStorage.clear();
+    window.location.href = "/login.html";
+  });
+}
