@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Paciente</title>
-  <link rel="stylesheet" href="/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Panel del Paciente</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="topbar">
@@ -13,14 +13,40 @@
   </header>
 
   <main class="landing">
+
+    <!-- Tarjeta de bienvenida -->
     <section class="hero-card">
-      <h1 id="nombrePaciente"></h1>
-      <p>Bienvenido a tu panel de salud. Programa tus videollamadas con enfermeros disponibles.</p>
+      <h1 id="nombrePaciente">👋 Hola paciente</h1>
+      <p>Bienvenido a tu panel de salud. Programa tus videollamadas con enfermeros disponibles y mantén tus datos actualizados.</p>
       <button class="btn primary" id="btnProgramar">📅 Programar Videollamada</button>
     </section>
 
+    <!-- Registro de datos del paciente -->
     <section class="card">
-      <h2>Mis Videollamadas</h2>
+      <h2>🧍‍♀️ Información del Paciente</h2>
+      <form id="formRegistroPaciente" class="form">
+        <label>Nombre <input type="text" id="nombre" required /></label>
+        <label>Edad <input type="number" id="edad" min="1" required /></label>
+        <label>Condición o enfermedad <input type="text" id="condicion" required /></label>
+        <button class="btn primary" type="submit">💾 Guardar Información</button>
+      </form>
+    </section>
+
+    <!-- Tarjeta de recomendaciones -->
+    <section class="card recomendaciones-card">
+      <h2>💡 Recomendaciones del día</h2>
+      <ul>
+        <li>🕒 Toma tus medicamentos según la hora indicada.</li>
+        <li>💧 Bebe al menos 8 vasos de agua al día.</li>
+        <li>🍎 Mantén una dieta balanceada y rica en frutas.</li>
+        <li>😴 Duerme entre 7 y 8 horas cada noche.</li>
+        <li>🚶‍♀️ Realiza al menos 30 minutos de actividad física diaria.</li>
+      </ul>
+    </section>
+
+    <!-- Tabla de videollamadas -->
+    <section class="card">
+      <h2>📞 Mis Videollamadas</h2>
       <table class="data-table" id="tablaVideollamadas">
         <thead><tr><th>Enfermero</th><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead>
         <tbody></tbody>
@@ -28,7 +54,7 @@
     </section>
   </main>
 
-  <!-- Modal -->
+  <!-- Modal para programar cita -->
   <div class="modal" id="modalCita" aria-hidden="true">
     <div class="modal-dialog">
       <button class="modal-close" data-close>✕</button>
@@ -37,7 +63,11 @@
         <label>Fecha <input type="date" name="fecha" required></label>
         <label>Hora <input type="time" name="hora" required></label>
         <label>Selecciona enfermero
-          <select name="enfermero" id="listaEnfermeros" required></select>
+          <select name="enfermero" id="listaEnfermeros" required>
+            <option>Yuri Liz</option>
+            <option>Vanesa Limas</option>
+            <option>Smith Rojas</option>
+          </select>
         </label>
         <button class="btn primary" type="submit">Guardar cita</button>
       </form>
@@ -45,67 +75,126 @@
     </div>
   </div>
 
-  <script src="/paciente.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <title>Panel del Paciente</title>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <header class="header">
-    <h1>👩‍⚕️ Panel del Paciente</h1>
-  </header>
-
-  <main class="content">
-    <div class="alerta alerta-medicamento">
-      ⚠️ Recuerda tomar tus medicamentos a la hora indicada.
-    </div>
-
-    <section class="recomendaciones">
-      <h2>💡 Recomendaciones del día</h2>
-      <ul>
-        <li>Beber al menos 8 vasos de agua 💧</li>
-        <li>Evita la cafeína después de las 6pm ☕</li>
-        <li>Descansa lo suficiente 💤</li>
-      </ul>
-    </section>
-
-    <section class="videollamada">
-      <h2>📞 Programar videollamada</h2>
-      <form id="formVideollamada">
-        <label>Selecciona enfermero:</label>
-        <select id="enfermero">
-          <option>Yuri Liz</option>
-          <option>Vanesa Limas</option>
-          <option>Smith Rojas</option>
-        </select>
-
-        <label>Hora de la videollamada:</label>
-        <input type="time" id="hora" required />
-
-        <button type="submit" class="btn primary">Guardar</button>
-      </form>
-    </section>
-
-    <div id="confirmacion" class="hidden mensaje-ok"></div>
-  </main>
-
   <!-- Chat flotante -->
   <div class="chat-icon" onclick="toggleChat()">💬</div>
 
   <div class="chat-box hidden" id="chatBox">
     <div class="chat-header">Chat con enfermero</div>
     <div class="chat-body">
-      <p><strong>Sistema:</strong> Hola, <span id="nombrePaciente">Paciente</span> 👋</p>
+      <p><strong>Sistema:</strong> Hola 👋 <span id="chatNombre"></span></p>
       <p>Tu enfermero se conectará en unos minutos...</p>
     </div>
     <button onclick="toggleChat()" class="btn close">Cerrar</button>
   </div>
 
-  <script src="app.js"></script>
+  <script>
+    // Guardar datos del paciente
+    document.getElementById("formRegistroPaciente").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const paciente = {
+        nombre: document.getElementById("nombre").value,
+        edad: document.getElementById("edad").value,
+        condicion: document.getElementById("condicion").value,
+      };
+
+      // Guardar en localStorage
+      let pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
+      pacientes.push(paciente);
+      localStorage.setItem("pacientes", JSON.stringify(pacientes));
+
+      // Mostrar nombre en encabezado y chat
+      document.getElementById("nombrePaciente").innerText = `👋 Hola ${paciente.nombre}`;
+      document.getElementById("chatNombre").innerText = paciente.nombre;
+
+      alert(`✅ Datos guardados correctamente para ${paciente.nombre}`);
+      e.target.reset();
+    });
+
+    // Chat toggle
+    function toggleChat() {
+      document.getElementById("chatBox").classList.toggle("hidden");
+    }
+
+    // Al cargar, mostrar nombre si ya está guardado
+    window.addEventListener("load", () => {
+      const pacientes = JSON.parse(localStorage.getItem("pacientes")) || [];
+      if (pacientes.length > 0) {
+        const ultimo = pacientes[pacientes.length - 1];
+        document.getElementById("nombrePaciente").innerText = `👋 Hola ${ultimo.nombre}`;
+        document.getElementById("chatNombre").innerText = ultimo.nombre;
+      }
+    });
+  </script>
+
+  <style>
+    /* Cuadro de recomendaciones */
+    .recomendaciones-card ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .recomendaciones-card li {
+      background: rgba(255, 255, 255, 0.1);
+      margin: 8px 0;
+      padding: 10px 14px;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: 500;
+    }
+
+    .chat-icon {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #00b686;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.6rem;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .chat-box {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      background: #f9f9f9;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+      width: 280px;
+      overflow: hidden;
+      z-index: 10;
+    }
+
+    .chat-header {
+      background: #00b686;
+      color: white;
+      padding: 10px;
+      font-weight: bold;
+    }
+
+    .chat-body {
+      padding: 10px;
+      font-size: 0.9rem;
+      color: #333;
+    }
+
+    .btn.close {
+      width: 100%;
+      background: #e74c3c;
+      color: white;
+      border: none;
+      padding: 8px;
+      border-radius: 0 0 10px 10px;
+      cursor: pointer;
+    }
+  </style>
 </body>
 </html>
