@@ -1,176 +1,99 @@
-// === Variables globales ===
-const apiBase = ""; // mismo dominio (Render usa proxy)
-
-// === Cargar recordatorios ===
-async function cargarRecordatorios() {
-  const res = await fetch(`${apiBase}/api/recordatorios`);
-  const data = await res.json();
-  const lista = document.getElementById("listaRecordatorios");
-  if (lista) {
-    lista.innerHTML = "";
-    data.forEach(r => {
-      const li = document.createElement("li");
-      li.textContent = `${r.medicamento} - ${r.hora}`;
-      lista.appendChild(li);
+const api = {
+  base: "", // rutas relativas (mismo dominio)
+  async post(path, body) {
+    const res = await fetch(`${this.base}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
     });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data?.mensaje || "Error");
+    return data;
   }
-}
+};
 
-// === Guardar paciente ===
-const formPaciente = document.getElementById("formPaciente");
-if (formPaciente) {
-  formPaciente.addEventListener("submit", async e => {
-    e.preventDefault();
-    const nombre = document.getElementById("nombre").value;
-    const edad = document.getElementById("edad").value;
-    const condicion = document.getElementById("condicion").value;
+// ----- Modales -----
+const modalLogin = document.getElementById("modalLogin");
+const modalRegister = document.getElementById("modalRegister");
+const openLogin = () => modalLogin.setAttribute("aria-hidden", "false");
+const openRegister = () => modalRegister.setAttribute("aria-hidden", "false");
+const closeAll = () => {
+  modalLogin.setAttribute("aria-hidden", "true");
+  modalRegister.setAttribute("aria-hidden", "true");
+};
 
-    const res = await fetch(`${apiBase}/api/pacientes`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ nombre, edad, condicion }),
-    });
+document.getElementById("btnOpenLogin")?.addEventListener("click", openLogin);
+document.getElementById("btnOpenRegister")?.addEventListener("click", openRegister);
+document.getElementById("ctaLogin")?.addEventListener("click", openLogin);
+document.getElementById("ctaRegister")?.addEventListener("click", openRegister);
 
-    const result = await res.json();
-    alert(`✅ ${result.mensaje}`);
-    e.target.reset();
-  });
-}
+document.querySelectorAll("[data-close]").forEach(b => b.addEventListener("click", closeAll));
+window.addEventListener("keydown", e => e.key === "Escape" && closeAll());
 
-// === Simulación de videollamada ===
-const btnVideo = document.getElementById("btnVideo");
-if (btnVideo) {
-  btnVideo.addEventListener("click", async () => {
-    alert("📞 Tu enfermera se conectará contigo en breve...");
-    await fetch(`${apiBase}/api/videollamadas`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ paciente: "Paciente" }),
-    });
-  });
-}
+// Cambios entre formularios
+document.getElementById("fromLoginToRegister")?.addEventListener("click", (e) => {
+  e.preventDefault(); closeAll(); openRegister();
+});
+document.getElementById("fromRegisterToLogin")?.addEventListener("click", (e) => {
+  e.preventDefault(); closeAll(); openLogin();
+});
 
-// === Mostrar pacientes (para enfermero) ===
-async function cargarPacientes() {
-  const tabla = document.getElementById("tablaPacientes");
-  if (!tabla) return;
-
-  const res = await fetch(`${apiBase}/api/pacientes`);
-  const pacientes = await res.json();
-  tabla.innerHTML = "";
-
-  pacientes.forEach(p => {
-    const fila = document.createElement("tr");
-    fila.innerHTML = `
-      <td>${p.id}</td>
-      <td>${p.nombre}</td>
-      <td>${p.edad}</td>
-      <td>${p.condicion}</td>
-      <td>
-        <button class="btn-observar" onclick="abrirModal('${p.nombre}')">🩺 Observar</button>
-      </td>
-    `;
-    tabla.appendChild(fila);
-  });
-}
-
-// === Modal de observaciones ===
-window.abrirModal = function(nombre) {
-  const modal = document.createElement("div");
-  modal.className = "modal";
-  modal.innerHTML = `
-    <div class="modal-content">
-      <h3>Agregar observación para ${nombre}</h3>
-      <textarea id="obsTexto" rows="4" placeholder="Escribe observación clínica..."></textarea>
-      <button id="guardarObs">Guardar</button>
-      <button onclick="cerrarModal()">Cerrar</button>
-    </div>`;
-  document.body.appendChild(modal);
-
-  document.getElementById("guardarObs").onclick = async () => {
-    const texto = document.getElementById("obsTexto").value;
-    await fetch(`${apiBase}/api/observaciones`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ paciente: nombre, texto }),
-    });
-    alert("🩺 Observación registrada");
-    cerrarModal();
+// ----- Registro -----
+const formRegister = document.getElementById("formRegister");
+const registerToast = document.getElementById("registerToast");
+formRegister?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  registerToast.className = "toast"; registerToast.textContent = "";
+  const fd = new FormData(formRegister);
+  const payload = {
+    nombre: fd.get("nombre")?.trim(),
+    email: fd.get("email")?.trim(),
+    password: fd.get("password"),
+    rol: fd.get("rol")
   };
-};
-
-window.cerrarModal = function() {
-  const modal = document.querySelector(".modal");
-  if (modal) modal.remove();
-};
-
-// === Gráfico de medicamentos (Chart.js) ===
-function crearGrafico() {
-  const ctx = document.getElementById("graficoMedicamentos");
-  if (!ctx) return;
-  new Chart(ctx, {
-    type: "bar",
-    data: {
-      labels: ["Losartán", "Metformina", "Atorvastatina"],
-      datasets: [{
-        label: "Dosis por día",
-        data: [1, 2, 1],
-        backgroundColor: ["#0d6efd", "#198754", "#ffc107"]
-      }]
-    }
-  });
-}
-
-// === Inicialización ===
-window.onload = () => {
-  cargarRecordatorios();
-  cargarPacientes();
-  crearGrafico();
-};
-// === Login simple ===
-const loginForm = document.getElementById("loginForm");
-if (loginForm) {
-  loginForm.addEventListener("submit", e => {
-    e.preventDefault();
-    const usuario = document.getElementById("usuario").value.trim();
-    const clave = document.getElementById("clave").value.trim();
-    const rol = document.getElementById("rol").value;
-
-    if (!usuario || !clave || !rol) {
-      alert("⚠️ Completa todos los campos");
-      return;
-    }
-
-    // Validación simple simulada
-    if (rol === "paciente" && clave === "1234") {
-      localStorage.setItem("rol", "paciente");
-      localStorage.setItem("usuario", usuario);
-      window.location.href = "/paciente.html";
-    } else if (rol === "enfermero" && clave === "admin") {
-      localStorage.setItem("rol", "enfermero");
-      localStorage.setItem("usuario", usuario);
-      window.location.href = "/enfermero.html";
-    } else {
-      alert("❌ Usuario o contraseña incorrectos");
-    }
-  });
-}
-
-// === Bloqueo de acceso directo a páginas ===
-const pagina = window.location.pathname;
-if (pagina.includes("paciente.html") || pagina.includes("enfermero.html")) {
-  const rol = localStorage.getItem("rol");
-  if (pagina.includes("paciente") && rol !== "paciente") {
-    window.location.href = "/login.html";
+  try {
+    const { usuario } = await api.post("/api/auth/register", payload);
+    registerToast.className = "toast ok";
+    registerToast.textContent = "Cuenta creada. ¡Bienvenido!";
+    // Guardamos sesión demo:
+    localStorage.setItem("eaac_user", JSON.stringify(usuario));
+    setTimeout(() => {
+      closeAll();
+      redirectByRole(usuario.rol);
+    }, 700);
+  } catch (err) {
+    registerToast.className = "toast err";
+    registerToast.textContent = err.message;
   }
-  if (pagina.includes("enfermero") && rol !== "enfermero") {
-    window.location.href = "/login.html";
+});
+
+// ----- Login -----
+const formLogin = document.getElementById("formLogin");
+const loginToast = document.getElementById("loginToast");
+formLogin?.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  loginToast.className = "toast"; loginToast.textContent = "";
+  const fd = new FormData(formLogin);
+  const payload = {
+    email: fd.get("email")?.trim(),
+    password: fd.get("password")
+  };
+  try {
+    const { usuario } = await api.post("/api/auth/login", payload);
+    loginToast.className = "toast ok";
+    loginToast.textContent = "Acceso correcto.";
+    localStorage.setItem("eaac_user", JSON.stringify(usuario));
+    setTimeout(() => {
+      closeAll();
+      redirectByRole(usuario.rol);
+    }, 500);
+  } catch (err) {
+    loginToast.className = "toast err";
+    loginToast.textContent = err.message;
   }
-}
-const cerrarSesion = document.getElementById("cerrarSesion");
-if (cerrarSesion) {
-  cerrarSesion.addEventListener("click", () => {
-    localStorage.clear();
-    window.location.href = "/login.html";
-  });
+});
+
+function redirectByRole(rol){
+  if (rol === "enfermero") window.location.href = "/enfermero.html";
+  else window.location.href = "/paciente.html";
 }
