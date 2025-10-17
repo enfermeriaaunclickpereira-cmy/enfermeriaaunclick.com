@@ -357,3 +357,120 @@ html,body{margin:0;padding:0;font-family:"Poppins",system-ui,-apple-system,Segoe
 .data-table tr:hover { background: rgba(255,255,255,.05); }
 
 .modal[aria-hidden="false"] { display:flex; }
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #b0f4e6, #e0fdf9);
+  color: #002b36;
+  margin: 0;
+  padding: 0;
+}
+
+/* Cabeceras */
+.header, .main-header {
+  background-color: #023047;
+  color: white;
+  text-align: center;
+  padding: 1rem;
+}
+
+/* Botones */
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.primary {
+  background-color: #00b686;
+  color: white;
+}
+
+.secondary {
+  background-color: #0077b6;
+  color: white;
+}
+
+.close {
+  background-color: #e63946;
+  color: white;
+}
+
+/* Contenedores */
+.content, .main-container {
+  width: 80%;
+  margin: auto;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Recomendaciones */
+.recomendaciones ul {
+  list-style: none;
+  padding: 0;
+}
+
+/* Alertas */
+.alerta {
+  background-color: #fff3cd;
+  border: 1px solid #ffeeba;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.alerta-medicamento {
+  background-color: #ffb703;
+  color: #023047;
+}
+
+.verde { color: #06d6a0; }
+.amarillo { color: #ffb703; }
+.rojo { color: #e63946; }
+
+/* Chat */
+.chat-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 25px;
+  background: #00b686;
+  color: white;
+  border-radius: 50%;
+  width: 55px;
+  height: 55px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.8em;
+  cursor: pointer;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+}
+
+.chat-box {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.3);
+  padding: 15px;
+}
+
+.chat-header {
+  font-weight: bold;
+  color: #0077b6;
+}
+
+.hidden {
+  display: none;
+}
+
+.mensaje-ok {
+  background-color: #d8f3dc;
+  padding: 10px;
+  border-radius: 8px;
+  color: #1b4332;
+}

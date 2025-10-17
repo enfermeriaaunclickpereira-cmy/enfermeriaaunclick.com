@@ -97,3 +97,24 @@ function redirectByRole(rol){
   if (rol === "enfermero") window.location.href = "/enfermero.html";
   else window.location.href = "/paciente.html";
 }
+// Mostrar chat
+function toggleChat() {
+  const chat = document.getElementById("chatBox");
+  chat.classList.toggle("hidden");
+}
+
+// Formulario de videollamada
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("formVideollamada");
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const enfermero = document.getElementById("enfermero").value;
+      const hora = document.getElementById("hora").value;
+      const confirmacion = document.getElementById("confirmacion");
+      confirmacion.textContent = `✅ Videollamada programada con ${enfermero} a las ${hora}.`;
+      confirmacion.classList.remove("hidden");
+      form.reset();
+    });
+  }
+});

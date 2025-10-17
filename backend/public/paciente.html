@@ -48,3 +48,64 @@
   <script src="/paciente.js"></script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel del Paciente</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>👩‍⚕️ Panel del Paciente</h1>
+  </header>
+
+  <main class="content">
+    <div class="alerta alerta-medicamento">
+      ⚠️ Recuerda tomar tus medicamentos a la hora indicada.
+    </div>
+
+    <section class="recomendaciones">
+      <h2>💡 Recomendaciones del día</h2>
+      <ul>
+        <li>Beber al menos 8 vasos de agua 💧</li>
+        <li>Evita la cafeína después de las 6pm ☕</li>
+        <li>Descansa lo suficiente 💤</li>
+      </ul>
+    </section>
+
+    <section class="videollamada">
+      <h2>📞 Programar videollamada</h2>
+      <form id="formVideollamada">
+        <label>Selecciona enfermero:</label>
+        <select id="enfermero">
+          <option>Yuri Liz</option>
+          <option>Vanesa Limas</option>
+          <option>Smith Rojas</option>
+        </select>
+
+        <label>Hora de la videollamada:</label>
+        <input type="time" id="hora" required />
+
+        <button type="submit" class="btn primary">Guardar</button>
+      </form>
+    </section>
+
+    <div id="confirmacion" class="hidden mensaje-ok"></div>
+  </main>
+
+  <!-- Chat flotante -->
+  <div class="chat-icon" onclick="toggleChat()">💬</div>
+
+  <div class="chat-box hidden" id="chatBox">
+    <div class="chat-header">Chat con enfermero</div>
+    <div class="chat-body">
+      <p><strong>Sistema:</strong> Hola, <span id="nombrePaciente">Paciente</span> 👋</p>
+      <p>Tu enfermero se conectará en unos minutos...</p>
+    </div>
+    <button onclick="toggleChat()" class="btn close">Cerrar</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

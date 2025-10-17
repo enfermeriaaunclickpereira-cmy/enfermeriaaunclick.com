@@ -38,3 +38,36 @@
   <script src="/enfermero.js"></script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Panel del Enfermero</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>🩺 Panel del Enfermero</h1>
+  </header>
+
+  <main class="content">
+    <section class="panel-info">
+      <h2>👥 Pacientes asignados</h2>
+      <p>Pacientes activos: <strong>3</strong></p>
+
+      <ul>
+        <li>Juan Pérez – <span class="estado verde">Estable</span></li>
+        <li>María López – <span class="estado amarillo">Observación</span></li>
+        <li>Jorge Ruiz – <span class="estado rojo">Alerta</span></li>
+      </ul>
+    </section>
+
+    <section class="alertas">
+      <h2>🚨 Alertas de seguimiento</h2>
+      <div class="alerta verde">✔️ Todo estable.</div>
+      <div class="alerta amarillo">⚠️ Monitorear presión arterial de María.</div>
+      <div class="alerta rojo">🚨 Jorge requiere revisión médica urgente.</div>
+    </section>
+  </main>
+</body>
+</html>
