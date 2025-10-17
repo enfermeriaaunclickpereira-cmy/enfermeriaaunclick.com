@@ -1,47 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Panel Enfermero</title>
-  <link rel="stylesheet" href="/styles.css">
-</head>
-<body>
-  <header class="topbar">
-    <div class="brand">👩‍⚕️ Panel del Enfermero</div>
-    <button class="btn ghost" onclick="logout()">Cerrar sesión</button>
-  </header>
-
-  <main class="landing">
-    <section class="hero-card">
-      <h1 id="nombreEnfermero"></h1>
-      <p>Gestión de pacientes y videollamadas programadas.</p>
-    </section>
-
-    <section class="card">
-      <h2>📋 Pacientes Registrados</h2>
-      <table class="data-table" id="tablaPacientes">
-        <thead><tr><th>Nombre</th><th>Edad</th><th>Condición</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </section>
-
-    <section class="card">
-      <h2>📅 Videollamadas Programadas</h2>
-      <table class="data-table" id="tablaCitas">
-        <thead><tr><th>Paciente</th><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead>
-        <tbody></tbody>
-      </table>
-    </section>
-  </main>
-
-  <script src="/enfermero.js"></script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="es">
-<head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Panel del Enfermero</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -51,23 +12,214 @@
   </header>
 
   <main class="content">
-    <section class="panel-info">
-      <h2>👥 Pacientes asignados</h2>
-      <p>Pacientes activos: <strong>3</strong></p>
+    <!-- 📋 PACIENTES REGISTRADOS -->
+    <section class="card" id="card-pacientes">
+      <h2>📋 Pacientes Registrados</h2>
 
-      <ul>
-        <li>Juan Pérez – <span class="estado verde">Estable</span></li>
-        <li>María López – <span class="estado amarillo">Observación</span></li>
-        <li>Jorge Ruiz – <span class="estado rojo">Alerta</span></li>
-      </ul>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Edad</th>
+            <th>Condición</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody id="pacientesTbody"></tbody>
+      </table>
     </section>
 
-    <section class="alertas">
+    <!-- 🚨 ALERTAS DE SEGUIMIENTO -->
+    <section class="card alertas">
       <h2>🚨 Alertas de seguimiento</h2>
       <div class="alerta verde">✔️ Todo estable.</div>
       <div class="alerta amarillo">⚠️ Monitorear presión arterial de María.</div>
       <div class="alerta rojo">🚨 Jorge requiere revisión médica urgente.</div>
     </section>
   </main>
+
+  <!-- ✅ TOAST (notificación flotante) -->
+  <div id="toast" class="toast hidden">Paciente atendido correctamente ✅</div>
+
+  <script>
+    // --- Escapar HTML peligroso ---
+    const escapeHTML = (str = "") =>
+      String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+    // --- Mostrar pacientes ---
+    document.addEventListener('DOMContentLoaded', () => {
+      mostrarPacientes();
+    });
+
+    // --- Cargar pacientes ---
+    function mostrarPacientes() {
+      const tbody = document.getElementById('pacientesTbody');
+      const pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
+
+      if (!pacientes.length) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align:center; opacity:.8;">
+              No hay pacientes registrados aún.
+            </td>
+          </tr>`;
+        return;
+      }
+
+      tbody.innerHTML = pacientes.map((p, index) => {
+        let estado = '🟢 Estable';
+        if (/presion|hipertension|tension/i.test(p.condicion)) estado = '🟡 Observación';
+        if (/fiebre|dolor|crisis|urgente|grave/i.test(p.condicion)) estado = '🔴 Alerta';
+
+        return `
+          <tr>
+            <td>${escapeHTML(p.nombre)}</td>
+            <td>${escapeHTML(p.edad)}</td>
+            <td>${escapeHTML(p.condicion)}</td>
+            <td>${estado}</td>
+            <td>
+              <button class="btn small success" onclick="marcarAtendido(${index})">✔ Atendido</button>
+            </td>
+          </tr>`;
+      }).join('');
+    }
+
+    // --- Marcar paciente como atendido ---
+    function marcarAtendido(index) {
+      let pacientes = JSON.parse(localStorage.getItem('pacientes')) || [];
+      const paciente = pacientes[index];
+
+      if (confirm(`¿Marcar a ${paciente.nombre} como atendido?`)) {
+        pacientes.splice(index, 1);
+        localStorage.setItem('pacientes', JSON.stringify(pacientes));
+        mostrarPacientes();
+        mostrarToast("Paciente atendido correctamente ✅");
+      }
+    }
+
+    // --- Mostrar toast ---
+    function mostrarToast(mensaje) {
+      const toast = document.getElementById('toast');
+      toast.textContent = mensaje;
+      toast.classList.remove('hidden');
+      toast.classList.add('show');
+
+      setTimeout(() => {
+        toast.classList.remove('show');
+        toast.classList.add('hidden');
+      }, 3000);
+    }
+  </script>
+
+  <style>
+    /* --- Tabla de pacientes --- */
+    #card-pacientes .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    #card-pacientes thead th {
+      background: #00b686;
+      color: white;
+      padding: 10px;
+    }
+
+    #card-pacientes tbody td {
+      padding: 10px;
+      text-align: left;
+      border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    #card-pacientes tbody tr:nth-child(even) {
+      background: #e7f9f4;
+    }
+
+    /* --- Botones pequeños --- */
+    .btn.small {
+      font-size: 0.85rem;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+
+    .btn.small.success {
+      background: #28a745;
+      color: white;
+    }
+
+    .btn.small.success:hover {
+      background: #218838;
+    }
+
+    /* --- Alertas de seguimiento --- */
+    .alertas {
+      margin-top: 25px;
+      background: #f7f7f7;
+      padding: 15px;
+      border-radius: 10px;
+    }
+
+    .alerta {
+      padding: 10px;
+      margin: 8px 0;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+
+    .alerta.verde {
+      background: #d4edda;
+      color: #155724;
+      border-left: 5px solid #28a745;
+    }
+
+    .alerta.amarillo {
+      background: #fff3cd;
+      color: #856404;
+      border-left: 5px solid #ffc107;
+    }
+
+    .alerta.rojo {
+      background: #f8d7da;
+      color: #721c24;
+      border-left: 5px solid #dc3545;
+    }
+
+    /* --- Toast --- */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #00b686;
+      color: white;
+      padding: 15px 25px;
+      border-radius: 8px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(50px);
+      transition: all 0.4s ease;
+      z-index: 1000;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast.hidden {
+      display: none;
+    }
+  </style>
 </body>
 </html>
