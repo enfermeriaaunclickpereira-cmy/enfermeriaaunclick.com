@@ -3,39 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Paciente - Enfermería a un Click</title>
+  <title>Panel Paciente</title>
   <link rel="stylesheet" href="/styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <header><h1>👩‍⚕️ Panel del Paciente</h1></header>
+  <header class="topbar">
+    <div class="brand">💊 Panel del Paciente</div>
+    <button class="btn ghost" onclick="logout()">Cerrar sesión</button>
+  </header>
 
-  <main>
-    <button id="cerrarSesion" style="float:right;margin:10px;">🚪 Cerrar sesión</button>
-
-    <section class="card registro">
-      <h2>🧾 Registrar Paciente</h2>
-      <form id="formPaciente">
-        <input id="nombre" placeholder="Nombre completo" required>
-        <input id="edad" type="number" placeholder="Edad" required>
-        <input id="condicion" placeholder="Condición médica">
-        <button type="submit">Guardar</button>
-      </form>
+  <main class="landing">
+    <section class="hero-card">
+      <h1 id="nombrePaciente"></h1>
+      <p>Bienvenido a tu panel de salud. Programa tus videollamadas con enfermeros disponibles.</p>
+      <button class="btn primary" id="btnProgramar">📅 Programar Videollamada</button>
     </section>
 
     <section class="card">
-      <h2>💊 Recordatorios</h2>
-      <ul id="listaRecordatorios"></ul>
-      <button id="btnVideo">📞 Iniciar videollamada</button>
-    </section>
-
-    <section class="card grafica">
-      <h2>📊 Control de medicamentos</h2>
-      <canvas id="graficoMedicamentos"></canvas>
+      <h2>Mis Videollamadas</h2>
+      <table class="data-table" id="tablaVideollamadas">
+        <thead><tr><th>Enfermero</th><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead>
+        <tbody></tbody>
+      </table>
     </section>
   </main>
 
-  <footer>© 2025 Enfermería a un Click - Todos los derechos reservados</footer>
-  <script src="/app.js" defer></script>
+  <!-- Modal -->
+  <div class="modal" id="modalCita" aria-hidden="true">
+    <div class="modal-dialog">
+      <button class="modal-close" data-close>✕</button>
+      <h3>Programar Videollamada</h3>
+      <form id="formCita" class="form">
+        <label>Fecha <input type="date" name="fecha" required></label>
+        <label>Hora <input type="time" name="hora" required></label>
+        <label>Selecciona enfermero
+          <select name="enfermero" id="listaEnfermeros" required></select>
+        </label>
+        <button class="btn primary" type="submit">Guardar cita</button>
+      </form>
+      <div id="msgCita" class="toast"></div>
+    </div>
+  </div>
+
+  <script src="/paciente.js"></script>
 </body>
 </html>

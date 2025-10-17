@@ -341,3 +341,19 @@ html,body{margin:0;padding:0;font-family:"Poppins",system-ui,-apple-system,Segoe
 .toast{margin-top:10px;font-size:14px;min-height:18px}
 .toast.ok{color:#8df2c8}
 .toast.err{color:#ffb4b4}
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: rgba(255,255,255,.05);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.data-table th, .data-table td {
+  padding: 10px;
+  border-bottom: 1px solid rgba(255,255,255,.1);
+}
+.data-table th { background: rgba(0,0,0,.2); }
+.data-table tr:hover { background: rgba(255,255,255,.05); }
+
+.modal[aria-hidden="false"] { display:flex; }

@@ -3,31 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Enfermero - Panel de Gestión</title>
+  <title>Panel Enfermero</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <header><h1>👨‍⚕️ Panel del Enfermero</h1></header>
+  <header class="topbar">
+    <div class="brand">👩‍⚕️ Panel del Enfermero</div>
+    <button class="btn ghost" onclick="logout()">Cerrar sesión</button>
+  </header>
 
-  <main>
-    <button id="cerrarSesion" style="float:right;margin:10px;">🚪 Cerrar sesión</button>
+  <main class="landing">
+    <section class="hero-card">
+      <h1 id="nombreEnfermero"></h1>
+      <p>Gestión de pacientes y videollamadas programadas.</p>
+    </section>
 
     <section class="card">
-      <h2>👥 Pacientes registrados</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th><th>Nombre</th><th>Edad</th><th>Condición</th><th>Acción</th>
-          </tr>
-        </thead>
-        <tbody id="tablaPacientes"></tbody>
+      <h2>📋 Pacientes Registrados</h2>
+      <table class="data-table" id="tablaPacientes">
+        <thead><tr><th>Nombre</th><th>Edad</th><th>Condición</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </section>
+
+    <section class="card">
+      <h2>📅 Videollamadas Programadas</h2>
+      <table class="data-table" id="tablaCitas">
+        <thead><tr><th>Paciente</th><th>Fecha</th><th>Hora</th><th>Estado</th></tr></thead>
+        <tbody></tbody>
       </table>
     </section>
   </main>
 
-  <div id="modalContainer"></div>
-  <footer>© 2025 Enfermería a un Click</footer>
-
-  <script src="/app.js" defer></script>
+  <script src="/enfermero.js"></script>
 </body>
 </html>

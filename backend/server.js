@@ -8,86 +8,110 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Paths base
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const DB_PATH = path.join(__dirname, "db.json");
 const PUBLIC_PATH = path.join(__dirname, "public");
 
-// Servir frontend
-app.use(express.static(PUBLIC_PATH));
-
-// DB helpers
+// === Helpers ===
 function readDB() {
   try {
     const data = fs.readFileSync(DB_PATH, "utf8");
     return JSON.parse(data);
   } catch {
-    return { usuarios: [], pacientes: [], recordatorios: [], videollamadas: [], observaciones: [] };
+    return { usuarios: [], pacientes: [], videollamadas: [], observaciones: [] };
   }
 }
 function writeDB(data) {
   fs.writeFileSync(DB_PATH, JSON.stringify(data, null, 2));
 }
 
-// Ping API
-app.get("/api", (req, res) => res.json({ ok: true }));
+// === Servir frontend ===
+app.use(express.static(PUBLIC_PATH));
 
-// ---------- AUTH DEMO ----------
+// === Registro/Login ===
 app.post("/api/auth/register", (req, res) => {
   const { nombre, email, password, rol } = req.body || {};
-  if (!nombre || !email || !password || !rol) {
+  if (!nombre || !email || !password || !rol)
     return res.status(400).json({ ok: false, mensaje: "Faltan campos" });
-  }
+
   const db = readDB();
-  const existe = (db.usuarios || []).find(u => u.email.toLowerCase() === email.toLowerCase());
-  if (existe) return res.status(409).json({ ok: false, mensaje: "El correo ya está registrado" });
+  const existe = (db.usuarios || []).find(u => u.email === email.toLowerCase());
+  if (existe) return res.status(409).json({ ok: false, mensaje: "Correo ya registrado" });
 
   const nuevo = {
     id: (db.usuarios?.length || 0) + 1,
     nombre,
     email: email.toLowerCase(),
-    password, // demo: sin hash
-    rol // "paciente" | "enfermero"
+    password,
+    rol
   };
-  db.usuarios = db.usuarios || [];
   db.usuarios.push(nuevo);
   writeDB(db);
-
-  res.json({ ok: true, usuario: { id: nuevo.id, nombre: nuevo.nombre, email: nuevo.email, rol: nuevo.rol } });
+  res.json({ ok: true, usuario: nuevo });
 });
 
 app.post("/api/auth/login", (req, res) => {
-  const { email, password } = req.body || {};
-  if (!email || !password) return res.status(400).json({ ok: false, mensaje: "Faltan credenciales" });
-
+  const { email, password } = req.body;
   const db = readDB();
   const user = (db.usuarios || []).find(
     u => u.email === email.toLowerCase() && u.password === password
   );
   if (!user) return res.status(401).json({ ok: false, mensaje: "Credenciales inválidas" });
-
-  res.json({ ok: true, usuario: { id: user.id, nombre: user.nombre, email: user.email, rol: user.rol } });
+  res.json({ ok: true, usuario: user });
 });
-// ---------- FIN AUTH ----------
 
-// Pacientes (igual que tenías; mantiene compatibilidad)
-app.get("/api/pacientes", (req, res) => res.json(readDB().pacientes || []));
+// === Pacientes ===
+app.get("/api/pacientes", (req, res) => {
+  res.json(readDB().pacientes || []);
+});
+
 app.post("/api/pacientes", (req, res) => {
+  const { nombre, edad, condicion } = req.body;
+  if (!nombre || !edad || !condicion)
+    return res.status(400).json({ ok: false, mensaje: "Faltan datos" });
   const db = readDB();
-  const nuevo = {
-    id: (db.pacientes?.length || 0) + 1,
-    nombre: req.body.nombre,
-    edad: req.body.edad,
-    condicion: req.body.condicion
-  };
-  db.pacientes = db.pacientes || [];
+  const nuevo = { id: (db.pacientes?.length || 0) + 1, nombre, edad, condicion };
   db.pacientes.push(nuevo);
   writeDB(db);
-  res.json({ mensaje: "Paciente agregado", paciente: nuevo });
+  res.json({ ok: true, mensaje: "Paciente agregado", paciente: nuevo });
 });
 
-// Catch-all → index
+// === Enfermeros (listar) ===
+app.get("/api/enfermeros", (req, res) => {
+  const db = readDB();
+  res.json((db.usuarios || []).filter(u => u.rol === "enfermero"));
+});
+
+// === Videollamadas ===
+app.post("/api/videollamadas", (req, res) => {
+  const { paciente, enfermero, fecha, hora } = req.body;
+  if (!paciente || !enfermero || !fecha || !hora)
+    return res.status(400).json({ ok: false, mensaje: "Faltan datos" });
+
+  const db = readDB();
+  const nueva = {
+    id: (db.videollamadas?.length || 0) + 1,
+    paciente,
+    enfermero,
+    fecha,
+    hora,
+    estado: "Pendiente"
+  };
+  db.videollamadas.push(nueva);
+  writeDB(db);
+  res.json({ ok: true, videollamada: nueva });
+});
+
+app.get("/api/videollamadas/:enfermero", (req, res) => {
+  const db = readDB();
+  const citas = (db.videollamadas || []).filter(
+    v => v.enfermero.toLowerCase() === req.params.enfermero.toLowerCase()
+  );
+  res.json(citas);
+});
+
+// === Catch-all ===
 app.get("*", (req, res) => res.sendFile(path.join(PUBLIC_PATH, "index.html")));
 
 const PORT = process.env.PORT || 10000;
