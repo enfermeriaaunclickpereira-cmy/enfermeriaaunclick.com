@@ -50,16 +50,17 @@ app.post("/api/auth/register", (req, res) => {
   writeDB(db);
   res.json({ ok: true, usuario: nuevo });
 });
-
+// = genera error estado de autenticación = 401 (generar correcion 2 sprint 22 oct )
 app.post("/api/auth/login", (req, res) => {
   const { email, password } = req.body;
   const db = readDB();
   const user = (db.usuarios || []).find(
     u => u.email === email.toLowerCase() && u.password === password
   );
-  if (!user) return res.status(401).json({ ok: false, mensaje: "Credenciales inválidas" });
+  if (!user) return res.status(401).json({ ok: false, mensaje: "Usuario o contraseña incorrecto" });
   res.json({ ok: true, usuario: user });
 });
+
 
 // === Pacientes ===
 app.get("/api/pacientes", (req, res) => {
